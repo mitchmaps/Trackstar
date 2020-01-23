@@ -12,4 +12,4 @@ Week 1 Log:
 
 - Set Goals for next week to familiarize ourselves with React-Native and look into Firebase
 - Perhaps have a small working demo in order to show our group next week and to have a round table
-- Looking forward to developing this coming week !
+- Looking forward to developing this coming week !!!
