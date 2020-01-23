@@ -1,0 +1,15 @@
+HaoHao Du
+ID: 101074491
+
+Week 1 Log:
+
+- Collaborated with group members to divide up presentation tasks
+- Brainstormed ideas for user scenarios, who our target users are, basically Deliverable 1 requirements
+- Helped build up rough draft of presentation slides and skit
+- Managed the Context portion of presentation (why Trackstar is useful, why it is needed in todays industry)
+- Looked at different mobile technologies both for front-end and back-end and compared pros and cons
+- Reached the decision to use React-Native and Firebase for our Tech Stack as they are the most versatile and members on our team have the most experience with those languages (not me)
+
+- Set Goals for next week to familiarize ourselves with React-Native and look into Firebase
+- Perhaps have a small working demo in order to show our group next week and to have a round table
+- Looking forward to developing this coming week !
