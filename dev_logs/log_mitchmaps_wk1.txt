@@ -1,0 +1,15 @@
+Mitchell Soares
+ID: 101103889
+
+Week 1 Log:
+
+- Worked with the team to iron out our plan for the D1 presentation
+- Worked on the introductory skit, conclusion and created final version of presentation slides for D1
+- Presented Trackstar to the class with the team
+- Met up with the team post-presentation to dive into technical decisions for the project
+- Helped in the decision of using React Native and Firebase to develop Trackstar
+- Began experimenting with the tech stack we'll be using by making a test project and trying to get the front and backend talking to each other
+  before diving into development for the real app
+- Had success spinning up a React Native hello world app to test how the technology works and was delighted to see just how similar
+  it is to React (I work with React every day at my current job)
+- Began figuring out how to use firebase for the app
