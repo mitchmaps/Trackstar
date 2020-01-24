@@ -1,0 +1,12 @@
+Gabrielle Pancu
+ID: 101104085
+
+Week 1:
+- created breakdown of tasks with duedates for our team (for d1 aka deliverable 1)
+- wrote page 1 for d1
+- wrote functional properties for d1
+- provided feedback and edited user scenarios and non-functional properties for d1
+- came up with idea for intro of presentation, wrote and presented section about
+  task prioritization feature
+- provided feedback in meeting about each member's presentation script
+- started doing research on languages and frameworks
