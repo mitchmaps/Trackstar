@@ -1,7 +1,7 @@
 Gabrielle Pancu
 ID: 101104085
 
-Week 1:
+Week 2:
 - Research on different options for local databases, weighing pros and cons.
 - Looked into tutorials for SQlite and how to integrate with React Native.
 - Did a set up and Hello World walk through of React Native and Expo.
