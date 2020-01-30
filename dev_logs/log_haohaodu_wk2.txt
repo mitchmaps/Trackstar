@@ -11,7 +11,8 @@ mobile platform and how it works
 - Met up with team and brainstormed different associations between classes, 
 sequence diagrams, and overall class architecture behind the scenes
 - Confirmed our front-end platform as React-Native with team, currently
-still deciding various backend technologies (FireBase, SQLite, etc.)
+still deciding various backend technologies (FireBase, SQLite, etc.) 
+- Will upload my small demo to repo next week
 
 - Goals: 
 - Start completing demo, and continue familiarizing self with React-Native
