@@ -1,13 +1,19 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { createAppContainer } from "react-navigation";
-import { createBottomTabNavigator } from "react-navigation-tabs";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import { CourseDashboard } from "./components/CourseDashboard/CourseDashboard";
+import { HomeDashboard } from './components/HomeDashboard/HomeDashboard';
+import { Courses } from './components/Courses/Courses';
 
 const AppNavigator = createBottomTabNavigator({
-  CourseDashboard: { screen: CourseDashboard }
-});
+  Dashboard: HomeDashboard,
+  Courses: Courses,
+  },
+  {
+    initialRouteName: 'Dashboard',
+  }
+);
 
 const AppContainer = createAppContainer(AppNavigator);
 
