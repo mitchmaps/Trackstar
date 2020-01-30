@@ -1,0 +1,19 @@
+HaoHao Du
+ID: 101074491
+
+Week 2 Log:
+
+- Accomplished Tasks
+- Familiarized self with React and React-Native
+- Created a small demo app for very basic functionality and understanding of
+mobile platform and how it works 
+- Looked through facebook documentation for React-Native
+- Met up with team and brainstormed different associations between classes, 
+sequence diagrams, and overall class architecture behind the scenes
+- Confirmed our front-end platform as React-Native with team, currently
+still deciding various backend technologies (FireBase, SQLite, etc.)
+
+- Goals: 
+- Start completing demo, and continue familiarizing self with React-Native
+- Look into Firebase
+- Try to link the two technologies together
