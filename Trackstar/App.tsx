@@ -1,19 +1,24 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
-  );
-}
+import { HomeDashboard } from './components/HomeDashboard/HomeDashboard';
+import { Courses } from './components/Courses/Courses';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const AppNavigator = createBottomTabNavigator({
+  Dashboard: HomeDashboard,
+  Courses: Courses,
   },
-});
+  {
+    initialRouteName: 'Dashboard',
+  }
+);
+
+const AppContainer = createAppContainer(AppNavigator);
+
+export default class App extends React.Component {
+  render() {
+    return <AppContainer />;
+  }
+}
