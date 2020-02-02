@@ -1,0 +1,11 @@
+Mitchell Soares
+ID: 101103889
+
+Week 2 log:
+
+- Continued doing research on what DBMS to use for the project
+- Met with the team to map out different models for the DB
+- Discussed different paths to go down in terms of model design
+- Initialized the project using the react native expo cli as a blank typescript RN project
+- Wrote and shipped first PR for setting up our different pages that will be used by the app
+- Researched react native component libraries to use for the UI
