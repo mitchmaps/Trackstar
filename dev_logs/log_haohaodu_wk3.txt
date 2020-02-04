@@ -1,0 +1,13 @@
+HaoHao Du
+ID: 101074491
+
+Week 3 Log:
+
+- Accomplished Tasks
+- Created a google project and linked it to firebase through the command 
+line and official google documentation
+- Continued to follow through SQLite tutorials on youtube
+- Met with team to discuss next weeks goals
+- Built basic class structure and hierachy 
+- Looked into typescript documentation for modules and classes
+- Try to help team with UI development / logic since I finished my part
