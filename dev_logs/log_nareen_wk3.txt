@@ -1,0 +1,19 @@
+Nareen Khurshid
+101029589
+
+group meeting Feb 2nd
+Diagram of relations decided
+base files made to begin
+
+how to calculate grades, logic and sudo code 
+how it interacts with the database
+
+Grade Calculation Logic -Nareen 
+Grade calculation code/pseudocode
+Calculating current grade based on evaluations
+Calculating hypothetical grades
+
+course veiw 
+
+
+-group divided up things to get done

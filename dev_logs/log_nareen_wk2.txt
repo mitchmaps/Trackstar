@@ -1,0 +1,21 @@
+Nareen Khurshid
+101029589
+Week of the 20th
+---------------------------------------------------------------------------
+-Used Expo CLI and Snack
+-Played around with https://snack.expo.io/
+-Install and experiment with React Native and Firebase
+-General research on mobile development (share good articles with the team!)
+-Everyone should share something they learned, something cool
+
+planning on setup
+-sqlite 
+-firebase
+-react native for the view + sqlite
+-might be able to do everything in javascript
+
+M-model classes
+V-view, front end stuff you see
+C-how the two parts talk to each other
+
+Group meeting 1pm Jan 28th Library room 469
