@@ -5,9 +5,9 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import { HomeDashboard } from './components/HomeDashboard/HomeDashboard';
-import { Courses } from './components/Courses/Courses';
+import Courses from './components/Courses/Courses';
 
-import { CourseCreate } from './components/Courses/components/CourseCreate'; 
+import CourseCreate from './components/Courses/components/CourseCreate'; 
 
 const dashboardStack = createStackNavigator({
   Dashboard: HomeDashboard,
@@ -23,14 +23,12 @@ const AppNavigator = createBottomTabNavigator({
   Courses: coursesStack,
   },
   {
-    initialRouteName: 'Dashboard',
+    initialRouteName: 'Courses',
   }
 );
 
 const AppContainer = createAppContainer(AppNavigator);
 
-export default class App extends React.Component {
-  render() {
-    return <AppContainer />;
-  }
+export default function App() {
+  return <AppContainer />;
 }
