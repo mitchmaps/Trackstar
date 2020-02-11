@@ -1,0 +1,5 @@
+Gabrielle Pancu
+ID: 101104085
+
+Week 4:
+- Attended a React Native workshop, made a sample app
