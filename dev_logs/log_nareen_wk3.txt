@@ -2,8 +2,9 @@ Nareen Khurshid
 101029589
 
 group meeting Feb 2nd
-Diagram of relations decided
-base files made to begin
+-Diagram of relations decided
+-base files made to begin programming a pseudocode
+-group divided up things to get done
 
 how to calculate grades, logic and sudo code 
 how it interacts with the database
@@ -13,7 +14,4 @@ Grade calculation code/pseudocode
 Calculating current grade based on evaluations
 Calculating hypothetical grades
 
-course veiw 
-
-
--group divided up things to get done
+talked about structure of the classes. course veiw.
