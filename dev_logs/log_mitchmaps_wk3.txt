@@ -1,0 +1,9 @@
+Mitchell Soares
+ID: 101103889
+
+Week 3 log:
+
+- Met with the team to plan out the Week
+- Assisted members of the team with environment setup including version control management and dependency installation
+- Planned out workflow for course creation framework
+- Began development for course creation work flow
