@@ -1,0 +1,6 @@
+Gabrielle Pancu
+ID: 101104085
+
+Week 3:
+- Drew up some different options for the organization of our database, made them into ER diagrams
+- Started following a tutorial for setting up SQlite in our project
