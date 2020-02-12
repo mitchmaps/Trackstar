@@ -1,0 +1,20 @@
+HaoHao Du
+ID: 101074491
+
+Week 3 Log:
+
+- Looked into React specific design patterns and there pros and cons
+ - MVC (scalability, debugging issues, work seperability advantages)
+ - Flux (unidirectional data flow, solves debugging and scalability issues,
+where information and commands are passed to *stores* where eaach store
+is responsible for its own domain and these stores update child components)
+ - Redux (also emphasizes unidirectional data flow however, utilises a 
+centralized store instead of multiple)
+ - Research document is here: https://docs.google.com/document/d/1hDuJhvRj3NNH2tzgwDk80guIViBI2FdRSjIsE6kC1wI/edit?usp=sharing
+
+
+- Possible Architectural Styles 
+ - Object Oriented Programming
+
+For Next Week:
+ - Dashboard Creation
