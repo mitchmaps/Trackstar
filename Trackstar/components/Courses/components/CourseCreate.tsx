@@ -1,8 +1,8 @@
 import * as React from 'react';
 import t from 'tcomb-form-native';
 
-import { Text, View, Button } from 'react-native';
-import { TextInput, Divider } from 'react-native-paper';
+import { Text, View, Button, FlatList, DatePickerIOS } from 'react-native';
+import { TextInput, Divider, Surface } from 'react-native-paper';
 import { iOSUIKit } from 'react-native-typography';
 
 
@@ -85,7 +85,17 @@ export class CourseCreate extends React.Component {
           <Text>{this.state.title}</Text>
           <Divider />
           <Text style={iOSUIKit.title3Emphasized}>Add grading scheme</Text>
-
+          <Text style={iOSUIKit.caption2}>
+            By adding various evaluations you'll be able to automatically keep track of them from your dashboard.
+          </Text>
+          <Text style={{paddingTop: 20, paddingBottom: 20}}>Evaluations:</Text>
+          <View>
+            <TextInput label="Evaluation title" onChangeText={() => {}} />
+            <View style={{flexDirection: 'row'}}>
+              <TextInput label="Grade percentage"></TextInput>
+            </View>
+          </View>
+            
           <Button title="submit" onPress={this.handleSubmit} />
         </View>
       </View>
