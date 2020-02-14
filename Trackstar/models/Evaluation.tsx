@@ -1,11 +1,14 @@
 export default class Evaluation {
     title: string;
-    due_date: [number, number, number];
+    due_date: Date;
+    complete: boolean;
     weight: number;
     grade: number;
-    complete: boolean;
+    
 
-    constructor(t: string, d: [number,number,number], w: number, g: number, c:boolean) {
+    constructor(t: string, d: Date, c: boolean)
+
+    constructor(t?: string, d?: Date, c?:boolean, w?: number, g?: number) {
         this.title = t;
         this.due_date = d;
         this.weight = w;

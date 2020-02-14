@@ -6,7 +6,7 @@ class Course {
     grade: number;
     complete: boolean;
 
-    constructor(t: string, min_g: number, g: number, g: number, c:boolean) {
+    constructor(t: string, min_g: number, g: number, c:boolean) {
         this.title = t;
         this.min_grade = min_g;
         this.grade = g;
@@ -14,6 +14,6 @@ class Course {
     }
 
     cur_grade(){
-        return Evaluation.grade;
+        // return Evaluation.grade;
     }
 }

@@ -1,24 +1,89 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+ 
+import * as React from 'react';
+import t from 'tcomb-form-native';
 
-import { HomeDashboard } from './components/HomeDashboard/HomeDashboard';
-import { Courses } from './components/Courses/Courses';
+import { Text, View, Button } from 'react-native';
+import { TextInput, Divider } from 'react-native-paper';
+import { iOSUIKit } from 'react-native-typography';
 
-const AppNavigator = createBottomTabNavigator({
-  Dashboard: HomeDashboard,
-  Courses: Courses,
-  },
-  {
-    initialRouteName: 'Dashboard',
+
+export interface EvaluationDescriptor {
+  title: string;
+  dueDate: Date;
+  weight: number;
+}
+
+export interface CourseDescriptor {
+  code: string;
+  title: string;
+  gradeBreakdown?: EvaluationDescriptor[];
+}
+
+const code: string = 'code';
+const title: string = 'title';
+
+export class CourseCreate extends React.Component {
+
+  state: {
+    code: string,
+    title: string,
   }
-);
 
-const AppContainer = createAppContainer(AppNavigator);
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
-export default class App extends React.Component {
+    this.state = {
+      code: '',
+      title: '',
+    }
+  }
+
+  // regex for course codes: \w{4}\d{4}
+
   render() {
-    return <AppContainer />;
+    const courseInfo = (
+      <>
+        <TextInput 
+          label="Course code"
+          value={this.state.code}
+          onChangeText={(text) => {this.setState({code: text})}} 
+          clearButtonMode= "while-editing"
+          autoCorrect={false}
+        />
+        <TextInput 
+          label="Course title"
+          value={this.state.title}
+          onChangeText={(text) => {this.setState({title: text})}}
+          clearButtonMode= "while-editing"
+          autoCorrect={false}
+        />
+      </>
+    );
+
+    return (
+      <View style={{alignSelf: "stretch"}}>
+        <View style={{
+          height: 80,
+          alignSelf: "stretch",
+          padding: 20,
+        }}>
+          <Text style={iOSUIKit.largeTitleEmphasized}>Add course</Text>
+          {courseInfo}
+          <Text>{this.state.code}</Text>
+          <Text>{this.state.title}</Text>
+          <Divider />
+          <Text style={iOSUIKit.title3Emphasized}>Add grading scheme</Text>
+
+          <Button title="submit" onPress={this.handleSubmit} />
+        </View>
+      </View>
+    );
+  }
+
+  handleSubmit() {
+    console.log('in submit');
+    console.log(this.state.code);
+    console.log(this.state.title);
   }
 }

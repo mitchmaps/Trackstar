@@ -1,13 +1,16 @@
-export default class Task {
+import Evaluation from "./Evaluation";
+
+export default class Task extends Evaluation{
     title: string;
+    due_date: Date;
+    complete: boolean;
     estimated_duration: number;
     priority: number;
-    complete: boolean;
+   
 
-    constructor(t: string, d: number, p: number, c:boolean) {
-        this.title = t;
-        this.estimated_duration = d;
+    constructor(t: string, d :Date, c: boolean, ed: number, p: number) {
+        super(t, d, c);
+        this.estimated_duration = ed;
         this.priority = p;
-        this.complete = c;
     }
 }
