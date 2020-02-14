@@ -1,0 +1,11 @@
+Mitchell Soares
+ID: 101103889
+
+Week 4 log:
+
+- ironed out plan for deliverable 2 detailing goals for the demo and the role that I'll play in it
+- Officially took ownership for the course creation work flow and continued development of it
+- Experimented with various React Native libraries for form submission and ended up creating my own system that works better for our needs
+- Did research on the advantages of functional vs class components for the project
+- Created form for creating a course
+- Demoed the progress of the course creation workflow to the team and took their feedback regarding how to handle creating different evaluations
