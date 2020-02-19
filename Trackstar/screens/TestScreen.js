@@ -1,53 +1,54 @@
 import React from "react";
 // import Constants from 'expo-constants';
 // import * as SQLite from 'expo-sqlite';
-import { DB } from "./DB"
-import { Text, View, Image, TouchableOpacity, SectionList, StyleSheet } from "react-native";
+import { DB } from "../DB"
+import { Text, View, Image, TouchableOpacity, SectionList, StyleSheet, TextInput } from "react-native";
+import { render } from "react-dom";
 // import {mockData} from "../mockData"
 
-const db = DB.new
 
-const sectionHeader = (data) => {
-  const section = data.section
-  return (
-    <View style={styles.sectionHeader}>
-      <Text style={styles.sectionHeaderText}>{section.time}</Text>
-    </View>
-  );
-};
+// const db = DB.new
 
-const TestScreen = (props) => {
-  // const navigation = props.navigation;
-//   const [text, setText] = React.useState(null)
+// const sectionHeader = (data) => {
+//   const section = data.section
+//   return (
+//     <View style={styles.sectionHeader}>
+//       <Text style={styles.sectionHeaderText}>{section.time}</Text>
+//     </View>
+//   );
+// };
 
-//   let _todo;
-//   let _done;
+// const TestScreen = (props) => {
 
-  React.useEffect(() => {
-    db.createCourse()
-  }, [])
-  const singleItem = (data) => {
-    const item = data.item
-    return (
-      // <TouchableOpacity onPress={() => {navigation.navigate("Details", {talkData: item})}}>
-        <View style={styles.singleItem}>
-          <Text>{item.title}</Text>
-        </View>
-      // </TouchableOpacity>
-    );
-  };
+//   React.useEffect(() => {
+//     db.createCourse()
+//   }, [])
+//   const singleItem = (data) => {
+//     const item = data.item
+//     return (
+//       // <TouchableOpacity onPress={() => {navigation.navigate("Details", {talkData: item})}}>
+//         <View style={styles.singleItem}>
+//           <Text>{item.title}</Text>
+//         </View>
+//       // </TouchableOpacity>
+//     );
+//   };
 
+  export class TestScreen extends React.Component {
+
+  render() {
+    const [text, setText] = React.useState(null)
   return (
     <View>
       <View>
         <TextInput
-        onChangeText={code => setText(code)}
+        onChangeText={text => setText(text)}
         onSubmitEditing={() => {
-          db.add(code);
+          db.add(text);
           setText(null);
         }}
         placeholder="course code"
-        value={code}
+        value={text}
         />
       </View>
       <View>
@@ -59,7 +60,9 @@ const TestScreen = (props) => {
       </View>
     </View>
   );
+  }
 };
+
 
 // ScheduleScreen.navigationOptions = () => {
 //   return {
@@ -82,4 +85,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default TestScreen;
+// export default TestScreen;
