@@ -32,40 +32,40 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 
 const db = SQLite.openDatabase("db.db");
 
-function Items({ done: doneHeading, onPressItem }) {
-  const [items, setItems] = React.useState(null);
+function Courses({ done: doneHeading, onPressCourse }) {
+  const [courses, setCourses] = React.useState(null);
 
   React.useEffect(() => {
     db.transaction(tx => {
       tx.executeSql(
-        `select * from items where done = ?;`,
+        `select * from Course where complete = ?;`,
         [doneHeading ? 1 : 0],
-        (_, { rows: { _array } }) => setItems(_array)
+        (_, { rows: { _array } }) => setCourses(_array)
       );
     });
   }, []);
 
-  const heading = doneHeading ? "Completed" : "Todo";
+  const heading = doneHeading ? "Completed Courses" : "Current Courses";
 
-  if (items === null || items.length === 0) {
+  if (courses === null || courses.length === 0) {
     return null;
   }
 
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.sectionHeading}>{heading}</Text>
-      {items.map(({ id, done, value }) => (
+      {courses.map(({ code, complete }) => (
         <TouchableOpacity
-          key={id}
-          onPress={() => onPressItem && onPressItem(id)}
+          key={code}
+          onPress={() => onPressCourse && onPressCourse(code)}
           style={{
-            backgroundColor: done ? "#1c9963" : "#fff",
+            backgroundColor: complete ? "#1c9963" : "#fff",
             borderColor: "#000",
             borderWidth: 1,
             padding: 8
           }}
         >
-          <Text style={{ color: done ? "#fff" : "#000" }}>{value}</Text>
+          <Text style={{ color: complete ? "#fff" : "#000" }}>{code}</Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -81,22 +81,22 @@ export default function App() {
   React.useEffect(() => {
     db.transaction(tx => {
       tx.executeSql(
-        "create table if not exists items (id integer primary key not null, done int, value text);"
+        "create table if not exists Course (code text primary key not null, complete bit default 0);"
       );
     });
   }, [])
 
 
-  const add = (text) => {
+  const add = (code) => {
     // is text empty?
-    if (text === null || text === "") {
+    if (code === null || code === "") {
       return false;
     }
 
     db.transaction(
       tx => {
-        tx.executeSql("insert into items (done, value) values (0, ?)", [text]);
-        tx.executeSql("select * from items", [], (_, { rows }) =>
+        tx.executeSql("insert into Course (code) values (?)", [code]);
+        tx.executeSql("select * from Course", [], (_, { rows }) =>
           console.log(JSON.stringify(rows))
         );
       },
@@ -120,40 +120,40 @@ export default function App() {
             add(text);
             setText(null);
           }}
-          placeholder="what do you need to do?"
+          placeholder="Enter course code"
           style={styles.input}
           value={text}
         />
       </View>
       <ScrollView style={styles.listArea}>
-        <Items
+        <Courses
           done={false}
           ref={todo => (_todo = todo)}
-          onPressItem={id =>
-            db.transaction(
-              tx => {
-                tx.executeSql(`update items set done = 1 where id = ?;`, [
-                  id
-                ]);
-              },
-              null,
-              update
-            )
-          }
+          // onPressCourse={id =>
+          //   db.transaction(
+          //     tx => {
+          //       tx.executeSql(`update Course set done = 1 where id = ?;`, [
+          //         id
+          //       ]);
+          //     },
+          //     null,
+          //     update
+          //   )
+          // }
         />
-        <Items
+        {/* <Courses
           done
           ref={done => (_done = done)}
-          onPressItem={id =>
+          onPressCourse={code =>
             db.transaction(
               tx => {
-                tx.executeSql(`delete from items where id = ?;`, [id]);
+                tx.executeSql(`delete from Course where code = ?;`, [code]);
               },
               null,
               update
             )
           }
-        />
+        /> */}
       </ScrollView>
     </View>
   );
