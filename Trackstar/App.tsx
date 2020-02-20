@@ -4,10 +4,9 @@ import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import CourseDashboard from "./screens/CourseDashboard";
 import { HomeDashboard } from './components/HomeDashboard/HomeDashboard';
-import Database from './Database';
+// import Database from './Database';
 
-// figure out how to pass this to all screens
-const db = new Database();
+// const db = new Database();
 
 const AppNavigator = createBottomTabNavigator({
   Dashboard: HomeDashboard,

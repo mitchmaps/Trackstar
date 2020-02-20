@@ -15,7 +15,7 @@ export default class Database {
     });
   }
 
-  addCourse = (code = "COMP3004") => {
+  addCourse = (code = "COMP3008") => {
     // is text empty?
     if (code === null || code === "") {
       return false;
@@ -34,12 +34,22 @@ export default class Database {
   }
 
   getCourses = () => {
-  //   const courses = []
-    this.db.transaction(tx => {
-      tx.executeSql("select * from Course", [], (_, { rows }) =>
-        console.log(JSON.stringify(rows))
-      );
-    });
+    const course_objs = []
+    return new Promise((resolve) => {
+      this.db.transaction(tx => {
+        tx.executeSql("select * from Course", [], (_, { rows: { _array } }) => {
+          _array.forEach(course => {
+            course_objs.push(course)
+          })
+          resolve(course_objs)
+        })
+      })
+    }).then((courses) => { // for testing only
+      console.log("All courses:")
+      courses.forEach(course => {
+        console.log(JSON.stringify(course))
+      })
+    })
   }
 
   deleteCourses = () => {
