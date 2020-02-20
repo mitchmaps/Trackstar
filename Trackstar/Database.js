@@ -59,6 +59,19 @@ export default class Database {
       );
     });
   }
+
+  find3004 = (code='COMP3004') => {
+    return new Promise((resolve) => {
+      this.db.transaction(tx => {
+        tx.executeSql("select * from Course where code = ?", [code], (_, { rows: { _array } }) => {
+          resolve(_array[0])
+        })
+      })
+    }).then((course) => { // for testing only
+      console.log("Found course:")
+      console.log(JSON.stringify(course))
+    })
+  }
   //         // const len = results.rows.length;
   //         // for (let i = 0; i < len; i++) {
   //         //   let row = results.rows.item(i);

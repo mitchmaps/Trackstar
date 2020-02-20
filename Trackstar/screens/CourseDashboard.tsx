@@ -23,6 +23,10 @@ const CourseDashboard = (props) => {
       <TouchableOpacity style={styles.button} onPress={() => {db.deleteCourses()}}>
         <Text style={styles.buttonText}>Delete Courses</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => {db.find3004()}}>
+        <Text style={styles.buttonText}>Find3004</Text>
+      </TouchableOpacity>
     </View>
   );
 };
