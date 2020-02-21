@@ -9,7 +9,7 @@ export default class Database {
     return new Promise((resolve) => {
       db.transaction(tx => {
         // finish this, figure out date type
-        tx.executeSql("create table if not exists Course (code text primary key not null, complete number(1) default 0)")
+        tx.executeSql("create table if not exists Course (code text primary key not null, complete number(1) default 0, grade number default 0)")
         resolve()
       })
     }).then(() => {
