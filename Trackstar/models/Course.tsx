@@ -3,14 +3,14 @@ import * as SQLite from 'expo-sqlite';
 import Evaluation from './Evaluation'
 
 export default class Course {
-    code: string;
-    title: string;
-    min_grade: number;
-    grade: number;
-    complete: boolean;
+    code:string;
+    title:string;
+    min_grade:number;
+    grade:number;
+    complete:boolean;
     db = SQLite.openDatabase("db.db");
 
-    constructor(c: string, t: string, min_g: number) {
+    constructor(c:string, t:string, min_g:number) {
         this.code = c;
         this.title = t;
         this.min_grade = min_g;

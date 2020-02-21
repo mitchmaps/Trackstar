@@ -2,17 +2,17 @@ import Constants from 'expo-constants';
 import * as SQLite from 'expo-sqlite';
 
 export default class Evaluation {
-    id: number;
-    title: string;
-    due_date: Date;
-    complete: boolean;
-    weight: number;
-    grade: number;
-    course_code: string;
+    id:number;
+    title:string;
+    due_date:Date;
+    complete:boolean;
+    weight:number;
+    grade:number;
+    course_code:string;
 
     db = SQLite.openDatabase("db.db");
 
-    constructor(t: string, d: Date, c:boolean, w: number, g: number, co: string) {
+    constructor(t:string, d:Date, c:boolean, w:number, g:number, co:string) {
         //this.id =
         this.title = t;
         this.due_date = d;
@@ -24,10 +24,11 @@ export default class Evaluation {
 
     // TO DO:
   // figure out how to do ID
+  // figure out if date needs to be converted to match sql type
   save() {
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into Evaluation (id, title, due_date, weight, grade, complete, course_id) values (?, ?, ?, ?)", [this.id, this.title, this.due_date, this.weight, this.grade, this.complete, this.course_code]);
+        tx.executeSql("insert into Evaluation (id, title, due_date, weight, grade, complete, course_id) values (?, ?, ?, ?, ?, ?, ?)", [this.id, this.title, this.due_date, this.weight, this.grade, this.complete, this.course_code]);
         // tx.executeSql("select * from Course", [], (_, { rows }) =>
         //   console.log(JSON.stringify(rows))
         // );
