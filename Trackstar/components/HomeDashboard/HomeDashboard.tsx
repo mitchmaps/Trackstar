@@ -1,7 +1,7 @@
 import React from 'react';
 import Styles from './Styles';
 
-import { Alert, Text, View } from 'react-native';
+import { ScrollView, Alert, Text, View } from 'react-native';
 
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { red100 } from 'react-native-paper/lib/typescript/src/styles/colors';
@@ -15,8 +15,7 @@ export class HomeDashboard extends React.Component {
   
   render() {
 
-    const MyComponent = (props) => (
-
+    const CourseComponent = (props) => (
       <Card onPress  ={ () =>
         {
           return Alert.alert('Task Title', '\nEstimated Duration' +
@@ -30,7 +29,9 @@ export class HomeDashboard extends React.Component {
         }
 
 
-      } style = {[{backgroundColor: props.color}, Styles.container]}>
+      } 
+      style = {[{backgroundColor: props.color}, Styles.container]}>
+
         <Card.Content>
           <View>
             <Title>{props.title}</Title>
@@ -41,7 +42,7 @@ export class HomeDashboard extends React.Component {
           </View>
         </Card.Content>
         <Card.Actions>
-          <Button onPress={() => Alert.alert(
+          <Button style={{marginVertical: -10}} onPress={() => Alert.alert(
           
           'Edit Page',
           'Options for Editing',
@@ -54,38 +55,82 @@ export class HomeDashboard extends React.Component {
         </Card.Actions>
       </Card>
     );
+
+    const LegendComponent = () => (
+      <Card style={{elevation:0, shadowOpacity:0, marginLeft:45, borderRadius: 50, marginTop:30}}>
+        <Card.Content>
+          <View style = {{flex: -1, flexDirection: "row"}}>
+            <Avatar.Icon size={18} icon="circle" color='#FF99CC' />
+            <Text>  COMP 3004</Text>
+          </View>
+          <View style = {{flex: -2, flexDirection: "row"}}>
+            <Avatar.Icon size={18} icon="circle" color='#FF9933' />
+            <Text>  COMP 3008</Text>
+          </View>
+          <View style = {{flex: 0, flexDirection: "row"}}>
+            <Avatar.Icon size={18} icon="circle" color='#99FF33' />   
+            <Text>  COMP 2804</Text>
+          </View>
+        </Card.Content>
+      </Card>
+    );
+
     return (
-      <View style = {Styles.content }>
+      
+      <ScrollView style = {Styles.content }>
         
-        <Text style={Styles.dashboardText}>
-            Dashboard
-        </Text>
+        <View style={Styles.dashboardRowOne}>
+          <Text style={Styles.dashboardText}>
+              Dashboard
+          </Text>
+          <LegendComponent />
+        </View>
 
-        
-
-        
-        
-        <MyComponent 
+        <CourseComponent 
           title= "Task Title"
           Duration="Estimated Duration"
           DueDate="Due Date" 
           color = '#FFFFFF'
           />
 
-        
-        <MyComponent 
-          title= "Read 3004 Chapter 6"
+        <CourseComponent 
+          title= "Read 3004 Ch. 6"
           Duration="Duration : 2 hours"
           DueDate= "Due Date: 2020/03/01" 
           color = '#FF99CC'
         />
-        <MyComponent 
-          title= "Finish 2804 A2"
+        <CourseComponent 
+          title= "Work on 3008 D4"
           Duration="Duration : 2 hours"
           DueDate="Due Date: 2020/03/11" 
           color = '#FF9933'
         />
-      </View>
+        <CourseComponent 
+          title= "Finish 2804 A2"
+          Duration="Duration : 1 hours"
+          DueDate="Due Date: 2020/03/11" 
+          color = '#99FF33'
+        />
+        <CourseComponent 
+          title= "Study 2804 Final"
+          Duration="Duration : 6 hours"
+          DueDate="Due Date: 2020/04/11" 
+          color = '#99FF33'
+        />        
+        <CourseComponent 
+          title= "Study 3008 Final"
+          Duration="Duration : 5 hours"
+          DueDate="Due Date: 2020/04/21" 
+          color = '#FF9933'
+        />
+        <CourseComponent 
+          title= "Study 3004 Final"
+          Duration="Duration : 2 hours"
+          DueDate= "Due Date: 2020/04/23" 
+          color = '#FF99CC'
+        />
+      </ScrollView>
+      
       
     );
   }
