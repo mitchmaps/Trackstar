@@ -2,7 +2,8 @@ import Constants from 'expo-constants';
 import * as SQLite from 'expo-sqlite';
 
 export default class Database {
-  // these should probably be static?
+  // TODO:
+  // finish queries, then test them
 
   static init = () => {
     const db = SQLite.openDatabase("db.db");
