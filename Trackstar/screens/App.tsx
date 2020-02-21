@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import { HomeDashboard } from './components/HomeDashboard/HomeDashboard';
-import { Courses } from './components/Courses/Courses';
+import { HomeDashboard } from '../components/HomeDashboard/HomeDashboard';
+import { Courses } from '../components/Courses/Courses';
 
 const AppNavigator = createBottomTabNavigator({
   Dashboard: HomeDashboard,
