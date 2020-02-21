@@ -5,6 +5,29 @@ export default class Database {
   // these should probably be static?
   db = SQLite.openDatabase("db.db");
 
+  init = () => {
+    return new Promise((resolve) => {
+      this.db.transaction(tx => {
+        // finish this, figure out date type
+        tx.executeSql("create table if not exists Course (code text primary key not null, complete number(1) default 0)")
+        resolve()
+      })
+    }).then(() => {
+      return new Promise((resolve) => {
+        this.db.transaction(tx => {
+          // finish this, figure out date type
+          tx.executeSql("create table if not exists Evaluation ()")
+          resolve()
+        })
+      }).then(() => {
+        this.db.transaction(tx => {
+          // finish this, figure out date type
+          tx.executeSql("create table if not exists Task ()")
+        })
+      })
+    }
+  )}
+
   createCourse = () => {
     console.log("creating table")
     this.db.transaction(tx => {

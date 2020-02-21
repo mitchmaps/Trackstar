@@ -4,9 +4,10 @@ import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import CourseDashboard from "./screens/CourseDashboard";
 import { HomeDashboard } from './components/HomeDashboard/HomeDashboard';
-// import Database from './Database';
+import Database from './Database';
 
-// const db = new Database();
+const db = new Database();
+db.init(); // is this the right spot to do this?
 
 const AppNavigator = createBottomTabNavigator({
   Dashboard: HomeDashboard,
