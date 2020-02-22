@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import * as SQLite from 'expo-sqlite';
 
 export default class Evaluation {
-    id:number;
+    // id:number;
     title:string;
     due_date:Date;
     complete:boolean;
@@ -23,12 +23,12 @@ export default class Evaluation {
     }
 
     // TO DO:
-  // figure out how to do ID
+  // figure out how to do ID INTEGER PRIMARY KEY
   // figure out if date needs to be converted to match sql type
   save() {
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into Evaluation (id, title, due_date, weight, grade, complete, course_id) values (?, ?, ?, ?, ?, ?, ?)", [this.id, this.title, this.due_date, this.weight, this.grade, this.complete, this.course_code]);
+        tx.executeSql("insert into Evaluation (title, due_date, weight, grade, complete, course_id) values (?, ?, ?, ?, ?, ?)", [this.title, this.due_date, this.weight, this.grade, this.complete, this.course_code]);
         // tx.executeSql("select * from Course", [], (_, { rows }) =>
         //   console.log(JSON.stringify(rows))
         // );
