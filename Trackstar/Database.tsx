@@ -4,7 +4,6 @@ import Course from './models/Course';
 
 export default class Database {
   // TODO:
-  // finish queries, then test them
   // figure out how to properly do callbacks for executeSql!!!!
   // test that foreign key is enabled
 
