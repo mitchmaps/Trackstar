@@ -5,14 +5,15 @@ import Course from './models/Course';
 export default class Database {
   // TODO:
   // finish queries, then test them
+  // figure out how to properly do callbacks for executeSql!!!!
 
   static init = () => {
     const db = SQLite.openDatabase("db.db");
     return new Promise((resolve) => {
       db.transaction(tx => {
         // finish this, figure out date type
-        tx.executeSql("create table if not exists Course (code text primary key, title text, min_grade float, grade float default 0, complete boolean default 0)")
-        // tx.executeSql("create table if not exists Course (code text primary key, title text, min_grade float (check min_grade >= 0 && min_grade <= 100), grade float default 0 (check grade >= 0), complete boolean default 0)")
+        // tx.executeSql("create table if not exists Course (code text primary key, title text, min_grade float, grade float default 0, complete boolean default 0)")
+        tx.executeSql("create table if not exists Course (code text primary key, title text, min_grade float check (min_grade >= 0 & min_grade <= 100), grade float default 0 check (grade >= 0), complete boolean default 0)")
         resolve()
       })
     }).then(() => {
@@ -36,7 +37,7 @@ export default class Database {
   static deleteCourseTable = () => {
     const db = SQLite.openDatabase("db.db");
     db.transaction(tx => {
-      tx.executeSql("drop table if exists Course")
+      tx.executeSql("drop table Course")
     })
   }
 
