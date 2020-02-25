@@ -2,11 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import {createStackNavigator} from 'react-navigation-stack';
 
-import { HomeDashboard } from './components/HomeDashboard/HomeDashboard';
-import { Courses } from './components/Courses/Courses';
+import HomeDashboard from './screens/DashboardScreen';
+import Courses from './screens/CourseScreen';
 
-const AppNavigator = createBottomTabNavigator({
+const AppNavigator = createStackNavigator({
   Dashboard: HomeDashboard,
   Courses: Courses,
   },
