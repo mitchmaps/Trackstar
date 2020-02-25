@@ -1,8 +1,8 @@
 import * as React from 'react';
 import t from 'tcomb-form-native';
 
-import { Text, View, Button, FlatList, DatePickerIOS } from 'react-native';
-import { TextInput, Divider, Surface } from 'react-native-paper';
+import { Text, View, Button, FlatList, DatePickerIOS, ScrollView } from 'react-native';
+import { TextInput, Divider, Surface, Card } from 'react-native-paper';
 import { iOSUIKit } from 'react-native-typography';
 
 
@@ -46,13 +46,15 @@ export class CourseCreate extends React.Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAddEvaluationToGradingScheme = this.handleAddEvaluationToGradingScheme.bind(this);
+    this.generateEvalMarkup = this.generateEvalMarkup.bind(this);
+    this.removeEvaluation = this.removeEvaluation.bind(this);
 
     this.state = {
       code: '',
       title: '',
       currEvalTitle: '',
       currEvalWeight: 0,
-      evaluations: [{title: '', weight: 0}],
+      evaluations: [],
     }
   }
 
@@ -78,13 +80,17 @@ export class CourseCreate extends React.Component {
       </>
     );
 
-    const evalMarkup = (
+    const currEvalsMarkup = this.generateEvalMarkup(this.state.evaluations);
+
+    const evalCreationMarkup = (
       <View>
         <Text style={iOSUIKit.title3Emphasized}>Add grading scheme</Text>
         <Text style={iOSUIKit.caption2}>
           By adding various evaluations you'll be able to automatically keep track of them from your dashboard.
         </Text>
         <Text style={{paddingTop: 20, paddingBottom: 20}}>Evaluations:</Text>
+        {currEvalsMarkup}
+        <Text style={{paddingTop: 20, paddingBottom: 20}}>Add new evaluation:</Text>
         <View>
           <TextInput label="Evaluation title" onChangeText={(text) => {this.setState({currEvalTitle: text})}} value={this.state.currEvalTitle} />
           <TextInput 
@@ -100,7 +106,7 @@ export class CourseCreate extends React.Component {
     );
 
     return (
-      <View style={{alignSelf: "stretch"}}>
+      <View style={{flex: 1, alignSelf: "stretch"}}>
         <View style={{
           height: 80,
           alignSelf: "stretch",
@@ -111,8 +117,8 @@ export class CourseCreate extends React.Component {
           <Text>{this.state.code}</Text>
           <Text>{this.state.title}</Text>
           <Divider />
-          {evalMarkup}
-          <Button title="submit" onPress={this.handleSubmit} />
+          {evalCreationMarkup}
+          {/* <Button title="submit" onPress={this.handleSubmit} /> */}
         </View>
       </View>
     );
@@ -132,5 +138,32 @@ export class CourseCreate extends React.Component {
     this.setState({evaluations: newScheme, currEvalTitle: '', currEvalWeight: 0});
 
     console.log(this.state.evaluations);
+  }
+
+  generateEvalMarkup(evaluations: EvaluationDescriptor[]) {
+    return evaluations.reduce(
+      (allEvals, currEval) => {
+        const {title, weight} = currEval;
+
+        const evalMarkup = (
+          <View>
+            <Card>
+              <Card.Title title={title} subtitle={`${weight}%`} />
+              <Card.Actions>
+                <Button title="Remove" onPress={} />
+              </Card.Actions>
+            </Card>
+          </View>
+        );
+
+        allEvals.push(evalMarkup);
+        return allEvals;
+      },
+      [],
+    );
+  }
+
+  removeEvaluation(evaluations: EvaluationDescriptor[]) {
+    
   }
 }
