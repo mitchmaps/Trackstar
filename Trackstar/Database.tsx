@@ -12,7 +12,7 @@ export default class Database {
     return new Promise((resolve) => {
       db.transaction(tx => {
         // add not null to min_grade
-        tx.executeSql("create table if not exists Course (code text primary key, title text not null, min_grade float check (min_grade >= 0 & min_grade <= 100), grade float default 0 check (grade >= 0), complete boolean default 0)")
+        tx.executeSql("create table if not exists Course (code text primary key not null, title text not null, min_grade float check (min_grade >= 0) check (min_grade <= 100) not null, grade float default 0 check (grade >= 0), complete boolean default 0)")
         resolve()
       })
     }).then(() => {
