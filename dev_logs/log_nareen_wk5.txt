@@ -19,3 +19,7 @@ homepage -> tasks
 What to do next, my task
 -Simulate screen for grade calculation
 enter grade earned, enter percentage it's worth. display final total earned so far
+>  homepage ->empty grade calculator
+>  Drop down menu allows you to select a course and see the grades for that course
+>  course view->current earned grade leads to grade calculator for that course
+
