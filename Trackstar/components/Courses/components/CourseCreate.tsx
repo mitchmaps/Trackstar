@@ -8,7 +8,6 @@ import { iOSUIKit } from 'react-native-typography';
 
 export interface EvaluationDescriptor {
   title: string;
-  dueDate: Date;
   weight: number;
 }
 
@@ -38,15 +37,22 @@ export class CourseCreate extends React.Component {
   state: {
     code: string,
     title: string,
+    currEvalTitle: string,
+    currEvalWeight: number,
+    evaluations: EvaluationDescriptor[],
   }
 
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleNewEvaluation = this.handleNewEvaluation.bind(this);
 
     this.state = {
       code: '',
       title: '',
+      currEvalTitle: '',
+      currEvalWeight: 0,
+      evaluations: [{title: '', weight: 0}],
     }
   }
 
@@ -72,6 +78,26 @@ export class CourseCreate extends React.Component {
       </>
     );
 
+    const evalMarkup = (
+      <View>
+        <Text style={iOSUIKit.title3Emphasized}>Add grading scheme</Text>
+        <Text style={iOSUIKit.caption2}>
+          By adding various evaluations you'll be able to automatically keep track of them from your dashboard.
+        </Text>
+        <Text style={{paddingTop: 20, paddingBottom: 20}}>Evaluations:</Text>
+        <View>
+          <TextInput label="Evaluation title" onChangeText={(text) => {this.setState({currEvalTitle: text})}} />
+          <View style={{flexDirection: 'row'}}>
+            <TextInput label="Evaluation weight" onChangeText={(text) => {this.setState({currEvalWeight: text})}} />
+          </View>
+        </View>
+        <Button title="Add to grading scheme (finish)" onPress={() => {}} />
+        <Divider />
+      
+        <Button title="Add new evaluation point" onPress={this.handleNewEvaluation} />
+      </View>
+    );
+
     return (
       <View style={{alignSelf: "stretch"}}>
         <View style={{
@@ -84,18 +110,7 @@ export class CourseCreate extends React.Component {
           <Text>{this.state.code}</Text>
           <Text>{this.state.title}</Text>
           <Divider />
-          <Text style={iOSUIKit.title3Emphasized}>Add grading scheme</Text>
-          <Text style={iOSUIKit.caption2}>
-            By adding various evaluations you'll be able to automatically keep track of them from your dashboard.
-          </Text>
-          <Text style={{paddingTop: 20, paddingBottom: 20}}>Evaluations:</Text>
-          <View>
-            <TextInput label="Evaluation title" onChangeText={() => {}} />
-            <View style={{flexDirection: 'row'}}>
-              <TextInput label="Grade percentage"></TextInput>
-            </View>
-          </View>
-            
+          {evalMarkup}
           <Button title="submit" onPress={this.handleSubmit} />
         </View>
       </View>
@@ -103,8 +118,22 @@ export class CourseCreate extends React.Component {
   }
 
   handleSubmit() {
-    console.log('in submit');
     console.log(this.state.code);
     console.log(this.state.title);
+    // DB stuff goes here
+  }
+
+  handleNewEvaluation() {
+    console.log('in new evaluation');
+    const currEvals: EvaluationDescriptor[] = this.state.evaluations;
+    const newEval: EvaluationDescriptor = {title: '', weight: 0};
+
+    currEvals.push(newEval);
+
+    this.setState({
+      evaluations: currEvals
+    });
+
+    console.log(this.state.evaluations);
   }
 }
