@@ -13,7 +13,7 @@ export default class Evaluation {
     db = SQLite.openDatabase("db.db");
 
     constructor(t:string, d:Date, c:boolean, w:number, g:number, co:string) {
-        //this.id =
+        // this.id = null;
         this.title = t;
         this.due_date = d;
         this.weight = w;
@@ -22,9 +22,8 @@ export default class Evaluation {
         this.course_code = co;
     }
 
-    // TO DO:
-  // figure out how to do ID INTEGER PRIMARY KEY
-  // figure out if date needs to be converted to match sql type
+  // TO DO:
+  // come back to this ID setting code
   save() {
     this.db.transaction(
       tx => {
@@ -35,6 +34,15 @@ export default class Evaluation {
       },
       null
     );
+    // return new Promise((resolve) => {
+    //   db.transaction(tx => {
+    //     tx.executeSql("select last_insert_rowid()", [], (_, { rows: { _array } }) => {
+    //       resolve(_array[0])
+    //     })
+    //   })
+    // }).then((id:[number]) => { // for testing only
+    //   this.id = id
+    // })
   };
 
   static all() {

@@ -1,6 +1,9 @@
 import Constants from 'expo-constants';
 import * as SQLite from 'expo-sqlite';
 
+// TO DO
+// see evaluation for draft id setting code
+
 export default class Task {
     title:string;
     due_date:Date;
