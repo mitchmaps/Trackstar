@@ -1,0 +1,21 @@
+Nareen Khurshid
+101029589
+
+Week 5
+Feb. 25th Tuesday Meeting
+-------------------------------------
+-Discussed what needs to be done next
+-next steps
+-split up taks between members
+-merging members progress
+-shared planned design
+-workflow organized
+-drew plan of navigation through the app
+
+How it's sorted
+dashboard -> courses
+homepage -> tasks
+
+What to do next, my task
+-Simulate screen for grade calculation
+enter grade earned, enter percentage it's worth. display final total earned so far
