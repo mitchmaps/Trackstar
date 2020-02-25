@@ -45,7 +45,7 @@ export class CourseCreate extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleNewEvaluation = this.handleNewEvaluation.bind(this);
+    this.handleAddEvaluationToGradingScheme = this.handleAddEvaluationToGradingScheme.bind(this);
 
     this.state = {
       code: '',
@@ -86,15 +86,16 @@ export class CourseCreate extends React.Component {
         </Text>
         <Text style={{paddingTop: 20, paddingBottom: 20}}>Evaluations:</Text>
         <View>
-          <TextInput label="Evaluation title" onChangeText={(text) => {this.setState({currEvalTitle: text})}} />
-          <View style={{flexDirection: 'row'}}>
-            <TextInput label="Evaluation weight" onChangeText={(text) => {this.setState({currEvalWeight: text})}} />
-          </View>
+          <TextInput label="Evaluation title" onChangeText={(text) => {this.setState({currEvalTitle: text})}} value={this.state.currEvalTitle} />
+          <TextInput 
+            label="Evaluation weight" 
+            keyboardType={'numeric'} 
+            onChangeText={(text) => {this.setState({currEvalWeight: text})}} 
+            value={this.state.currEvalWeight as unknown as string}
+          />
         </View>
-        <Button title="Add to grading scheme (finish)" onPress={() => {}} />
+        <Button title="Add to grading scheme (finish)" onPress={this.handleAddEvaluationToGradingScheme} />
         <Divider />
-      
-        <Button title="Add new evaluation point" onPress={this.handleNewEvaluation} />
       </View>
     );
 
@@ -123,16 +124,12 @@ export class CourseCreate extends React.Component {
     // DB stuff goes here
   }
 
-  handleNewEvaluation() {
-    console.log('in new evaluation');
-    const currEvals: EvaluationDescriptor[] = this.state.evaluations;
-    const newEval: EvaluationDescriptor = {title: '', weight: 0};
+  handleAddEvaluationToGradingScheme() {
+    const newEval: EvaluationDescriptor = {title: this.state.currEvalTitle, weight: this.state.currEvalWeight};
+    const newScheme: EvaluationDescriptor[] = this.state.evaluations;
 
-    currEvals.push(newEval);
-
-    this.setState({
-      evaluations: currEvals
-    });
+    newScheme.push(newEval);
+    this.setState({evaluations: newScheme, currEvalTitle: '', currEvalWeight: 0});
 
     console.log(this.state.evaluations);
   }
