@@ -1,7 +1,7 @@
 HaoHao Du
 ID: 101074491
 
-Week 3 Log:
+Week 4 Log:
 
 - Looked into React specific design patterns and there pros and cons
  - MVC (scalability, debugging issues, work seperability advantages)
