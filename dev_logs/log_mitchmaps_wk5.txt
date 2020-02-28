@@ -1,0 +1,10 @@
+Mitchell Soares
+ID: 101103889
+
+Week 5 log:
+
+- Divided time to focus on progressing on this project while also studying for midterms
+- Synced wtih the team to decide on the scope for deliverable 2 and the demo next Week
+- Created work flow for adding evaluation points to a course during the course creation work flow
+- Reviewed PR
+- Thought of action plan for implementing my changes into the new master
