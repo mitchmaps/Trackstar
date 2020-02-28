@@ -150,7 +150,7 @@ export class CourseCreate extends React.Component {
             <Card>
               <Card.Title title={title} subtitle={`${weight}%`} />
               <Card.Actions>
-                <Button title="Remove" onPress={} />
+                <Button title="Remove" onPress={() => {}} />
               </Card.Actions>
             </Card>
           </View>
@@ -164,6 +164,6 @@ export class CourseCreate extends React.Component {
   }
 
   removeEvaluation(evaluations: EvaluationDescriptor[]) {
-    
+
   }
 }
