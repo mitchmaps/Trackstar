@@ -126,14 +126,4 @@ const HomeScreen = (props) => {
       </Card>
     );
 
-
-
-// DashboardScreen.navigationOptions = () => {
-//   return {
-//     headerShown: false
-//   };
-// };
-
-
-
 export default HomeScreen;

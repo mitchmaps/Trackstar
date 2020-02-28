@@ -11,10 +11,4 @@ const CoursesScreen = (props) => {
     );
 };
 
-// Courses.navigationOptions = () => {
-//   return {
-//     headerShown: false
-//   };
-// };
-
 export default CoursesScreen;
