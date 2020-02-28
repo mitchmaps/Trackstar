@@ -35,9 +35,11 @@ const HomeScreen = (props) => {
           <Card.Content style={{flex: 1, flexDirection: 'column'}}>
             <Text style={{flex: 8}}>Details</Text>
             <CircleCheckBox
-              style={{flex: 2}}
+              styleCheckboxContainer={{flex: 2}}
               checked={item.title == "1. Registration & breakfast" ? true : false}
-              // onToggle={(checked) => console.log('My state is: ', checked)}
+              outerColor = {'#5273eb'}
+              innerColor = {'#5273eb'}
+              onToggle={(checked) => console.log('My state is: ', checked)}
             />
           </Card.Content>
       </Card>
