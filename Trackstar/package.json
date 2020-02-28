@@ -19,9 +19,11 @@
     "react-native-paper": "^3.6.0",
     "react-native-reanimated": "^1.7.0",
     "react-native-tabs": "^1.0.9",
+    "react-native-typography": "^1.4.1",
     "react-native-unimodules": "^0.7.0",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.1.0",
+    "react-navigation-bottom-tabs": "^1.0.2",
     "react-navigation-stack": "^2.0.16",
     "react-navigation-tabs": "^2.7.0"
   },
