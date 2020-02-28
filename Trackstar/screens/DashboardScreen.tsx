@@ -4,6 +4,7 @@ import { Text, View, Image, TouchableOpacity, SectionList, StyleSheet } from "re
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { red100 } from 'react-native-paper/lib/typescript/src/styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import CircleCheckBox, {LABEL_POSITION} from 'react-native-circle-checkbox';
 
 import {mockData} from "../mockData"
 
@@ -31,6 +32,14 @@ const HomeScreen = (props) => {
       <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'stretch'}}>
       <Card style={{width: 350, marginBottom: 10}}>
           <Card.Title title={item.title}/>
+          <Card.Content style={{flex: 1, flexDirection: 'column'}}>
+            <Text style={{flex: 8}}>Details</Text>
+            <CircleCheckBox
+              style={{flex: 2}}
+              checked={item.title == "1. Registration & breakfast" ? true : false}
+              // onToggle={(checked) => console.log('My state is: ', checked)}
+            />
+          </Card.Content>
       </Card>
       </View>
     );
