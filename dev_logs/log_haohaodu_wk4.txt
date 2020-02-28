@@ -8,5 +8,4 @@ Week 4 Log:
   - i didn't understand a lot of how that works so I should look into that soon
 - merged class-creation branch into master, worked with team members to review code
 and ensure code is integrated and functional
-- looking to finalize course-dashboard page according to design requirements
 
