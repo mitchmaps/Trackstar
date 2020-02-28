@@ -5,65 +5,72 @@ import { ScrollView, Alert, Text, View } from 'react-native';
 
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { red100 } from 'react-native-paper/lib/typescript/src/styles/colors';
+import { LinearGradient } from 'expo-linear-gradient';
 // import { iOSUIKit } from 'react-native-typography';
 
 const HomeScreen = (props) => {
 
   return(
+    <LinearGradient
+        colors={['#bcf7ed', '#5273eb']}
+        style={{flex: 1}}
+      >
+      <Text>Test</Text>
+    </LinearGradient>
 
-    <ScrollView style = {Styles.content }>
+  //   <ScrollView style = {Styles.content }>
 
-    <View style={Styles.dashboardRowOne}>
-      <Text style={Styles.dashboardText}>
-          Dashboard
-      </Text>
-      <LegendComponent />
-    </View>
+  //   <View style={Styles.dashboardRowOne}>
+  //     <Text style={Styles.dashboardText}>
+  //         Dashboard
+  //     </Text>
+  //     <LegendComponent />
+  //   </View>
 
-    <CourseComponent
-      title= "Task Title"
-      Duration="Estimated Duration"
-      DueDate="Due Date"
-      color = '#FFFFFF'
-      />
+  //   <CourseComponent
+  //     title= "Task Title"
+  //     Duration="Estimated Duration"
+  //     DueDate="Due Date"
+  //     color = '#FFFFFF'
+  //     />
 
-    <CourseComponent
-      title= "Read 3004 Ch. 6"
-      Duration="Duration : 2 hours"
-      DueDate= "Due Date: 2020/03/01"
-      color = '#FF99CC'
-    />
-    <CourseComponent
-      title= "Work on 3008 D4"
-      Duration="Duration : 2 hours"
-      DueDate="Due Date: 2020/03/11"
-      color = '#FF9933'
-    />
-    <CourseComponent
-      title= "Finish 2804 A2"
-      Duration="Duration : 1 hours"
-      DueDate="Due Date: 2020/03/11"
-      color = '#99FF33'
-    />
-    <CourseComponent
-      title= "Study 2804 Final"
-      Duration="Duration : 6 hours"
-      DueDate="Due Date: 2020/04/11"
-      color = '#99FF33'
-    />
-    <CourseComponent
-      title= "Study 3008 Final"
-      Duration="Duration : 5 hours"
-      DueDate="Due Date: 2020/04/21"
-      color = '#FF9933'
-    />
-    <CourseComponent
-      title= "Study 3004 Final"
-      Duration="Duration : 2 hours"
-      DueDate= "Due Date: 2020/04/23"
-      color = '#FF99CC'
-    />
-  </ScrollView>
+  //   <CourseComponent
+  //     title= "Read 3004 Ch. 6"
+  //     Duration="Duration : 2 hours"
+  //     DueDate= "Due Date: 2020/03/01"
+  //     color = '#FF99CC'
+  //   />
+  //   <CourseComponent
+  //     title= "Work on 3008 D4"
+  //     Duration="Duration : 2 hours"
+  //     DueDate="Due Date: 2020/03/11"
+  //     color = '#FF9933'
+  //   />
+  //   <CourseComponent
+  //     title= "Finish 2804 A2"
+  //     Duration="Duration : 1 hours"
+  //     DueDate="Due Date: 2020/03/11"
+  //     color = '#99FF33'
+  //   />
+  //   <CourseComponent
+  //     title= "Study 2804 Final"
+  //     Duration="Duration : 6 hours"
+  //     DueDate="Due Date: 2020/04/11"
+  //     color = '#99FF33'
+  //   />
+  //   <CourseComponent
+  //     title= "Study 3008 Final"
+  //     Duration="Duration : 5 hours"
+  //     DueDate="Due Date: 2020/04/21"
+  //     color = '#FF9933'
+  //   />
+  //   <CourseComponent
+  //     title= "Study 3004 Final"
+  //     Duration="Duration : 2 hours"
+  //     DueDate= "Due Date: 2020/04/23"
+  //     color = '#FF99CC'
+  //   />
+  // </ScrollView>
   );
 };
 
