@@ -1,3 +1,5 @@
+import Evaluation from './Evaluation'
+
 export default class Course {
     code: string;
     title: string;
@@ -5,8 +7,7 @@ export default class Course {
     grade: number;
     complete: boolean;
 
-    constructor(c: string, t: string, min_g: number) {
-        this.code = c;
+    constructor(t: string, min_g: number, g: number, c:boolean) {
         this.title = t;
         this.min_grade = min_g;
         this.grade = 0;

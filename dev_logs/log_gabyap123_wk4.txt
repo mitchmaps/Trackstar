@@ -3,3 +3,4 @@ ID: 101104085
 
 Week 4:
 - Attended a React Native workshop, made a sample app
+- Continue trying to set up database, looking for a tutorial/approach that actually works

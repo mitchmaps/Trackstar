@@ -12,7 +12,7 @@ const DashboardScreen = (props) => {
   return(
 
     <ScrollView style = {Styles.content }>
-        
+
     <View style={Styles.dashboardRowOne}>
       <Text style={Styles.dashboardText}>
           Dashboard
@@ -20,47 +20,47 @@ const DashboardScreen = (props) => {
       <LegendComponent />
     </View>
 
-    <CourseComponent 
+    <CourseComponent
       title= "Task Title"
       Duration="Estimated Duration"
-      DueDate="Due Date" 
+      DueDate="Due Date"
       color = '#FFFFFF'
       />
 
-    <CourseComponent 
+    <CourseComponent
       title= "Read 3004 Ch. 6"
       Duration="Duration : 2 hours"
-      DueDate= "Due Date: 2020/03/01" 
+      DueDate= "Due Date: 2020/03/01"
       color = '#FF99CC'
     />
-    <CourseComponent 
+    <CourseComponent
       title= "Work on 3008 D4"
       Duration="Duration : 2 hours"
-      DueDate="Due Date: 2020/03/11" 
+      DueDate="Due Date: 2020/03/11"
       color = '#FF9933'
     />
-    <CourseComponent 
+    <CourseComponent
       title= "Finish 2804 A2"
       Duration="Duration : 1 hours"
-      DueDate="Due Date: 2020/03/11" 
+      DueDate="Due Date: 2020/03/11"
       color = '#99FF33'
     />
-    <CourseComponent 
+    <CourseComponent
       title= "Study 2804 Final"
       Duration="Duration : 6 hours"
-      DueDate="Due Date: 2020/04/11" 
+      DueDate="Due Date: 2020/04/11"
       color = '#99FF33'
-    />        
-    <CourseComponent 
+    />
+    <CourseComponent
       title= "Study 3008 Final"
       Duration="Duration : 5 hours"
-      DueDate="Due Date: 2020/04/21" 
+      DueDate="Due Date: 2020/04/21"
       color = '#FF9933'
     />
-    <CourseComponent 
+    <CourseComponent
       title= "Study 3004 Final"
       Duration="Duration : 2 hours"
-      DueDate= "Due Date: 2020/04/23" 
+      DueDate= "Due Date: 2020/04/23"
       color = '#FF99CC'
     />
   </ScrollView>
@@ -79,7 +79,7 @@ const DashboardScreen = (props) => {
           { text: 'OK', onPress: () => console.log('OK Pressed!') },
         ], { cancelable: false });
       }
-    } 
+    }
     style = {[{backgroundColor: props.color}, Styles.container]}>
 
       <Card.Content>
@@ -93,7 +93,7 @@ const DashboardScreen = (props) => {
       </Card.Content>
       <Card.Actions>
         <Button style={{marginVertical: -10}} onPress={() => Alert.alert(
-        
+
         'Edit Page',
         'Options for Editing',
         [
@@ -119,7 +119,7 @@ const DashboardScreen = (props) => {
             <Text>  COMP 3008</Text>
           </View>
           <View style = {{flex: 0, flexDirection: "row"}}>
-            <Avatar.Icon size={18} icon="circle" color='#99FF33' />   
+            <Avatar.Icon size={18} icon="circle" color='#99FF33' />
             <Text>  COMP 2804</Text>
           </View>
         </Card.Content>
@@ -127,13 +127,13 @@ const DashboardScreen = (props) => {
     );
 
 
-    
+
 DashboardScreen.navigationOptions = () => {
   return {
     headerShown: false
   };
 };
-  
+
 
 
 export default DashboardScreen;
