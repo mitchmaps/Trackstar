@@ -1,0 +1,6 @@
+Gabrielle Pancu
+ID: 101104085
+
+Week 5:
+- Set up and tested database functions (create tables, save to table, find in table)
+- Reviewed models created and integrated these db functions into each model
