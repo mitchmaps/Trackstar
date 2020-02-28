@@ -8,6 +8,8 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^5.1.0",
+    "@react-navigation/native": "^5.0.8",
     "expo": "~36.0.0",
     "expo-sqlite": "^8.0.0",
     "react": "~16.9.0",

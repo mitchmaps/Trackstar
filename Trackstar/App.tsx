@@ -1,25 +1,30 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-import {createStackNavigator} from 'react-navigation-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';// import {createStackNavigator} from 'react-navigation-stack';
 
-import HomeDashboard from './screens/DashboardScreen';
-import Courses from './screens/CourseScreen';
+import HomeScreen from './screens/DashboardScreen';
+import CoursesSreen from './screens/CourseScreen';
+import GradesScreen from './screens/GradesScreen';
 
-const AppNavigator = createStackNavigator({
-  Dashboard: HomeDashboard,
-  Courses: Courses,
-  },
-  {
-    initialRouteName: 'Dashboard',
-  }
-);
+const Tab = createBottomTabNavigator();
 
-const AppContainer = createAppContainer(AppNavigator);
+function MyTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Courses" component={CoursesSreen} />
+      <Tab.Screen name="Grades" component={GradesScreen} />
+    </Tab.Navigator>
+  );
+}
 
 export default class App extends React.Component {
   render() {
-    return <AppContainer />;
+    return (
+      <NavigationContainer>
+        <MyTabs />
+      </NavigationContainer>
+    )
   }
 }

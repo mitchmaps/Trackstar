@@ -5,9 +5,9 @@ import { ScrollView, Alert, Text, View } from 'react-native';
 
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { red100 } from 'react-native-paper/lib/typescript/src/styles/colors';
-import { iOSUIKit } from 'react-native-typography';
+// import { iOSUIKit } from 'react-native-typography';
 
-const DashboardScreen = (props) => {
+const HomeScreen = (props) => {
 
   return(
 
@@ -128,12 +128,12 @@ const DashboardScreen = (props) => {
 
 
 
-DashboardScreen.navigationOptions = () => {
-  return {
-    headerShown: false
-  };
-};
+// DashboardScreen.navigationOptions = () => {
+//   return {
+//     headerShown: false
+//   };
+// };
 
 
 
-export default DashboardScreen;
+export default HomeScreen;
