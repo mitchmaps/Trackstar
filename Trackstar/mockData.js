@@ -5,7 +5,7 @@ export const mockData = [
     data: [
       {
         id: 1,
-        title: "Registration & breakfast",
+        title: "1. Registration & breakfast",
         description: "Register and grab some breakfast and coffee.",
         time: "8:45 AM",
         speaker: null
@@ -18,7 +18,7 @@ export const mockData = [
     data: [
       {
         id: 2,
-        title: "Keynote",
+        title: "2. Keynote",
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
         time: "9:30 AM",
@@ -36,7 +36,7 @@ export const mockData = [
     data: [
       {
         id: 3,
-        title: "Introduction to React Native",
+        title: "3. Introduction to React Native",
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
         time: "10:15 AM",
@@ -48,7 +48,7 @@ export const mockData = [
       },
       {
         id: 4,
-        title: "React Native at Scale",
+        title: "4. React Native at Scale",
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
         time: "10:15 AM",
@@ -58,48 +58,48 @@ export const mockData = [
           avatar: "https://api.adorable.io/avatars/285/sergey.png"
         }
       },
-  //     {
-  //       id: 5,
-  //       title: "Working With Data Using Apollo and GraphQL in React Native",
-  //       description:
-  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
-  //       time: "10:15 AM",
-  //       speaker: {
-  //         name: "Corey Pollock",
-  //         role: "Poor man's Steve Jobs",
-  //         avatar: "https://api.adorable.io/avatars/285/corey.png"
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   id: 3456466,
-  //   time: "11:00 AM",
-  //   data: [
-  //     {
-  //       id: 6,
-  //       title: "Styling with the StyleSheet API",
-  //       description:
-  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
-  //       time: "11:00 AM",
-  //       speaker: {
-  //         name: "Jacob Abraham",
-  //         role: "Founder & CEO of Jacob By Jacob",
-  //         avatar: "https://api.adorable.io/avatars/285/jacob.png"
-  //       }
-  //     },
-  //     {
-  //       id: 7,
-  //       title: "Creating Themes with Restyle",
-  //       description:
-  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
-  //       time: "11:00 AM",
-  //       speaker: {
-  //         name: "Matt Legaspi",
-  //         role: "Figma World Champion",
-  //         avatar: "https://api.adorable.io/avatars/285/matt.png"
-  //       }
-  //     },
+      {
+        id: 5,
+        title: "5. Working With Data Using Apollo and GraphQL in React Native",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
+        time: "10:15 AM",
+        speaker: {
+          name: "Corey Pollock",
+          role: "Poor man's Steve Jobs",
+          avatar: "https://api.adorable.io/avatars/285/corey.png"
+        }
+      }
+    ]
+  },
+  {
+    id: 3456466,
+    time: "11:00 AM",
+    data: [
+      {
+        id: 6,
+        title: "6. Styling with the StyleSheet API",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
+        time: "11:00 AM",
+        speaker: {
+          name: "Jacob Abraham",
+          role: "Founder & CEO of Jacob By Jacob",
+          avatar: "https://api.adorable.io/avatars/285/jacob.png"
+        }
+      },
+      {
+        id: 7,
+        title: "7. Creating Themes with Restyle",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
+        time: "11:00 AM",
+        speaker: {
+          name: "Matt Legaspi",
+          role: "Figma World Champion",
+          avatar: "https://api.adorable.io/avatars/285/matt.png"
+        }
+      },
   //     {
   //       id: 8,
   //       title: "Making Apps Accessible in React Native",

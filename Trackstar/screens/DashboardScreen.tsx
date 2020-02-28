@@ -38,10 +38,14 @@ const HomeScreen = (props) => {
 
   return(
     <LinearGradient
-        colors={['#bcf7ed', '#5273eb']}
-        style={{flex: 1}}
-      >
-      <SectionList
+      colors={['#bcf7ed', '#5273eb']}
+      style={{flex: 1}}
+    >
+      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'stretch', marginTop: 50}}>
+        <Text style={{fontSize: 45, color: "white"}}>Welcome Back!</Text>
+      </View>
+
+      <SectionList style={{flex: 3}}
         sections={mockData}
         renderItem={singleItem}
         // renderSectionHeader={sectionHeader}
