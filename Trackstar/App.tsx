@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';// import {createStackNavigator} from 'react-navigation-stack';
 import { AntDesign } from '@expo/vector-icons';
 
-import HomeScreen from './screens/DashboardScreen';
+import HomeScreen from './screens/HomeScreen';
 import CoursesSreen from './screens/CourseScreen';
 import GradesScreen from './screens/GradesScreen';
 
