@@ -1,21 +1,51 @@
 import React from 'react';
 import Styles from '../Styles/DashboardStyles';
-
-import { ScrollView, Alert, Text, View } from 'react-native';
-
+import { Text, View, Image, TouchableOpacity, SectionList, StyleSheet } from "react-native";
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { red100 } from 'react-native-paper/lib/typescript/src/styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
+
+import {mockData} from "../mockData"
+
 // import { iOSUIKit } from 'react-native-typography';
+// const sectionHeader = (data) => {
+//   const section = data.section
+//   return (
+//     <View style={styles.sectionHeader}>
+//       <Text style={styles.sectionHeaderText}>{section.time}</Text>
+//     </View>
+//   );
+// };
 
 const HomeScreen = (props) => {
+  const navigation = props.navigation;
+
+  const singleItem = (data) => {
+    const item = data.item
+    return (
+      // <TouchableOpacity onPress={() => {navigation.navigate("Details", {talkData: item})}}>
+      //   <View style={styles.singleItem}>
+      //     <Text>{item.title}</Text>
+      //   </View>
+      // </TouchableOpacity>
+      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'stretch'}}>
+      <Card style={{width: 350, marginBottom: 10}}>
+          <Card.Title title={item.title}/>
+      </Card>
+      </View>
+    );
+  };
 
   return(
     <LinearGradient
         colors={['#bcf7ed', '#5273eb']}
         style={{flex: 1}}
       >
-      <Text>Test</Text>
+      <SectionList
+        sections={mockData}
+        renderItem={singleItem}
+        // renderSectionHeader={sectionHeader}
+      />
     </LinearGradient>
 
   //   <ScrollView style = {Styles.content }>
@@ -132,5 +162,19 @@ const HomeScreen = (props) => {
         </Card.Content>
       </Card>
     );
+
+  const styles = StyleSheet.create({
+    sectionHeader: {
+      padding: 14,
+      backgroundColor: "pink"
+    },
+    sectionHeaderText: {
+      color: "white"
+    },
+    singleItem: {
+      paddingVertical: 18,
+      paddingHorizontal: 14
+    }
+  });
 
 export default HomeScreen;
