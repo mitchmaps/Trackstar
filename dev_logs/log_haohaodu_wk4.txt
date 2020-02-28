@@ -1,0 +1,20 @@
+HaoHao Du
+ID: 101074491
+
+Week 4 Log:
+
+- created a front end UI for the course-dashboard page on my git branch
+- looked through SQL page and functionality that Gaby was working on 
+  - i didn't understand a lot of how that works so I should look into that soon
+- merged class-creation branch into master, worked with team members to review code
+and ensure code is integrated and functional
+- looking to finalize course-dashboard page according to design requirements
+
+- Accomplished Tasks
+- Created a google project and linked it to firebase through the command 
+line and official google documentation
+- Continued to follow through SQLite tutorials on youtube
+- Met with team to discuss next weeks goals
+- Built basic class structure and hierachy 
+- Looked into typescript documentation for modules and classes
+- Try to help team with UI development / logic since I finished my part
