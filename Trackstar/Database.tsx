@@ -9,6 +9,7 @@ export default class Database {
 
   static init = () => {
     const db = SQLite.openDatabase("db.db");
+    // check that grade constraint works
     return new Promise((resolve) => {
       db.transaction(tx => {
         // add not null to min_grade
