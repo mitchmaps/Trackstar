@@ -29,13 +29,13 @@ const HomeScreen = (props) => {
       //     <Text>{item.title}</Text>
       //   </View>
       // </TouchableOpacity>
-      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'stretch'}}>
+      // <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
       <Card style={{width: 350, marginBottom: 10}}>
           <Card.Title title={item.title}/>
-          <Card.Content style={{flex: 1, flexDirection: 'column'}}>
+          <Card.Content style={{flex: 1, flexDirection: 'row'}}>
             <Text style={{flex: 8}}>Details</Text>
             <CircleCheckBox
-              styleCheckboxContainer={{flex: 2}}
+              style={{flex: 2}}
               checked={item.title == "1. Registration & breakfast" ? true : false}
               outerColor = {'#5273eb'}
               innerColor = {'#5273eb'}
@@ -43,23 +43,24 @@ const HomeScreen = (props) => {
             />
           </Card.Content>
       </Card>
-      </View>
+      // </View>
     );
   };
 
   return(
     <LinearGradient
       colors={['#bcf7ed', '#5273eb']}
-      style={{flex: 1}}
+      style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}
     >
-      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'stretch', marginTop: 50}}>
-        <Text style={{fontSize: 45, color: "white"}}>Welcome Back!</Text>
+      <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch', marginTop: 150}}>
+        <Text style={{fontSize: 45, color: "white", textAlign: "center"}}>Welcome Back!</Text>
+        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Next Evaluation: COMP 3008 Project 2</Text>
+        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Due March 28th</Text>
       </View>
 
-      <SectionList style={{flex: 3}}
+      <SectionList style={{flex: 4}}
         sections={mockData}
         renderItem={singleItem}
-        // renderSectionHeader={sectionHeader}
       />
     </LinearGradient>
 
