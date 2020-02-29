@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Text, View, ScrollView, FlatList, Alert } from 'react-native';
-import { Divider, Surface, Card, TextInput, Button } from 'react-native-paper';
+import { Text, View, ScrollView, Alert } from 'react-native';
+import { Divider, Card, TextInput, Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { iOSUIKit } from 'react-native-typography';
 
@@ -20,14 +20,6 @@ export interface CourseDescriptor {
   title: string;
   gradeBreakdown?: EvaluationDescriptor[];
 }
-
-const code: string = 'code';
-const title: string = 'title';
-
-// TODO:
-// 1. Add smart form stuff like knowing when you reach 100% of the grade
-// 2. Add a counter for what the total percent is at, use an alert if u go over 100
-// 3. Make PR for this and get merged ASAP
 
 export default class CourseCreate extends React.Component {
   state: {
