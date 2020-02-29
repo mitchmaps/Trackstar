@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';// import {createStackNavigator} from 'react-navigation-stack';
 import { AntDesign } from '@expo/vector-icons';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 import HomeScreen from './screens/DashboardScreen';
 import CoursesSreen from './screens/CourseScreen';
@@ -43,10 +44,21 @@ function MyTabs() {
 
 export default class App extends React.Component {
   render() {
+    const theme = {
+      ...DefaultTheme,
+      colors: {
+        ...DefaultTheme.colors,
+        primary: 'dodgerblue',
+        accent: 'tomato',
+      },
+    };
+
     return (
-      <NavigationContainer>
-        <MyTabs />
-      </NavigationContainer>
+      <PaperProvider theme={theme}>
+        <NavigationContainer>
+          <MyTabs />
+        </NavigationContainer>
+      </PaperProvider>
     )
   }
 }
