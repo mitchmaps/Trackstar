@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { Text, View, Button, FlatList, DatePickerIOS, ScrollView } from 'react-native';
+import { Text, View, ScrollView, Button, FlatList } from 'react-native';
 import { TextInput, Divider, Surface, Card } from 'react-native-paper';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { iOSUIKit } from 'react-native-typography';
 
+import Course from '../../models/Course';
+import Evaluation from '../../models/Evaluation';
 
 export interface EvaluationDescriptor {
   title: string;
   weight: number;
+  date: Date;
 }
 
 export interface CourseDescriptor {
@@ -19,24 +23,13 @@ const code: string = 'code';
 const title: string = 'title';
 
 export default class CourseCreate extends React.Component {
-  // const [courseInfo, setCourseInfo] = useState({code: '', title: ''});
-
-  // const handleChange = useCallback((text, id) => {
-  //   const currInfo: CourseDescriptor = courseInfo;
-  //   id === code ? currInfo.code = text : currInfo.title = text
-  //   setCourseInfo(currInfo);
-  // }, []);
-
-  // const handleSubmit = useCallback(() => {
-  //   console.log('in submit');
-  //   console.log(courseInfo);
-  // }, []);
-
   state: {
     code: string,
     title: string,
+    minGrade: number,
     currEvalTitle: string,
     currEvalWeight: number,
+    currDate: Date,
     evaluations: EvaluationDescriptor[],
   }
 
@@ -50,8 +43,10 @@ export default class CourseCreate extends React.Component {
     this.state = {
       code: '',
       title: '',
+      minGrade: 0,
       currEvalTitle: '',
       currEvalWeight: 0,
+      currDate: new Date(),
       evaluations: [],
     }
   }
@@ -72,6 +67,14 @@ export default class CourseCreate extends React.Component {
           label="Course title"
           value={this.state.title}
           onChangeText={(text) => {this.setState({title: text})}}
+          clearButtonMode= "while-editing"
+          autoCorrect={false}
+        />
+        <TextInput 
+          label="Minimum desired grade"
+          keyboardType={'numeric'} 
+          value={this.state.minGrade as unknown as string}
+          onChangeText={(text) => {this.setState({minGrade: text})}}
           clearButtonMode= "while-editing"
           autoCorrect={false}
         />
@@ -97,6 +100,15 @@ export default class CourseCreate extends React.Component {
             onChangeText={(text) => {this.setState({currEvalWeight: text})}} 
             value={this.state.currEvalWeight as unknown as string}
           />
+          <DateTimePicker 
+            testID="dateTimePicker"
+            timeZoneOffsetInMinutes={0}
+            value={this.state.currDate}
+            onChange={(event, selectedDate) => {
+              this.setState({currDate: selectedDate});
+            }}
+            display="default"
+          />
         </View>
         <Button title="Add to grading scheme (finish)" onPress={this.handleAddEvaluationToGradingScheme} />
         <Divider />
@@ -105,31 +117,31 @@ export default class CourseCreate extends React.Component {
 
     return (
       <View style={{flex: 1, alignSelf: "stretch"}}>
-        <View style={{
+        <ScrollView style={{
           height: 80,
           alignSelf: "stretch",
           padding: 20,
         }}>
           <Text style={iOSUIKit.largeTitleEmphasized}>Add course</Text>
           {courseInfo}
-          <Text>{this.state.code}</Text>
-          <Text>{this.state.title}</Text>
           <Divider />
           {evalCreationMarkup}
-          {/* <Button title="submit" onPress={this.handleSubmit} /> */}
-        </View>
+          <View style={{padding: 20}}>
+            <Button title="submit" onPress={this.handleSubmit} />
+          </View>
+        </ScrollView>
       </View>
     );
   }
 
   handleSubmit() {
-    console.log(this.state.code);
-    console.log(this.state.title);
-    // DB stuff goes here
+    this.saveEvaluations(this.state.evaluations, this.state.code);
+    const newCourse = new Course(this.state.title, this.state.code, this.state.minGrade);
+    newCourse.save();
   }
 
   handleAddEvaluationToGradingScheme() {
-    const newEval: EvaluationDescriptor = {title: this.state.currEvalTitle, weight: this.state.currEvalWeight};
+    const newEval: EvaluationDescriptor = {title: this.state.currEvalTitle, weight: this.state.currEvalWeight, date: this.state.currDate};
     const newScheme: EvaluationDescriptor[] = this.state.evaluations;
 
     newScheme.push(newEval);
@@ -148,7 +160,7 @@ export default class CourseCreate extends React.Component {
             <Card>
               <Card.Title title={title} subtitle={`${weight}%`} />
               <Card.Actions>
-                <Button title="Remove" onPress={() => {}} />
+                <Button title="Remove" onPress={this.removeEvaluation} />
               </Card.Actions>
             </Card>
           </View>
@@ -161,7 +173,14 @@ export default class CourseCreate extends React.Component {
     );
   }
 
-  removeEvaluation(evaluations: EvaluationDescriptor[]) {
+  removeEvaluation() {
+    
+  }
 
+  saveEvaluations(courseEvals: EvaluationDescriptor[], courseCode: string) {
+    courseEvals.forEach((currEval) => {
+      const newEval = new Evaluation(currEval.title, currEval.date, false, currEval.weight, 0, courseCode);
+      newEval.save();
+    });
   }
 }
