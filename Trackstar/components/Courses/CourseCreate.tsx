@@ -51,8 +51,6 @@ export default class CourseCreate extends React.Component {
     }
   }
 
-  // regex for course codes: \w{4}\d{4}
-
   render() {
     const courseInfo = (
       <>
@@ -146,21 +144,21 @@ export default class CourseCreate extends React.Component {
 
     newScheme.push(newEval);
     this.setState({evaluations: newScheme, currEvalTitle: '', currEvalWeight: 0});
-
-    console.log(this.state.evaluations);
   }
 
   generateEvalMarkup(evaluations: EvaluationDescriptor[]) {
     return evaluations.reduce(
       (allEvals, currEval) => {
-        const {title, weight} = currEval;
+        const {title, weight, date} = currEval;
+
+        const subTitle = `Due on ${date.toISOString().split('T')[0]} worth ${weight}%`;
 
         const evalMarkup = (
           <View>
             <Card>
-              <Card.Title title={title} subtitle={`${weight}%`} />
+              <Card.Title title={title} subtitle={subTitle} />
               <Card.Actions>
-                <Button title="Remove" onPress={this.removeEvaluation} />
+                <Button title="Remove" onPress={() => {this.removeEvaluation(title)}} />
               </Card.Actions>
             </Card>
           </View>
@@ -173,8 +171,10 @@ export default class CourseCreate extends React.Component {
     );
   }
 
-  removeEvaluation() {
-    
+  removeEvaluation(title: string) {
+    const updatedEvals = this.state.evaluations.filter(currEval => currEval.title !== title);
+
+    this.setState({evaluations: updatedEvals});
   }
 
   saveEvaluations(courseEvals: EvaluationDescriptor[], courseCode: string) {
