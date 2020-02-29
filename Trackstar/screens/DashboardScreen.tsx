@@ -1,22 +1,10 @@
 import React from 'react';
 import Styles from '../Styles/DashboardStyles';
-import { Text, View, Image, TouchableOpacity, SectionList, StyleSheet } from "react-native";
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
-import { red100 } from 'react-native-paper/lib/typescript/src/styles/colors';
+import { Text, View, TouchableOpacity, SectionList, StyleSheet } from "react-native";
+import { Card } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import CircleCheckBox, {LABEL_POSITION} from 'react-native-circle-checkbox';
-
 import {mockData} from "../mockData"
-
-// import { iOSUIKit } from 'react-native-typography';
-// const sectionHeader = (data) => {
-//   const section = data.section
-//   return (
-//     <View style={styles.sectionHeader}>
-//       <Text style={styles.sectionHeaderText}>{section.time}</Text>
-//     </View>
-//   );
-// };
 
 const HomeScreen = (props) => {
   const navigation = props.navigation;
@@ -24,13 +12,7 @@ const HomeScreen = (props) => {
   const singleItem = (data) => {
     const item = data.item
     return (
-      // <TouchableOpacity onPress={() => {navigation.navigate("Details", {talkData: item})}}>
-      //   <View style={styles.singleItem}>
-      //     <Text>{item.title}</Text>
-      //   </View>
-      // </TouchableOpacity>
-      // <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
-
+      // TO DO: figure out if we wanna keep the alerts Haohao set up. I like it as opposed to going to a new screen
       // TO DO: align checkbox properly
       <Card style={{width: 350, marginBottom: 10}}>
           <Card.Title title={item.title}/>
