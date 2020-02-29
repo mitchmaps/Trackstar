@@ -30,20 +30,21 @@ const HomeScreen = (props) => {
       //   </View>
       // </TouchableOpacity>
       // <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
+
+      // TO DO: align checkbox properly
       <Card style={{width: 350, marginBottom: 10}}>
           <Card.Title title={item.title}/>
           <Card.Content style={{flex: 1, flexDirection: 'row'}}>
-            <Text style={{flex: 8}}>Details</Text>
+            <Text style={{flex: 8}}>{item.course}</Text>
             <CircleCheckBox
               style={{flex: 2}}
-              checked={item.title == "1. Registration & breakfast" ? true : false}
+              checked={item.title == "1. Read Chapter 3" ? true : false}
               outerColor = {'#5273eb'}
               innerColor = {'#5273eb'}
               onToggle={(checked) => console.log('My state is: ', checked)}
             />
           </Card.Content>
       </Card>
-      // </View>
     );
   };
 
@@ -52,13 +53,14 @@ const HomeScreen = (props) => {
       colors={['#bcf7ed', '#5273eb']}
       style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}
     >
-      <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch', marginTop: 150}}>
+      <View style={{flexDirection: 'column', marginTop: 150}}>
         <Text style={{fontSize: 45, color: "white", textAlign: "center"}}>Welcome Back!</Text>
         <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Next Evaluation: COMP 3008 Project 2</Text>
         <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Due March 28th</Text>
       </View>
-
-      <SectionList style={{flex: 4}}
+      {/* TO DO: figure out how to raise this section */}
+      <SectionList
+        style={{marginTop: 50}}
         sections={mockData}
         renderItem={singleItem}
       />

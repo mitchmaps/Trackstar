@@ -5,8 +5,8 @@ export const mockData = [
     data: [
       {
         id: 1,
-        title: "1. Registration & breakfast",
-        description: "Register and grab some breakfast and coffee.",
+        title: "1. Read Chapter 3",
+        course: "COMP 3008",
         time: "8:45 AM",
         speaker: null
       }
@@ -18,9 +18,8 @@ export const mockData = [
     data: [
       {
         id: 2,
-        title: "2. Keynote",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
+        title: "2. Pick topic for term paper",
+        course: "PHIL 2807",
         time: "9:30 AM",
         speaker: {
           name: "Haris Mahmood",
@@ -36,9 +35,8 @@ export const mockData = [
     data: [
       {
         id: 3,
-        title: "3. Introduction to React Native",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
+        title: "3. Study unit 1",
+        course: "COMP 3008",
         time: "10:15 AM",
         speaker: {
           name: "Ryan Baldwin",
@@ -48,9 +46,8 @@ export const mockData = [
       },
       {
         id: 4,
-        title: "4. React Native at Scale",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
+        title: "4. Assignment 2",
+        course: "COMP 3000",
         time: "10:15 AM",
         speaker: {
           name: "Sergey Gavrilyuk",
@@ -60,9 +57,8 @@ export const mockData = [
       },
       {
         id: 5,
-        title: "5. Working With Data Using Apollo and GraphQL in React Native",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
+        title: "5. Prepare for lab",
+        course: "COMP 2804",
         time: "10:15 AM",
         speaker: {
           name: "Corey Pollock",
@@ -72,38 +68,38 @@ export const mockData = [
       }
     ]
   },
-  {
-    id: 3456466,
-    time: "11:00 AM",
-    data: [
-      {
-        id: 6,
-        title: "6. Styling with the StyleSheet API",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
-        time: "11:00 AM",
-        speaker: {
-          name: "Jacob Abraham",
-          role: "Founder & CEO of Jacob By Jacob",
-          avatar: "https://api.adorable.io/avatars/285/jacob.png"
-        }
-      },
-      {
-        id: 7,
-        title: "7. Creating Themes with Restyle",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
-        time: "11:00 AM",
-        speaker: {
-          name: "Matt Legaspi",
-          role: "Figma World Champion",
-          avatar: "https://api.adorable.io/avatars/285/matt.png"
-        }
-      },
+  // {
+  //   id: 3456466,
+  //   time: "11:00 AM",
+  //   data: [
+  //     {
+  //       id: 6,
+  //       title: "6. Styling with the StyleSheet API",
+  //       course:
+  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
+  //       time: "11:00 AM",
+  //       speaker: {
+  //         name: "Jacob Abraham",
+  //         role: "Founder & CEO of Jacob By Jacob",
+  //         avatar: "https://api.adorable.io/avatars/285/jacob.png"
+  //       }
+  //     },
+  //     {
+  //       id: 7,
+  //       title: "7. Creating Themes with Restyle",
+  //       course:
+  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
+  //       time: "11:00 AM",
+  //       speaker: {
+  //         name: "Matt Legaspi",
+  //         role: "Figma World Champion",
+  //         avatar: "https://api.adorable.io/avatars/285/matt.png"
+  //       }
+  //     },
   //     {
   //       id: 8,
   //       title: "Making Apps Accessible in React Native",
-  //       description:
+  //       course:
   //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
   //       time: "11:00 AM",
   //       speaker: {
@@ -121,7 +117,7 @@ export const mockData = [
   //     {
   //       id: 9,
   //       title: "Lunch break",
-  //       description:
+  //       course:
   //         "Break time! Grab some lunch and coffee and mingle with fellow humans.",
   //       time: "12:00 PM",
   //       speaker: null
@@ -135,7 +131,7 @@ export const mockData = [
   //     {
   //       id: 10,
   //       title: "RN Workshop",
-  //       description:
+  //       course:
   //         "Introductory React Native workshop for those looking to get started.",
   //       time: "2:00 PM - 5:00 PM",
   //       speaker: {
@@ -144,6 +140,6 @@ export const mockData = [
   //         avatar: "https://api.adorable.io/avatars/285/lloyd.png"
   //       }
   //     }
-    ]
-  }
+  //   ]
+  // }
 ];
