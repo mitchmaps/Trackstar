@@ -68,48 +68,45 @@ export const mockData = [
       }
     ]
   },
-  // {
-  //   id: 3456466,
-  //   time: "11:00 AM",
-  //   data: [
-  //     {
-  //       id: 6,
-  //       title: "6. Styling with the StyleSheet API",
-  //       course:
-  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
-  //       time: "11:00 AM",
-  //       speaker: {
-  //         name: "Jacob Abraham",
-  //         role: "Founder & CEO of Jacob By Jacob",
-  //         avatar: "https://api.adorable.io/avatars/285/jacob.png"
-  //       }
-  //     },
-  //     {
-  //       id: 7,
-  //       title: "7. Creating Themes with Restyle",
-  //       course:
-  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
-  //       time: "11:00 AM",
-  //       speaker: {
-  //         name: "Matt Legaspi",
-  //         role: "Figma World Champion",
-  //         avatar: "https://api.adorable.io/avatars/285/matt.png"
-  //       }
-  //     },
-  //     {
-  //       id: 8,
-  //       title: "Making Apps Accessible in React Native",
-  //       course:
-  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius nisl sapien, a ullamcorper felis aliquam nec. Aliquam erat volutpat. Donec eget risus pretium orci fermentum aliquam et pellentesque sem. Maecenas luctus dictum odio, imperdiet pharetra felis accumsan quis. Integer lobortis augue felis. Ut non dui gravida, luctus lectus non, semper lectus.",
-  //       time: "11:00 AM",
-  //       speaker: {
-  //         name: "Mo Hashi",
-  //         role: "Director of Business",
-  //         avatar: "https://api.adorable.io/avatars/285/mo.png"
-  //       }
-  //     }
-  //   ]
-  // },
+  {
+    id: 3456466,
+    time: "11:00 AM",
+    data: [
+      {
+        id: 6,
+        title: "6. Finish part 2 of project 1",
+        course: "COMP 3008",
+        time: "11:00 AM",
+        speaker: {
+          name: "Jacob Abraham",
+          role: "Founder & CEO of Jacob By Jacob",
+          avatar: "https://api.adorable.io/avatars/285/jacob.png"
+        }
+      },
+      {
+        id: 7,
+        title: "7. Read chapter 4",
+        course: "COMP 3008",
+        time: "11:00 AM",
+        speaker: {
+          name: "Matt Legaspi",
+          role: "Figma World Champion",
+          avatar: "https://api.adorable.io/avatars/285/matt.png"
+        }
+      },
+      {
+        id: 8,
+        title: "8. Study Unit 2",
+        course: "COMP 3008",
+        time: "11:00 AM",
+        speaker: {
+          name: "Mo Hashi",
+          role: "Director of Business",
+          avatar: "https://api.adorable.io/avatars/285/mo.png"
+        }
+      }
+    ]
+  },
   // {
   //   id: 456435643,
   //   time: "12:00 PM",

@@ -53,7 +53,7 @@ const HomeScreen = (props) => {
       colors={['#bcf7ed', '#5273eb']}
       style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}
     >
-      <View style={{flexDirection: 'column', marginTop: 150}}>
+      <View style={{flexDirection: 'column', marginTop: 100}}>
         <Text style={{fontSize: 45, color: "white", textAlign: "center"}}>Welcome Back!</Text>
         <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Next Evaluation: COMP 3008 Project 2</Text>
         <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Due March 28th</Text>
