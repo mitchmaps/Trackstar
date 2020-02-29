@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, ScrollView, FlatList } from 'react-native';
+import { Text, View, ScrollView, FlatList, Alert } from 'react-native';
 import { Divider, Surface, Card, TextInput, Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { iOSUIKit } from 'react-native-typography';
@@ -24,6 +24,11 @@ export interface CourseDescriptor {
 const code: string = 'code';
 const title: string = 'title';
 
+// TODO:
+// 1. Add smart form stuff like knowing when you reach 100% of the grade
+// 2. Add a counter for what the total percent is at, use an alert if u go over 100
+// 3. Make PR for this and get merged ASAP
+
 export default class CourseCreate extends React.Component {
   state: {
     code: string,
@@ -32,6 +37,7 @@ export default class CourseCreate extends React.Component {
     currEvalTitle: string,
     currEvalWeight: number,
     currDate: Date,
+    currTotalGradeWeight: number,
     evaluations: EvaluationDescriptor[],
   }
 
@@ -49,6 +55,7 @@ export default class CourseCreate extends React.Component {
       currEvalTitle: '',
       currEvalWeight: 0,
       currDate: new Date(),
+      currTotalGradeWeight: 0,
       evaluations: [],
     }
   }
@@ -92,7 +99,7 @@ export default class CourseCreate extends React.Component {
     const evalCreationMarkup = (
       <>
         <Card style={styles.cardMargin}>
-          <Card.Title title="Add grading scheme" />
+          <Card.Title title="Add grading scheme" subtitle={`${this.state.currTotalGradeWeight}% of grade accounted for`} />
           <Card.Content>
             <Text style={{paddingTop: 20, paddingBottom: 20}}>Add new evaluation:</Text>
             <View>
@@ -127,6 +134,18 @@ export default class CourseCreate extends React.Component {
       </>
     );
 
+    const weightWarning = (this.state.currTotalGradeWeight > 100) ? (
+      Alert.alert(
+        'Grading scheme surpasses 100%', 
+        "Remove evaluations until at or below 100%",
+        [
+          {
+            text: 'Dismiss'
+          }
+        ]
+      )
+    ) : null;
+
     return (
       <View style={{flex: 1, alignSelf: "stretch"}}>
         <ScrollView style={{
@@ -138,6 +157,7 @@ export default class CourseCreate extends React.Component {
           {courseInfo}
           <Divider />
           {evalCreationMarkup}
+          {weightWarning}
           <View style={styles.buttonMargin}>
             <Button mode="contained" onPress={this.handleSubmit}>Submit</Button>
           </View>
@@ -156,8 +176,16 @@ export default class CourseCreate extends React.Component {
     const newEval: EvaluationDescriptor = {title: this.state.currEvalTitle, weight: this.state.currEvalWeight, date: this.state.currDate};
     const newScheme: EvaluationDescriptor[] = this.state.evaluations;
 
+    // this is a super weird thing due to typescript interfaces but it works
+    const newTotal: number = +this.state.currTotalGradeWeight + +newEval.weight;
+    console.log(newTotal);
     newScheme.push(newEval);
-    this.setState({evaluations: newScheme, currEvalTitle: '', currEvalWeight: 0});
+    this.setState({
+      evaluations: newScheme, 
+      currEvalTitle: '', 
+      currEvalWeight: 0, 
+      currTotalGradeWeight: newTotal,
+    });
   }
 
   generateEvalMarkup(evaluations: EvaluationDescriptor[]) {
