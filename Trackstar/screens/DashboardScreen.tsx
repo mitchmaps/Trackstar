@@ -10,23 +10,18 @@ import { red100 } from 'react-native-paper/lib/typescript/src/styles/colors';
 
 
 const DashboardScreen = props => {
-
-const pre = {prereqToggle: false}
-const [oldCourses, setOldCourses] = useState (true);
+const [oldCourses, setOldCourses] = useState (true); // hook state for toggle
 
 const CourseComponent = props => {
-    if(props.color === "#999999" && oldCourses === false){
+    if(props.color === "#999999" && oldCourses === false){ // only render on toggle if course is not pre-req
       return null;
     }
     else{
       return(
       <Card style = {[{backgroundColor: props.color}, Styles.container]}
-      onPress  ={ () =>
-        {
-          props.navigation.navigate("Course")
-        }
-      }
-      >
+            onPress  ={() =>{ 
+            props.navigation.navigate("Course")
+      }}>
         <Card.Content >
           <View style={props.color}>
             <Title style={Styles.titleText}>{props.courseCode}</Title>
@@ -52,6 +47,8 @@ return(
       }
     />
   </View>
+
+  // Mock Data
 
   <CourseComponent
     courseCode= "COMP 3005"

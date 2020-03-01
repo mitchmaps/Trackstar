@@ -4,6 +4,7 @@ import CourseScreen from './CourseScreen';
 import DashboardScreen from './DashboardScreen';
 import AddCourseScreen from './AddCourseScreen';
 
+// Hold Dashboard navigation here
 const DashboardStack = createStackNavigator({
   Dashboard: DashboardScreen,
   Course: CourseScreen,

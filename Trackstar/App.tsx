@@ -17,6 +17,7 @@ import AddCourseScreen from './screens/AddCourseScreen';
 
 const Stack = createStackNavigator();
 
+// Dashboard Stack Navigation - HaoHao
 const DashboardStack = () => {
   return(
     <Stack.Navigator>
@@ -54,7 +55,7 @@ function MyTabs() {
     >
       
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Dashboard" component={DashboardStack} />
+      <Tab.Screen name="Dashboard" component={DashboardStack} /> /* Updated Dashboard Screen here */
       <Tab.Screen name="Grades" component={GradesScreen} />
     </Tab.Navigator>
   );
