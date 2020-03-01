@@ -1,167 +1,53 @@
-import {useEffect, useState} from 'react';
 import React from 'react';
+import { Text, View, TouchableOpacity, SectionList, StyleSheet } from "react-native";
+import { Card } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
+import CircleCheckBox, {LABEL_POSITION} from 'react-native-circle-checkbox';
+import {mockData} from "../mockData"
 
-import {StyleSheet, ScrollView, Alert, Text, View , TouchableOpacity} from 'react-native';
+const HomeScreen = (props) => {
+  const navigation = props.navigation;
 
-import { Switch, Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
-import { red100 } from 'react-native-paper/lib/typescript/src/styles/colors';
-// import { iOSUIKit } from 'react-native-typography';
-
-
-
-const DashboardScreen = props => {
-const [oldCourses, setOldCourses] = useState (true); // hook state for toggle
-
-const CourseComponent = props => {
-    if(props.color === "#999999" && oldCourses === false){ // only render on toggle if course is not pre-req
-      return null;
-    }
-    else{
-      return(
-      <Card style = {[{backgroundColor: props.color}, Styles.container]}
-            onPress  ={() =>{ 
-            props.navigation.navigate("Course")
-      }}>
-        <Card.Content >
-          <View style={props.color}>
-            <Title style={Styles.titleText}>{props.courseCode}</Title>
-            <Paragraph style={Styles.paragraphText}>{props.title}</Paragraph>
-            <Paragraph style={Styles.paragraphText}>{props.term}</Paragraph>
-          </View>
-        </Card.Content>
+  const singleItem = (data) => {
+    const item = data.item
+    return (
+      // TO DO: figure out if we wanna keep the alerts Haohao set up. I like it as opposed to going to a new screen
+      // TO DO: align checkbox properly
+      <Card style={{width: 350, marginBottom: 10}}>
+          <Card.Title title={item.title}/>
+          <Card.Content style={{flex: 1, flexDirection: 'row'}}>
+            <Text style={{flex: 8}}>{item.course}</Text>
+            <CircleCheckBox
+              style={{flex: 2}}
+              checked={item.title == "1. Read Chapter 3" ? true : false}
+              outerColor = {'#5273eb'}
+              innerColor = {'#5273eb'}
+              onToggle={(checked) => console.log('My state is: ', checked)}
+            />
+          </Card.Content>
       </Card>
-      );
-    }
-};
+    );
+  };
 
-return(
-  <ScrollView style = {Styles.content }>
-
-  <View style={Styles.dashboardRowOne}>
-    <Text style={Styles.dashboardText}>Dashboard</Text>
-    <Text style={Styles.switchText}>              Pre-Reqs </Text>
-    <Switch
-      value={oldCourses}
-      onValueChange={() =>
-        { setOldCourses(!oldCourses) }
-      }
-    />
-  </View>
-
-  // Mock Data
-
-  <CourseComponent
-    courseCode= "COMP 3005"
-    title="Database Management Systems"
-    term="Winter 2020"
-    color = '#99FF33'
-    />
-
-  <CourseComponent
-    courseCode= "COMP 3004"
-    title="Object-Oriented Software Engin"
-    term= "Winter 2020"
-    color = '#FF99CC'
-  />
-  <CourseComponent
-    courseCode= "COMP 3008"
-    title="Human-Computer Interaction"
-    term="Winter 2020"
-    color = '#FF9933'
-  />
-  <CourseComponent
-    courseCode= "COMP 3804"
-    title="Design and Analysis of Algorithms"
-    term="Winter 2019"
-    color = '#999999'
-  />
-    <CourseComponent
-    courseCode= "COMP 3000"
-    title="Operating Systems"
-    term="Winter 2019"
-    color = '#999999'
-  />
-    <CourseComponent
-    courseCode= "CLCV 1003"
-    title="Survey of Roman Civilization"
-    term="Winter 2019"
-    color = '#999999'
-  />
-    <CourseComponent
-    courseCode= "COMP 2507"
-    title="Introduction to Stats Modeling"
-    term="Winter 2019"
-    color = '#999999'
-  />
-  
-  <View style={Styles.buttonContentStyle}>
-  <TouchableOpacity onPress={() => {
-    props.navigation.navigate("Add")
-  }}>
-    <View style={Styles.buttonContentStyle}>
-      <Button  icon="plus-circle" mode="contained" contentStyle={{marginLeft:10}} >
-        add course
-      </Button>
-    </View>
-  </TouchableOpacity>
-
-  </View>
-  </ScrollView>
-
+  return(
+    <LinearGradient
+      colors={['#bcf7ed', '#5273eb']}
+      style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}
+    >
+      <View style={{flexDirection: 'column', marginTop: 100}}>
+        <Text style={{fontSize: 45, color: "white", textAlign: "center"}}>Welcome Back!</Text>
+        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Next Evaluation: COMP 3008 Project 2</Text>
+        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Due March 28th</Text>
+      </View>
+      {/* TO DO: figure out how to raise this section */}
+      <SectionList
+        style={{marginTop: 50}}
+        sections={mockData}
+        renderItem={singleItem}
+      />
+    </LinearGradient>
   );
 
 };
 
-  export default DashboardScreen;
-
-    const Styles = StyleSheet.create({
-
-      buttonContentStyle: {
-        
-        display: "flex",
-        width: "100%",        
-        justifyContent: "center",
-        alignItems: "center",
-        marginRight: 20
-      },
-        content: {
-          flex: 1, 
-          marginLeft: 20
-        },
-        container: {
-          shadowColor: 'rgba(0,0,0,1)',
-          shadowOffset: { height: 0, width: 0 },
-          shadowOpacity: 1, //default is 1
-          shadowRadius: 1, //default is 1
-          width: 320,
-          marginTop: 10,
-          marginBottom: 10
-        },
-        headingText: {
-          fontSize: 30
-        },
-        titleText: {
-          fontSize: 24,
-          display: 'flex',
-          alignContent: 'flex-start'
-        },
-        paragraphText: {
-          fontSize: 18
-        },
-        dashboardText: {
-          fontSize: 30,
-          fontWeight: "900",
-          marginLeft: 15,
-          marginTop: 10,
-          marginBottom: -10,
-          textAlignVertical: "center",
-        },
-        dashboardRowOne:{
-          flexDirection: "row",
-          height:100
-        },
-        switchText: {
-          textAlignVertical: "center",
-        },
-
-      });
+export default HomeScreen;

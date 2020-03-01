@@ -6,9 +6,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {createAppContainer} from "react-navigation";
 import { AntDesign } from '@expo/vector-icons';
 
-import HomeScreen from './screens/HomeScreen';
+
+import HomeScreen from './screens/DashboardScreen';
 import GradesScreen from './screens/GradesScreen';
-import DashboardScreen from './screens/DashboardScreen';
+import CoursesDashboard from './screens/CoursesDashboard';
 
 import CourseScreen from './screens/CourseScreen';
 import AddCourseScreen from './screens/AddCourseScreen';
@@ -18,12 +19,12 @@ import AddCourseScreen from './screens/AddCourseScreen';
 const Stack = createStackNavigator();
 
 // Dashboard Stack Navigation - HaoHao
-const DashboardStack = () => {
+const CoursesStack = () => {
   return(
     <Stack.Navigator>
-      <Stack.Screen name="Dashboard" component={DashboardScreen} />
-      <Stack.Screen name="Add" component={AddCourseScreen} />
+      <Stack.Screen name="Dashboard" component={CoursesDashboard} />
       <Stack.Screen name="Course" component={CourseScreen} />
+      <Stack.Screen name="Add" component={AddCourseScreen} />
     </Stack.Navigator>
   );
 }
@@ -49,13 +50,13 @@ function MyTabs() {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
+        activeTintColor: '#5273eb',
         inactiveTintColor: 'gray',
       }}
     >
       
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Dashboard" component={DashboardStack} /> /* Updated Dashboard Screen here */
+      <Tab.Screen name="Dashboard" component={CoursesStack} /> 
       <Tab.Screen name="Grades" component={GradesScreen} />
     </Tab.Navigator>
   );
