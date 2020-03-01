@@ -11,31 +11,114 @@ const navigation = props.navigation;
     return (
       <View style={Styles.content}>
                 <Text>Grade calculation!</Text>
-				
+	  <View style={{ flex: 1, flexDirection: 'row' }}>			
 	  <TextInput
           style={{ height: 40 }}
           placeholder="Enter grade % earned"
          // onChangeText={text => this.setState({ text })}
           //value={this.state.text}
         />
-        <TextInput
+		<TextInput
           style={{ height: 40 }}
-          placeholder="Enter grade % earned"
-          //onChangeText={text => this.setState({ text })}
+          placeholder="% of worth overall"
+         // onChangeText={text => this.setState({ text })}
           //value={this.state.text}
         />
-        <TextInput
+	   </View>
+	   
+	   	<View style={{ flex: 1, flexDirection: 'row' }}>			
+	  <TextInput
           style={{ height: 40 }}
           placeholder="Enter grade % earned"
          // onChangeText={text => this.setState({ text })}
           //value={this.state.text}
         />
-        <TextInput
+		<TextInput
           style={{ height: 40 }}
-          placeholder="Enter grade % earned"
-          //onChangeText={text => this.setState({ text })}
+          placeholder="% of worth overall"
+         // onChangeText={text => this.setState({ text })}
           //value={this.state.text}
         />
+	   </View>
+	   
+	   	  <View style={{ flex: 1, flexDirection: 'row' }}>			
+	  <TextInput
+          style={{ height: 40 }}
+          placeholder="Enter grade % earned"
+         // onChangeText={text => this.setState({ text })}
+          //value={this.state.text}
+        />
+		<TextInput
+          style={{ height: 40 }}
+          placeholder="% of worth overall"
+         // onChangeText={text => this.setState({ text })}
+          //value={this.state.text}
+        />
+	   </View>
+	   
+	   	   	  <View style={{ flex: 1, flexDirection: 'row' }}>			
+	  <TextInput
+          style={{ height: 40 }}
+          placeholder="Enter grade % earned"
+         // onChangeText={text => this.setState({ text })}
+          //value={this.state.text}
+        />
+		<TextInput
+          style={{ height: 40 }}
+          placeholder="% of worth overall"
+         // onChangeText={text => this.setState({ text })}
+          //value={this.state.text}
+        />
+	   </View>
+	   
+	   	   	  <View style={{ flex: 1, flexDirection: 'row' }}>			
+	  <TextInput
+          style={{ height: 40 }}
+          placeholder="Enter grade % earned"
+         // onChangeText={text => this.setState({ text })}
+          //value={this.state.text}
+        />
+		<TextInput
+          style={{ height: 40 }}
+          placeholder="% of worth overall"
+         // onChangeText={text => this.setState({ text })}
+          //value={this.state.text}
+        />
+	   </View>
+	   
+	   	   	  <View style={{ flex: 1, flexDirection: 'row' }}>			
+	  <TextInput
+          style={{ height: 40 }}
+          placeholder="Enter grade % earned"
+         // onChangeText={text => this.setState({ text })}
+          //value={this.state.text}
+        />
+		<TextInput
+          style={{ height: 40 }}
+          placeholder="% of worth overall"
+         // onChangeText={text => this.setState({ text })}
+          //value={this.state.text}
+        />
+	   </View>
+	   
+	   <View style={{ flex: 1, flexDirection: 'row' }}>			
+	  <TextInput
+          style={{ height: 40 }}
+          placeholder="Enter grade % earned"
+         // onChangeText={text => this.setState({ text })}
+          //value={this.state.text}
+        />
+		<TextInput
+          style={{ height: 40 }}
+          placeholder="% of worth overall"
+         // onChangeText={text => this.setState({ text })}
+          //value={this.state.text}
+        />
+	   </View>
+	   
+
+      <Text>Total Earned is: </Text>
+				
 
       <TouchableOpacity
         style={{ backgroundColor: 'black' }}>
