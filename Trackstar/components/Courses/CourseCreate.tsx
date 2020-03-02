@@ -25,9 +25,9 @@ export default class CourseCreate extends React.Component {
   state: {
     code: string,
     title: string,
-    minGrade: number,
+    minGrade: string,
     currEvalTitle: string,
-    currEvalWeight: number,
+    currEvalWeight: string,
     currDate: Date,
     currTotalGradeWeight: number,
     evaluations: EvaluationDescriptor[],
@@ -43,9 +43,9 @@ export default class CourseCreate extends React.Component {
     this.state = {
       code: '',
       title: '',
-      minGrade: 0,
+      minGrade: '',
       currEvalTitle: '',
-      currEvalWeight: 0,
+      currEvalWeight: '',
       currDate: new Date(),
       currTotalGradeWeight: 0,
       evaluations: [],
@@ -76,8 +76,8 @@ export default class CourseCreate extends React.Component {
           <TextInput 
             label="Minimum desired grade"
             style={styles.textInputMargin}
-            keyboardType={'numeric'} 
-            value={this.state.minGrade as unknown as string}
+            keyboardType={'numeric'}
+            value={this.state.minGrade}
             onChangeText={(text) => {this.setState({minGrade: text})}}
             clearButtonMode= "while-editing"
             autoCorrect={false}
@@ -88,10 +88,16 @@ export default class CourseCreate extends React.Component {
 
     const currEvalsMarkup = this.generateEvalMarkup(this.state.evaluations);
 
+    const subTitleMarkup = (this.state.currTotalGradeWeight > 100) ? (
+      <Text style={{color: 'red'}}>Grading scheme surpasses 100%, remove evaluations</Text>
+    ) : (
+      <Text>{this.state.currTotalGradeWeight}% of grade accounted for</Text>
+    );
+
     const evalCreationMarkup = (
       <>
         <Card style={styles.cardMargin}>
-          <Card.Title title="Add grading scheme" subtitle={`${this.state.currTotalGradeWeight}% of grade accounted for`} />
+          <Card.Title title="Add grading scheme" subtitle={subTitleMarkup} />
           <Card.Content>
             <Text style={{paddingTop: 20, paddingBottom: 20}}>Add new evaluation:</Text>
             <View>
@@ -103,9 +109,9 @@ export default class CourseCreate extends React.Component {
               />
               <TextInput 
                 label="Evaluation weight" 
-                keyboardType={'numeric'} 
+                keyboardType="numeric" 
                 onChangeText={(text) => {this.setState({currEvalWeight: text})}} 
-                value={this.state.currEvalWeight as unknown as string}
+                value={this.state.currEvalWeight}
               />
               <DateTimePicker 
                 testID="dateTimePicker"
@@ -118,7 +124,14 @@ export default class CourseCreate extends React.Component {
               />
             </View>
           </Card.Content>
-          <Button style={styles.buttonMargin} mode="contained" onPress={this.handleAddEvaluationToGradingScheme}>Add to grading scheme</Button>
+          <Button 
+            style={styles.buttonMargin} 
+            mode="contained" 
+            onPress={this.handleAddEvaluationToGradingScheme}
+            disabled={this.state.currTotalGradeWeight > 100}
+          >
+            Add to grading scheme
+          </Button>
         </Card>
 
         <Text style={{paddingTop: 20, paddingBottom: 20}}>Evaluations:</Text>
@@ -151,7 +164,7 @@ export default class CourseCreate extends React.Component {
           {evalCreationMarkup}
           {weightWarning}
           <View style={styles.buttonMargin}>
-            <Button mode="contained" onPress={this.handleSubmit}>Submit</Button>
+            <Button mode="contained" onPress={this.handleSubmit} disabled={this.state.currTotalGradeWeight > 100}>Submit</Button>
           </View>
         </ScrollView>
       </View>
@@ -160,12 +173,13 @@ export default class CourseCreate extends React.Component {
 
   handleSubmit() {
     this.saveEvaluations(this.state.evaluations, this.state.code);
-    const newCourse = new Course(this.state.title, this.state.code, this.state.minGrade);
-    newCourse.save();
+    const newCourse = new Course(this.state.title, this.state.code, +this.state.minGrade);
+    console.log(newCourse);
+    // newCourse.save();
   }
 
   handleAddEvaluationToGradingScheme() {
-    const newEval: EvaluationDescriptor = {title: this.state.currEvalTitle, weight: this.state.currEvalWeight, date: this.state.currDate};
+    const newEval: EvaluationDescriptor = {title: this.state.currEvalTitle, weight: +this.state.currEvalWeight, date: this.state.currDate};
     const newScheme: EvaluationDescriptor[] = this.state.evaluations;
 
     // this is a super weird thing due to typescript interfaces but it works
@@ -175,12 +189,13 @@ export default class CourseCreate extends React.Component {
     this.setState({
       evaluations: newScheme, 
       currEvalTitle: '', 
-      currEvalWeight: 0, 
+      currEvalWeight: '', 
       currTotalGradeWeight: newTotal,
     });
   }
 
   generateEvalMarkup(evaluations: EvaluationDescriptor[]) {
+    let currID = 1;
     return evaluations.reduce(
       (allEvals, currEval) => {
         const {title, weight, date} = currEval;
@@ -189,7 +204,7 @@ export default class CourseCreate extends React.Component {
         const weightMarkup = <Text>{`Grade weight: ${weight}%`}</Text>
 
         const evalMarkup = (
-          <Card>
+          <Card key={`eval-${currID}`}>
             <Card.Title title={title} />
             <Card.Content>
               {dueDateMarkup}
@@ -200,6 +215,7 @@ export default class CourseCreate extends React.Component {
         );
 
         allEvals.push(evalMarkup);
+        currID++;
         return allEvals;
       },
       [],
@@ -207,9 +223,17 @@ export default class CourseCreate extends React.Component {
   }
 
   removeEvaluation(title: string) {
-    const updatedEvals = this.state.evaluations.filter(currEval => currEval.title !== title);
+    let evalToRemove: EvaluationDescriptor = null;
+    const updatedEvals = this.state.evaluations.filter((currEval) => {
+      if (currEval.title !== title) {
+        return currEval;
+      } else {
+        evalToRemove = currEval;
+      }
+    });
 
-    this.setState({evaluations: updatedEvals});
+    const newTotalWeight = this.state.currTotalGradeWeight - evalToRemove.weight;
+    this.setState({evaluations: updatedEvals, currTotalGradeWeight: newTotalWeight});
   }
 
   saveEvaluations(courseEvals: EvaluationDescriptor[], courseCode: string) {
