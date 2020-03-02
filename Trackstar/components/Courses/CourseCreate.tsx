@@ -89,9 +89,11 @@ export default class CourseCreate extends React.Component {
     const currEvalsMarkup = this.generateEvalMarkup(this.state.evaluations);
 
     const subTitleMarkup = (this.state.currTotalGradeWeight > 100) ? (
-      <Text style={{color: 'red'}}>Grading scheme surpasses 100%, remove evaluations</Text>
+      <Text style={{color: 'red'}}>Grading scheme surpasses 100%, remove evaluations.</Text>
+    ) : (this.state.currTotalGradeWeight === 100) ? (
+      <Text style={{color: '#4090f7'}}>Full grading scheme added.</Text>
     ) : (
-      <Text>{this.state.currTotalGradeWeight}% of grade accounted for</Text>
+      <Text>{this.state.currTotalGradeWeight}% of grade accounted for.</Text>
     );
 
     const evalCreationMarkup = (
@@ -128,7 +130,7 @@ export default class CourseCreate extends React.Component {
             style={styles.buttonMargin} 
             mode="contained" 
             onPress={this.handleAddEvaluationToGradingScheme}
-            disabled={this.state.currTotalGradeWeight > 100}
+            disabled={this.state.currTotalGradeWeight >= 100}
           >
             Add to grading scheme
           </Button>
@@ -164,7 +166,7 @@ export default class CourseCreate extends React.Component {
           {evalCreationMarkup}
           {weightWarning}
           <View style={styles.buttonMargin}>
-            <Button mode="contained" onPress={this.handleSubmit} disabled={this.state.currTotalGradeWeight > 100}>Submit</Button>
+            <Button mode="contained" onPress={this.handleSubmit} disabled={this.state.currTotalGradeWeight > 100 || this.state.currTotalGradeWeight < 100}>Submit</Button>
           </View>
         </ScrollView>
       </View>
@@ -174,8 +176,7 @@ export default class CourseCreate extends React.Component {
   handleSubmit() {
     this.saveEvaluations(this.state.evaluations, this.state.code);
     const newCourse = new Course(this.state.title, this.state.code, +this.state.minGrade);
-    console.log(newCourse);
-    // newCourse.save();
+    newCourse.save();
   }
 
   handleAddEvaluationToGradingScheme() {
