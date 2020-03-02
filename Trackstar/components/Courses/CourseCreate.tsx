@@ -185,7 +185,6 @@ export default class CourseCreate extends React.Component {
 
     // this is a super weird thing due to typescript interfaces but it works
     const newTotal: number = +this.state.currTotalGradeWeight + +newEval.weight;
-    console.log(newTotal);
     newScheme.push(newEval);
     this.setState({
       evaluations: newScheme, 
