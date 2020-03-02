@@ -110,7 +110,7 @@ export default class CourseCreate extends React.Component {
                 value={this.state.currEvalTitle} 
               />
               <TextInput 
-                label="Evaluation weight" 
+                label="Evaluation weight (%)" 
                 keyboardType="numeric" 
                 onChangeText={(text) => {this.setState({currEvalWeight: text})}} 
                 value={this.state.currEvalWeight}
