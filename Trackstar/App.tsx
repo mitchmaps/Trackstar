@@ -2,15 +2,35 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';// import {createStackNavigator} from 'react-navigation-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import {createAppContainer} from "react-navigation";
 import { AntDesign } from '@expo/vector-icons';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
+
 import HomeScreen from './screens/DashboardScreen';
-import CoursesSreen from './screens/CourseScreen';
 import GradesScreen from './screens/GradesScreen';
+import CoursesDashboard from './screens/CoursesDashboard';
+
+import CourseScreen from './screens/CourseScreen';
+import AddCourseScreen from './screens/AddCourseScreen';
+
+
+
+const Stack = createStackNavigator();
+
+// Dashboard Stack Navigation - HaoHao
+const CoursesStack = () => {
+  return(
+    <Stack.Navigator>
+      <Stack.Screen name="Dashboard" component={CoursesDashboard} />
+      <Stack.Screen name="Course" component={CourseScreen} />
+      <Stack.Screen name="Add" component={AddCourseScreen} />
+    </Stack.Navigator>
+  );
+}
 
 const Tab = createBottomTabNavigator();
-
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -31,12 +51,13 @@ function MyTabs() {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
+        activeTintColor: '#5273eb',
         inactiveTintColor: 'gray',
       }}
     >
+      
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Courses" component={CoursesSreen} />
+      <Tab.Screen name="Dashboard" component={CoursesStack} /> 
       <Tab.Screen name="Grades" component={GradesScreen} />
     </Tab.Navigator>
   );
