@@ -128,6 +128,8 @@ export default class GradesForm extends React.Component {
         {this.field(6)}
         {this.field(7)}
 
+        {/*ADD + BUTTON TO ADD MORE FIELDS */}
+
         <View style={{alignItems: 'center'}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}>
             <Text>Desired grade: </Text>
