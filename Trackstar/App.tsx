@@ -12,7 +12,7 @@ import HomeScreen from './screens/DashboardScreen';
 import GradesScreen from './screens/GradesScreen';
 import CoursesDashboard from './screens/CoursesDashboard';
 
-import CourseScreen from './screens/CourseScreen';
+import ViewCourseScreen from './screens/ViewCourseScreen';
 import AddCourseScreen from './screens/AddCourseScreen';
 
 
@@ -24,7 +24,7 @@ const CoursesStack = () => {
   return(
     <Stack.Navigator>
       <Stack.Screen name="Dashboard" component={CoursesDashboard} />
-      <Stack.Screen name="Course" component={CourseScreen} />
+      <Stack.Screen name="Course" component={ViewCourseScreen} />
       <Stack.Screen name="Add" component={AddCourseScreen} />
     </Stack.Navigator>
   );
