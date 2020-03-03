@@ -13,9 +13,7 @@ import GradesScreen from './screens/GradesScreen';
 import CoursesDashboard from './screens/CoursesDashboard';
 
 import ViewCourseScreen from './screens/ViewCourseScreen';
-import AddCourseScreen from './screens/AddCourseScreen';
-
-
+import CourseCreate from './screens/CourseCreate';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +23,7 @@ const CoursesStack = () => {
     <Stack.Navigator>
       <Stack.Screen name="Dashboard" component={CoursesDashboard} />
       <Stack.Screen name="Course" component={ViewCourseScreen} />
-      <Stack.Screen name="Add" component={AddCourseScreen} />
+      <Stack.Screen name="Add" component={CourseCreate} />
     </Stack.Navigator>
   );
 }

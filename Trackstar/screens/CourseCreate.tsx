@@ -4,10 +4,10 @@ import { Divider, Card, TextInput, Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { iOSUIKit } from 'react-native-typography';
 
-import Course from '../../models/Course';
-import Evaluation from '../../models/Evaluation';
+import Course from '../models/Course';
+import Evaluation from '../models/Evaluation';
 
-import styles from './style';
+import styles from '../Styles/CourseCreateStyles';
 
 export interface EvaluationDescriptor {
   title: string;
@@ -177,6 +177,12 @@ export default class CourseCreate extends React.Component {
     this.saveEvaluations(this.state.evaluations, this.state.code);
     const newCourse = new Course(this.state.title, this.state.code, +this.state.minGrade);
     newCourse.save();
+
+    this.props.navigation.navigate("Dashboard", {
+      code: newCourse.code,
+      name: newCourse.title,
+      minGrade: newCourse.min_grade,
+    });
   }
 
   handleAddEvaluationToGradingScheme() {
