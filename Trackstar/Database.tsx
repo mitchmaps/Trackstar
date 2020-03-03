@@ -47,4 +47,12 @@ export default class Database {
     console.log(course.code)
     course.save()
   }
+
+//adding mock course
+  static mockMethod() {
+    let course1  = new Course (title, code, grade);
+    console.log(course.code)
+    course.save()
+  }
+
 }
