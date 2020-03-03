@@ -6,7 +6,7 @@ const TestScreen = (props) => {
   const navigation = props.navigation;
     return (
       <View style={Styles.content}>
-        <Text>Home Screen!</Text>
+        <Text>Test screen</Text>
       </View>
     );
 };

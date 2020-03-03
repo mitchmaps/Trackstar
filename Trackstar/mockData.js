@@ -5,7 +5,7 @@ export const mockData = [
     data: [
       {
         id: 1,
-        title: "1. Read Chapter 3",
+      title: "1. Read Chapter 3",
         course: "COMP 3008",
         time: "8:45 AM",
         speaker: null
