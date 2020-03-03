@@ -1,5 +1,4 @@
 import React from 'react';
-import Styles from '../Styles/DashboardStyles';
 import { Text, View, TouchableOpacity, SectionList, StyleSheet } from "react-native";
 import { Card } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -48,8 +47,7 @@ const HomeScreen = (props) => {
       />
     </LinearGradient>
   );
-};
 
-// TO DO: abstract styles into stylesheets
+};
 
 export default HomeScreen;
