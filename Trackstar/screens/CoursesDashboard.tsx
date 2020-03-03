@@ -42,6 +42,7 @@ const CoursesDashboard = props => {
               code: item.courseCode,
               name: item.courseName,
               term: item.term,
+              minGrade: item.minGrade,
             });
           }}
         >
