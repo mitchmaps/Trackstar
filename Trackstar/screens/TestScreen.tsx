@@ -1,13 +1,13 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import Styles from '../Styles/CourseStyles';
+import { Text, View, TouchableOpacity } from 'react-native';
+import Course from '../models/Course';
 
 const TestScreen = (props) => {
   const navigation = props.navigation;
     return (
-      <View style={Styles.content}>
-        <Text>Home Screen!</Text>
-      </View>
+      <TouchableOpacity onPress={() => {Course.all()}}>
+        <Text>All Courses</Text>
+      </TouchableOpacity>
     );
 };
 
