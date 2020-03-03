@@ -174,9 +174,9 @@ export default class CourseCreate extends React.Component {
   }
 
   handleSubmit() {
-    // this.saveEvaluations(this.state.evaluations, this.state.code);
     const newCourse = new Course(this.state.title, this.state.code, +this.state.minGrade);
     newCourse.save();
+    this.saveEvaluations(this.state.evaluations, this.state.code);
   }
 
   handleAddEvaluationToGradingScheme() {
