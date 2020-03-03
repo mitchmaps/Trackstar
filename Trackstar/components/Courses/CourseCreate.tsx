@@ -238,7 +238,8 @@ export default class CourseCreate extends React.Component {
 
   saveEvaluations(courseEvals: EvaluationDescriptor[], courseCode: string) {
     courseEvals.forEach((currEval) => {
-      const newEval = new Evaluation(currEval.title, currEval.date, false, currEval.weight, 0, courseCode);
+      console.log(currEval.title, currEval.date.toString(), false, currEval.weight, 0, courseCode);
+      const newEval = new Evaluation(currEval.title, currEval.date.toString(), false, currEval.weight, 0, courseCode);
       newEval.save();
     });
   }

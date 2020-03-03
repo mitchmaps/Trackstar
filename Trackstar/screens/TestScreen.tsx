@@ -27,6 +27,14 @@ const TestScreen = (props) => {
         <TouchableOpacity style={{marginTop: 100}} onPress={() => {Evaluation.all()}}>
           <Text>All Evaluations</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity style={{marginTop: 100}} onPress={() => {
+          // Database.deleteTaskTable()
+          Database.deleteEvalTable()
+          Database.deleteCourseTable()
+        }}>
+          <Text>Wipe DB</Text>
+        </TouchableOpacity>
       </View>
     );
 };
