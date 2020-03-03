@@ -168,6 +168,7 @@ export default class CourseCreate extends React.Component {
           <View style={styles.buttonMargin}>
             <Button mode="contained" onPress={this.handleSubmit} disabled={this.state.currTotalGradeWeight > 100 || this.state.currTotalGradeWeight < 100}>Submit</Button>
           </View>
+          <Button onPress={() => {Course.all()}}>Test</Button> 
         </ScrollView>
       </View>
     );
