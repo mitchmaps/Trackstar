@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import Styles from '../Styles/CourseStyles';
 
 const CourseScreen = props => {

@@ -11,8 +11,9 @@ export default class Course {
     complete:boolean;
     db = SQLite.openDatabase("db.db");
 
-    constructor(t: string, min_g: number, g: number, c:boolean) {
+    constructor(t: string, c: string, min_g: number) {
         this.title = t;
+        this.code = c;
         this.min_grade = min_g;
         this.grade = 0;
         this.complete = false;

@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';// impo
 import { createStackNavigator } from '@react-navigation/stack';
 import {createAppContainer} from "react-navigation";
 import { AntDesign } from '@expo/vector-icons';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 
 import HomeScreen from './screens/DashboardScreen';
@@ -64,10 +65,21 @@ function MyTabs() {
 
 export default class App extends React.Component {
   render() {
+    const theme = {
+      ...DefaultTheme,
+      colors: {
+        ...DefaultTheme.colors,
+        primary: 'dodgerblue',
+        accent: 'tomato',
+      },
+    };
+
     return (
-      <NavigationContainer>
-        <MyTabs />
-      </NavigationContainer>
+      <PaperProvider theme={theme}>
+        <NavigationContainer>
+          <MyTabs />
+        </NavigationContainer>
+      </PaperProvider>
     )
   }
 }
