@@ -50,12 +50,13 @@ export default class Course {
                 })
             })
         }).then((courses:[Course]) => { // for testing only
-            console.log("All courses:")
-            console.log(courses.length)
-            courses.forEach(course => {
-                console.log(JSON.stringify(course))
-            })
+            // console.log("All courses:")
+            // console.log(courses.length)
+            // courses.forEach(course => {
+            //     console.log(JSON.stringify(course))
+            // })
         })
+        return course_objs
     }
 
     static find(code) {

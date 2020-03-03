@@ -13,7 +13,18 @@ const TestScreen = (props) => {
           <Text>Init DB</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={{marginTop: 100}}onPress={() => {Course.all()}}>
+        <TouchableOpacity style={{marginTop: 100}} onPress={() => {Database.populateCourseTable()}}>
+          <Text>Load Courses</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={{marginTop: 100}}onPress={() => {
+          let courses = Course.all()
+          console.log("All courses:")
+          console.log(courses.length)
+          courses.forEach(course => {
+              console.log(JSON.stringify(course))
+          })
+        }}>
           <Text>All Courses</Text>
         </TouchableOpacity>
 

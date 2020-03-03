@@ -24,7 +24,7 @@ const CoursesDashboard = props => {
     else{
       return(
         <Card style = {[{backgroundColor: item.color}, Styles.container]}
-        onPress  ={() =>{ 
+        onPress  ={() =>{
         navigation.navigate("Course") }}>
             <Card.Content style={{flex: 1, flexDirection: 'row'}}>
             <View style={{backgroundColor: item.color}}>
@@ -43,10 +43,10 @@ const CoursesDashboard = props => {
     <LinearGradient
     colors={['#bcf7ed', '#5273eb']}
     style={{ flex: 1, flexDirection: 'column',
-    width: "100%",        
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",}}>
-      
+
       <View style={Styles.dashboardRowOne}>
         <Text style={Styles.dashboardText}>Dashboard</Text>
         <Text style={Styles.switchText}>              Pre-Reqs </Text>
@@ -56,7 +56,7 @@ const CoursesDashboard = props => {
             { setOldCourses(!oldCourses) }
           }/>
       </View>
-      
+
 
       <SectionList
         style={{marginBottom: 10}}
@@ -74,7 +74,7 @@ const CoursesDashboard = props => {
           </View>
         </TouchableOpacity>
       </View>
-      
+
     </LinearGradient>
 
     );
@@ -82,4 +82,3 @@ const CoursesDashboard = props => {
 };
 
   export default CoursesDashboard;
-      

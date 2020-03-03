@@ -30,6 +30,15 @@ export default class Database {
     }
   )}
 
+  static populateCourseTable = () => {
+    let course1  = new Course ("Object-Oriented Software Engineering", "COMP3004", 90);
+    let course2  = new Course ("Database Management Systems", "COMP3005", 90);
+    let course3  = new Course ("Human Computer Interaction", "COMP3008", 80);
+    course1.save()
+    course2.save()
+    course3.save()
+  }
+
   static deleteCourseTable = () => {
     const db = SQLite.openDatabase("db.db");
     db.transaction(tx => {
