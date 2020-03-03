@@ -4,32 +4,41 @@ import { TextInput } from 'react-native';
 
 export default class GradesForm extends React.Component {
   state: {
-    grades_and_weights: number[][]
+    grades_and_weights: number[][],
+    desired_grade: number,
+    total_weight: number,
+    current_grade: number,
+    calculation_result: number
   }
 
   constructor(props) {
     super(props);
-    this.update = this.update.bind(this);
-    this.field = this.update.bind(this);
+    // this.update = this.update.bind(this);
+    this.field = this.field.bind(this);
 
 
     this.state = {
-      grades_and_weights: []
+      grades_and_weights: [],
+      desired_grade: 0,
+      total_weight: 0,
+      current_grade: 0,
+      calculation_result: 0
+      // ex: You currently have that
     }
   }
 
-  update(index1, index2, value) {
-    const grades_and_weights = this.state.grades_and_weights
-    grades_and_weights[index1][index2] = value
-    return grades_and_weights
-  }
+  // update(index1, index2, value) {
+  //   const grades_and_weights = this.state.grades_and_weights
+  //   grades_and_weights[index1][index2] = value
+  //   return grades_and_weights
+  // }
 
   field(index1) {
     return (
       <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
         <TextInput
           style={{ height: 30, width: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={text => this.setState({ grades_and_weights: this.update(index1, 0, text) })}
+          // onChangeText={text => this.setState({ grades_and_weights: this.update(index1, 0, text) })}
           //value={this.state.text}
         />
         <TextInput
@@ -59,6 +68,15 @@ export default class GradesForm extends React.Component {
         {this.field(5)}
         {this.field(6)}
         {this.field(7)}
+
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <Text>Desired grade: </Text>
+          <TextInput
+            style={{ height: 30, width: 40, borderColor: 'gray', borderWidth: 1}}
+            // onChangeText={text => this.setState({ grades_and_weights: this.update(index1, 0, text) })}
+            //value={this.state.text}
+          />
+        </View>
       </View>
     )
   }
