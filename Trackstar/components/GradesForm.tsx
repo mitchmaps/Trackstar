@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View,TouchableOpacity, ImageEditor, Button } from 'react-native';
+import { Text, View,TouchableOpacity, ImageEditor, Alert } from 'react-native';
 import { TextInput } from 'react-native';
 
 export default class GradesForm extends React.Component {
@@ -16,8 +16,8 @@ export default class GradesForm extends React.Component {
     super(props);
     // this.update = this.update.bind(this);
     this.field = this.field.bind(this);
+    this.handle_submit = this.handle_submit.bind(this)
     this.calculate = this.calculate.bind(this)
-
 
     this.state = {
       grades_and_weights: [], // looks like [ [grade1, weight1], [grade2, weight2], [grade3, weight3], ...]
@@ -58,18 +58,37 @@ export default class GradesForm extends React.Component {
     )
   }
 
+  handle_submit() {
+    this.calculate()
+    Alert.alert(
+      `Current average grade: ${this.state.avg_grade}%\nCombined weight: ${this.state.combined_weight}%`,
+      `In order to finish with a ${this.state.desired_grade}%, you need an average of ${this.state.needed_grade}% on the remaining ${this.state.remaining_weight}%`,
+      [
+        {
+          text: 'Back'
+        }
+      ]
+    )
+  }
   // will be moved out to another file
   calculate() {
-    let avg_grade = 0;
-    let combined_weight = 0;
-    let needed_grade = 0;
-    let remaining_weight = 0;
-    this.state.grades_and_weights.forEach(function(evaluation) {
+    // let avg_grade = 0;
+    // let combined_weight = 0;
+    // let needed_grade = 0;
+    // let remaining_weight = 0;
+    // this.state.grades_and_weights.forEach(function(evaluation) {
+      // check if value is not undefined
       // update avg grade
       // update combined_weight
-    })
+    // })
     // calculated needed_grade based on desired_grade
     // calculate remaining_weight based on combined_weight
+
+    //Nareen you can remove this when you're done implementing:
+    this.state.avg_grade = 85
+    this.state.combined_weight = 60
+    this.state.remaining_weight = 40
+    this.state.needed_grade = 97.5
   }
 
   render() {
@@ -100,7 +119,7 @@ export default class GradesForm extends React.Component {
           />
         </View>
 
-        <TouchableOpacity onPress={this.calculate}>
+        <TouchableOpacity onPress={this.handle_submit}>
           <Text>Calculate</Text>
         </TouchableOpacity>
       </View>
