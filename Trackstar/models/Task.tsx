@@ -25,7 +25,7 @@ export default class Task {
   save() {
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into Task (title, est_duration, priority, complete, evaluation_id) values (?, ?, ?, ?, ?)", [this.title, this.est_duration, this.priority, this.complete, this.evaluation_id]);
+        tx.executeSql("insert into Task (title, due_date, est_duration, priority, complete, eval_id) values (?, ?, ?, ?, ?, ?)", [this.title, this.due_date, this.est_duration, this.priority, this.complete, this.evaluation_id]);
         // tx.executeSql("select * from Course", [], (_, { rows }) =>
         //   console.log(JSON.stringify(rows))
         // );
