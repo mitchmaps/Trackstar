@@ -18,11 +18,13 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={{marginTop: 100}}onPress={() => {
-          let courses = Course.all()
-          console.log("All courses:")
-          console.log(courses.length)
-          courses.forEach(course => {
-              console.log(JSON.stringify(course))
+          Course.all().then((data) => {
+            let courses: Course[] = data;
+            console.log("All courses:")
+            console.log(courses.length)
+            courses.forEach(course => {
+              console.log(course)
+            })
           })
         }}>
           <Text>All Courses</Text>

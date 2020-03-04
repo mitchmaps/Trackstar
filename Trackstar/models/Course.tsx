@@ -11,12 +11,12 @@ export default class Course {
     complete:boolean;
     db = SQLite.openDatabase("db.db");
 
-    constructor(t: string, c: string, min_g: number) {
+    constructor(t: string, c: string, min_g: number, g: number = 0, cp: boolean = false) {
         this.title = t;
         this.code = c;
         this.min_grade = min_g;
-        this.grade = 0;
-        this.complete = false;
+        this.grade = g;
+        this.complete = cp;
     }
 
     // cur_grade(){
@@ -39,24 +39,23 @@ export default class Course {
 
     static all() {
         const db = SQLite.openDatabase("db.db");
-        const course_objs = []
         return new Promise((resolve) => {
+            const course_objs = []
             db.transaction(tx => {
                 tx.executeSql("select * from Course", [], (_, { rows: { _array } }) => {
                     _array.forEach(course => {
-                        course_objs.push(course)
+                        course_objs.push(new Course(course.title, course.code, course.min_grade, course.grade, course.complete))
                     })
                     resolve(course_objs)
                 })
             })
-        }).then((courses:[Course]) => { // for testing only
+            //.then((courses:[Course]) => { // for testing only
             // console.log("All courses:")
             // console.log(courses.length)
             // courses.forEach(course => {
             //     console.log(JSON.stringify(course))
             // })
         })
-        return course_objs
     }
 
     static find(code) {
@@ -71,5 +70,5 @@ export default class Course {
           console.log("Found course:")
           console.log(JSON.stringify(course))
         })
-      }
+    }
 }
