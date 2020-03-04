@@ -1,0 +1,11 @@
+Nareen Khurshid
+101029589
+
+Week 6
+March
+-------------------------------------
+-Tuesday Meeting
+-Planned Presentation, who's phone would be used and who would say what
+-Worked on GradesForm.tsx
+-Wednesday videocall meeting
+-GradesFrom, error in calculate()

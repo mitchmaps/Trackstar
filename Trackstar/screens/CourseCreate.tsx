@@ -57,15 +57,15 @@ export default class CourseCreate extends React.Component {
       <Card style={styles.cardMargin}>
         <Card.Title title="Course info"/>
         <Card.Content>
-          <TextInput 
+          <TextInput
             label="Course code"
             style={styles.textInputMargin}
             value={this.state.code}
-            onChangeText={(text) => {this.setState({code: text})}} 
+            onChangeText={(text) => {this.setState({code: text})}}
             clearButtonMode= "while-editing"
             autoCorrect={false}
           />
-          <TextInput 
+          <TextInput
             label="Course title"
             style={styles.textInputMargin}
             value={this.state.title}
@@ -73,7 +73,7 @@ export default class CourseCreate extends React.Component {
             clearButtonMode= "while-editing"
             autoCorrect={false}
           />
-          <TextInput 
+          <TextInput
             label="Minimum desired grade"
             style={styles.textInputMargin}
             keyboardType={'numeric'}
@@ -103,19 +103,19 @@ export default class CourseCreate extends React.Component {
           <Card.Content>
             <Text style={{paddingTop: 20, paddingBottom: 20}}>Add new evaluation:</Text>
             <View>
-              <TextInput 
-                style={styles.textInputMargin} 
-                label="Evaluation title" 
-                onChangeText={(text) => {this.setState({currEvalTitle: text})}} 
-                value={this.state.currEvalTitle} 
+              <TextInput
+                style={styles.textInputMargin}
+                label="Evaluation title"
+                onChangeText={(text) => {this.setState({currEvalTitle: text})}}
+                value={this.state.currEvalTitle}
               />
-              <TextInput 
-                label="Evaluation weight (%)" 
-                keyboardType="numeric" 
-                onChangeText={(text) => {this.setState({currEvalWeight: text})}} 
+              <TextInput
+                label="Evaluation weight (%)"
+                keyboardType="numeric"
+                onChangeText={(text) => {this.setState({currEvalWeight: text})}}
                 value={this.state.currEvalWeight}
               />
-              <DateTimePicker 
+              <DateTimePicker
                 testID="dateTimePicker"
                 timeZoneOffsetInMinutes={0}
                 value={this.state.currDate}
@@ -126,9 +126,9 @@ export default class CourseCreate extends React.Component {
               />
             </View>
           </Card.Content>
-          <Button 
-            style={styles.buttonMargin} 
-            mode="contained" 
+          <Button
+            style={styles.buttonMargin}
+            mode="contained"
             onPress={this.handleAddEvaluationToGradingScheme}
             disabled={this.state.currTotalGradeWeight >= 100}
           >
@@ -137,13 +137,13 @@ export default class CourseCreate extends React.Component {
         </Card>
 
         <Text style={{paddingTop: 20, paddingBottom: 20}}>Evaluations:</Text>
-        {currEvalsMarkup} 
+        {currEvalsMarkup}
       </>
     );
 
     const weightWarning = (this.state.currTotalGradeWeight > 100) ? (
       Alert.alert(
-        'Grading scheme surpasses 100%', 
+        'Grading scheme surpasses 100%',
         "Remove evaluations until at or below 100%",
         [
           {
@@ -168,14 +168,13 @@ export default class CourseCreate extends React.Component {
           <View style={styles.buttonMargin}>
             <Button mode="contained" onPress={this.handleSubmit} disabled={this.state.currTotalGradeWeight > 100 || this.state.currTotalGradeWeight < 100}>Submit</Button>
           </View>
-          <Button onPress={() => {Course.all()}}>Test</Button> 
+          <Button onPress={() => {Course.all()}}>Test</Button>
         </ScrollView>
       </View>
     );
   }
 
   handleSubmit() {
-    this.saveEvaluations(this.state.evaluations, this.state.code);
     const newCourse = new Course(this.state.title, this.state.code, +this.state.minGrade);
     newCourse.save();
 
@@ -184,6 +183,7 @@ export default class CourseCreate extends React.Component {
       name: newCourse.title,
       minGrade: newCourse.min_grade,
     });
+    this.saveEvaluations(this.state.evaluations, this.state.code);
   }
 
   handleAddEvaluationToGradingScheme() {
@@ -194,9 +194,9 @@ export default class CourseCreate extends React.Component {
     const newTotal: number = +this.state.currTotalGradeWeight + +newEval.weight;
     newScheme.push(newEval);
     this.setState({
-      evaluations: newScheme, 
-      currEvalTitle: '', 
-      currEvalWeight: '', 
+      evaluations: newScheme,
+      currEvalTitle: '',
+      currEvalWeight: '',
       currTotalGradeWeight: newTotal,
     });
   }
@@ -245,7 +245,8 @@ export default class CourseCreate extends React.Component {
 
   saveEvaluations(courseEvals: EvaluationDescriptor[], courseCode: string) {
     courseEvals.forEach((currEval) => {
-      const newEval = new Evaluation(currEval.title, currEval.date, false, currEval.weight, 0, courseCode);
+      console.log(currEval.title, currEval.date.toString(), false, currEval.weight, 0, courseCode);
+      const newEval = new Evaluation(currEval.title, currEval.date.toString(), currEval.weight, courseCode, false, 0);
       newEval.save();
     });
   }

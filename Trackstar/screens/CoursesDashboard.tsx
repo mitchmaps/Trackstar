@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import React from "react";
 
 import {
@@ -24,9 +24,22 @@ import { mockData_CourseDashboard } from "../mockData_CourseDashboard";
 import Styles from "../Styles/CoursesDashboardStyles";
 // import { iOSUIKit } from 'react-native-typography';
 
+import Course from "../models/Course";
+
 const CoursesDashboard = props => {
   const [oldCourses, setOldCourses] = useState(true); // hook state for toggle
+  const [formattedCourseData, setFormattedCourseData] = useState([]);
   const navigation = props.navigation;
+
+  useEffect(() => {
+    const formattedCourses = formatData().then((data) => {
+      console.log("formatted");
+      console.log(data);
+      setFormattedCourseData(data);
+      console.log('state');
+      console.log(formattedCourseData);
+    })
+  }, []);
 
   const SingleItem = data => {
     const item = data.item;
@@ -39,20 +52,18 @@ const CoursesDashboard = props => {
           style={[{ backgroundColor: item.color }, Styles.container]}
           onPress={() => {
             navigation.navigate("Course", {
-              code: item.courseCode,
-              name: item.courseName,
-              term: item.term,
+              code: item.code,
+              name: item.title,
               minGrade: item.minGrade,
             });
           }}
         >
           <Card.Content style={{ flex: 1, flexDirection: "row" }}>
-            <View style={{ backgroundColor: item.color }}>
-              <Title style={Styles.titleText}>{item.courseCode}</Title>
+            <View>
+              <Title style={Styles.titleText}>{item.code}</Title>
               <Paragraph style={Styles.paragraphText}>
-                {item.courseName}
+                {item.title}
               </Paragraph>
-              <Paragraph style={Styles.paragraphText}>{item.term}</Paragraph>
             </View>
           </Card.Content>
         </Card>
@@ -84,7 +95,7 @@ const CoursesDashboard = props => {
 
       <SectionList
         style={{ marginBottom: 10 }}
-        sections={mockData_CourseDashboard}
+        sections={formattedCourseData}
         renderItem={SingleItem}
       />
 
@@ -108,5 +119,28 @@ const CoursesDashboard = props => {
     </LinearGradient>
   );
 };
+
+async function formatData() {
+  const formattedData = [];
+
+  let rawData: Course[] = await Course.all();
+  console.log("raw");
+  console.log(rawData);
+
+  rawData.forEach(course => {
+    const courseInfo = {
+      title: course.title,
+      data: [
+        {
+          code: course.code,
+          title: course.title
+        }
+      ]
+    };
+    formattedData.push(courseInfo);
+  });
+
+  return formattedData;
+}
 
 export default CoursesDashboard;

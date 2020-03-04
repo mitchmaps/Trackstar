@@ -11,6 +11,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import HomeScreen from './screens/DashboardScreen';
 import GradesScreen from './screens/GradesScreen';
 import CoursesDashboard from './screens/CoursesDashboard';
+import TestScreen from './screens/TestScreen';
 
 import ViewCourseScreen from './screens/ViewCourseScreen';
 import CourseCreate from './screens/CourseCreate';
@@ -57,6 +58,7 @@ function MyTabs() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Courses" component={CoursesStack} /> 
       <Tab.Screen name="Grades" component={GradesScreen} />
+      {/* <Tab.Screen name="Testing" component={TestScreen} /> */}
     </Tab.Navigator>
   );
 }
