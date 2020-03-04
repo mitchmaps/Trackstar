@@ -70,7 +70,7 @@ export default class GradesForm extends React.Component {
             text: 'Back'
           }
         ]
-      )
+      ) 
     }
     else {
       Alert.alert(
@@ -86,23 +86,36 @@ export default class GradesForm extends React.Component {
   }
   // will be moved out to another file
   calculate() {
-    // let avg_grade = 0;
-    // let combined_weight = 0;
-    // let needed_grade = 0;
-    // let remaining_weight = 0;
-    // this.state.grades_and_weights.forEach(function(evaluation) {
+    let avg_grade = 0;
+    let combined_weight = 0;
+    let needed_grade = 0;
+    let remaining_weight = 0;
+    this.state.grades_and_weights.forEach(function(evaluation) {
       // check if value is not undefined
+	  //which value? if (function(evaluation) != 0)
+	  
       // update avg grade
+	  avg_grade += grades_and_weights [i][];
+	  
       // update combined_weight
-    // })
+	  combined_weight += grades_and_weights;
+    })
+	
     // calculated needed_grade based on desired_grade
-    // calculate remaining_weight based on combined_weight
-
-    //Nareen you can remove this when you're done implementing:
+	let current_grade = combined_weight*avg_grade;
+	needed_grade = desired_grade - current_grade;
+	
+    // remaining_weight based on combined_weight
+	remaining_weight = 100 - combined_weight;
+	
+/*
+//hard coded
+    //remove this when you're done implementing:
     this.state.avg_grade = 85
     this.state.combined_weight = 60
     this.state.remaining_weight = 40
     this.state.needed_grade = 97.5
+*/
   }
 
   clear_fields() {
