@@ -12,13 +12,13 @@ export default class Evaluation {
 
     db = SQLite.openDatabase("db.db");
 
-    constructor(t:string, d:string, c:boolean, w:number, g:number, co:string) {
+    constructor(t:string, d:string, w:number, co:string, c:boolean = false, g:number = 0) {
         // this.id = null;
         this.title = t;
         this.due_date = d;
         this.weight = w;
         this.grade = 0;
-        this.complete = false;
+        this.complete = c;
         this.course_code = co;
     }
 

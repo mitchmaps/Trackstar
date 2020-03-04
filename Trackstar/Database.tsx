@@ -1,6 +1,8 @@
 import Constants from 'expo-constants';
 import * as SQLite from 'expo-sqlite';
 import Course from './models/Course';
+import Evaluation from './models/Evaluation';
+import Task from './models/Task';
 
 export default class Database {
   // TODO:
@@ -24,7 +26,7 @@ export default class Database {
         })
       }).then(() => {
         db.transaction(tx => {
-          tx.executeSql("create table if not exists Task (id integer primary key, title text not null, due_date string, est_duration:number not null, priority number, complete boolean default 0, eval_id integer not null, foreign key(eval_id) references Evaluation(id))")
+          tx.executeSql("create table if not exists Task (id integer primary key, title text not null, due_date text, est_duration number not null, priority number, complete boolean default 0, eval_id integer not null, foreign key(eval_id) references Evaluation(id))")
         })
       })
     }
@@ -37,6 +39,23 @@ export default class Database {
     course1.save()
     course2.save()
     course3.save()
+  }
+
+  static populateEvalTable = () => {
+    let eval1  = new Evaluation ("Test", "March 1", 10, "COMP3008");
+    let eval2  = new Evaluation ("Project", "April 1", 90, "COMP3008");
+    eval1.save()
+    eval2.save()
+  }
+
+  static populateTaskTable = () => {
+    let task1  = new Task ("Study unit 1", "February 20", 120, 1);
+    let task2  = new Task ("Study unit 2", "February 25", 120, 1);
+    let task3  = new Task ("Brainstorm projecy ideas", "March 10", 30, 2);
+
+    task1.save()
+    task2.save()
+    task3.save()
   }
 
   static deleteCourseTable = () => {

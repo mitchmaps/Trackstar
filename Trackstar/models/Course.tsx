@@ -37,6 +37,7 @@ export default class Course {
         );
     };
 
+    // returns a promise
     static all() {
         const db = SQLite.openDatabase("db.db");
         return new Promise((resolve) => {
