@@ -58,7 +58,7 @@ const TestScreen = (props) => {
           <Text>All Tasks</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => {
+        <TouchableOpacity style={styles.wipe} onPress={() => {
           // Database.deleteTaskTable()
           Database.deleteEvalTable()
           Database.deleteCourseTable()
@@ -77,6 +77,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 4,
     marginBottom: 10
+  },
+  wipe: {
+    width: 100,
+    backgroundColor: "red",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+    marginBottom: 10,
+    marginTop: 50
   }
 })
 
