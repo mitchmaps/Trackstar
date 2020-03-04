@@ -3,3 +3,8 @@ Nareen Khurshid
 
 Feb 11, week 4
 -updated/commited logs to the github
+-Planned deliverable 2
+-Worked on the grade calculator
+-visuals completed for the grade calculator screen, buttons and input fields
+
+
