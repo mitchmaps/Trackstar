@@ -28,40 +28,23 @@ export default class Evaluation {
     this.db.transaction(
       tx => {
         tx.executeSql("insert into Evaluation (title, due_date, weight, grade, complete, course_code) values (?, ?, ?, ?, ?, ?)", [this.title, this.due_date, this.weight, this.grade, this.complete, this.course_code]);
-        // tx.executeSql("select * from Course", [], (_, { rows }) =>
-        //   console.log(JSON.stringify(rows))
-        // );
       },
       null
     );
-    // return new Promise((resolve) => {
-    //   db.transaction(tx => {
-    //     tx.executeSql("select last_insert_rowid()", [], (_, { rows: { _array } }) => {
-    //       resolve(_array[0])
-    //     })
-    //   })
-    // }).then((id:[number]) => { // for testing only
-    //   this.id = id
-    // })
   };
 
   static all() {
     const db = SQLite.openDatabase("db.db");
-    const eval_objs = []
     return new Promise((resolve) => {
-      db.transaction(tx => {
-        tx.executeSql("select * from Evaluation", [], (_, { rows: { _array } }) => {
-          _array.forEach(evaltn => {
-            eval_objs.push(evaltn)
-          })
-          resolve(eval_objs)
+        const eval_objs = []
+        db.transaction(tx => {
+            tx.executeSql("select * from Evaluation", [], (_, { rows: { _array } }) => {
+                _array.forEach(evaluation => {
+                    eval_objs.push(new Evaluation(evaluation.title, evaluation.due_date, evaluation.weight, evaluation.course_code, evaluation.complete, evaluation.grade))
+                })
+                resolve(eval_objs)
+            })
         })
-      })
-    }).then((evals:[Evaluation]) => { // for testing only
-      console.log("All evaluations:")
-      evals.forEach(evaltn => {
-        console.log(JSON.stringify(evaltn))
-      })
     })
   }
 
