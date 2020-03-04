@@ -90,6 +90,7 @@ export default class GradesForm extends React.Component {
     let combined_weight = 0;
     let needed_grade = 0;
     let remaining_weight = 0;
+	  
     this.state.grades_and_weights.forEach(function(evaluation) {
       // check if value is not undefined
       //if (grades_and_weights[index1] == undefined) break;
@@ -98,6 +99,7 @@ export default class GradesForm extends React.Component {
       // update avg grade
 	  avg_grade += grades_and_weights[index1][];
 	    //that just added all the grade values. need to divide it to be an average.
+	    //how do I access the grades and the weights seperately 
   
       // update combined_weight
 	  combined_weight += grades_and_weights[][index2] ;
