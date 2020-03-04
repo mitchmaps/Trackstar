@@ -85,6 +85,7 @@ export default class GradesForm extends React.Component {
     }
   }
   // will be moved out to another file
+    // will be moved out to another file
   calculate() {
     let avg_grade = 0;
     let combined_weight = 0;
@@ -94,11 +95,13 @@ export default class GradesForm extends React.Component {
       // check if value is not undefined
 	  //which value? if (function(evaluation) != 0)
 	  
+    for (int i = 0; i < grades_and_weights [i][]; i++){
       // update avg grade
 	  avg_grade += grades_and_weights [i][];
+    }
 	  
       // update combined_weight
-	  combined_weight += grades_and_weights;
+	  combined_weight += grades_and_weights [] [i];
     })
 	
     // calculated needed_grade based on desired_grade
