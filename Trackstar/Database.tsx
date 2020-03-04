@@ -51,7 +51,7 @@ export default class Database {
   static populateTaskTable = () => {
     let task1  = new Task ("Study unit 1", "February 20", 120, 1);
     let task2  = new Task ("Study unit 2", "February 25", 120, 1);
-    let task3  = new Task ("Brainstorm projecy ideas", "March 10", 30, 2);
+    let task3  = new Task ("Brainstorm project ideas", "March 10", 30, 2);
 
     task1.save()
     task2.save()
