@@ -99,7 +99,7 @@ export default class GradesForm extends React.Component {
       // update avg grade
 	  avg_grade += grades_and_weights [i][];
     }
-	  
+	 
       // update combined_weight
 	  combined_weight += grades_and_weights [] [i];
     })
