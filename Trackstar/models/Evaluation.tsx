@@ -17,7 +17,7 @@ export default class Evaluation {
         this.title = t;
         this.due_date = d;
         this.weight = w;
-        this.grade = 0;
+        this.grade = g;
         this.complete = c;
         this.course_code = co;
     }
