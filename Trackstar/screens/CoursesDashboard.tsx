@@ -51,7 +51,11 @@ const CoursesDashboard = props => {
         <Card
           style={[{ backgroundColor: item.color }, Styles.container]}
           onPress={() => {
-            navigation.navigate("Course");
+            navigation.navigate("Course", {
+              code: item.code,
+              name: item.title,
+              minGrade: item.minGrade,
+            });
           }}
         >
           <Card.Content style={{ flex: 1, flexDirection: "row" }}>
@@ -80,9 +84,6 @@ const CoursesDashboard = props => {
     >
       <View style={Styles.dashboardRowOne}>
         <Text style={Styles.dashboardText}>Dashboard</Text>
-        <Text style={Styles.dashboardText}>
-          {/* {formattedCourseData[0].title} */}
-        </Text>
         <Text style={Styles.switchText}> Pre-Reqs </Text>
         <Switch
           value={oldCourses}

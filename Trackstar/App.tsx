@@ -14,9 +14,7 @@ import CoursesDashboard from './screens/CoursesDashboard';
 import TestScreen from './screens/TestScreen';
 
 import ViewCourseScreen from './screens/ViewCourseScreen';
-import AddCourseScreen from './screens/AddCourseScreen';
-
-
+import CourseCreate from './screens/CourseCreate';
 
 const Stack = createStackNavigator();
 
@@ -26,7 +24,7 @@ const CoursesStack = () => {
     <Stack.Navigator>
       <Stack.Screen name="Dashboard" component={CoursesDashboard} />
       <Stack.Screen name="Course" component={ViewCourseScreen} />
-      <Stack.Screen name="Add" component={AddCourseScreen} />
+      <Stack.Screen name="Add" component={CourseCreate} />
     </Stack.Navigator>
   );
 }
@@ -58,7 +56,7 @@ function MyTabs() {
     >
       
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Dashboard" component={CoursesStack} /> 
+      <Tab.Screen name="Courses" component={CoursesStack} /> 
       <Tab.Screen name="Grades" component={GradesScreen} />
       {/* <Tab.Screen name="Testing" component={TestScreen} /> */}
     </Tab.Navigator>

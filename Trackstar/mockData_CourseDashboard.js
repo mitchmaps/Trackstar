@@ -6,6 +6,7 @@ export const mockData_CourseDashboard = [
             courseCode: "COMP 3005",
             courseName: "Database Management Systems",
             term: "Winter 2020",
+            minGrade: 90,
             color: '#99FF33'
         }]
     },
@@ -16,6 +17,7 @@ export const mockData_CourseDashboard = [
             courseCode: "COMP 3004",
             courseName:"Object-Oriented Software Engin",
             term: "Winter 2020",
+            minGrade: 90,
             color : '#FF99CC'
         }]
     }
@@ -27,6 +29,7 @@ export const mockData_CourseDashboard = [
             courseCode: "COMP 3008",
             courseName:"Human-Computer Interaction",
             term:"Winter 2020",
+            minGrade: 80,
             color : '#FF9933'
         }]
     },
@@ -37,6 +40,7 @@ export const mockData_CourseDashboard = [
             courseCode: "COMP 3804",
             courseName:"Design and Analysis of Algorithms",
             term:"Winter 2019",
+            minGrade: 75,
             color : '#999999'
         }]
     },
@@ -47,6 +51,7 @@ export const mockData_CourseDashboard = [
             courseCode: "COMP 3000",
             courseName:"Operating Systems",
             term:"Winter 2019",
+            minGrade: 89,
             color : '#999999'
         }]
     },
