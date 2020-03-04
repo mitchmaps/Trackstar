@@ -112,7 +112,8 @@ export default class GradesForm extends React.Component {
     // remaining_weight based on combined_weight
 	remaining_weight = 100 - combined_weight;
 	  
-this.state.needed_grade = needed_grade;
+//this.state.needed_grade = needed_grade;
+this.state.needed_grade = desired_grade - current_grade;
 	
 /*
 //hard coded
