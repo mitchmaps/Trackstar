@@ -94,11 +94,11 @@ export default class GradesForm extends React.Component {
       // check if value is not undefined
       //if (grades_and_weights[index1] == undefined) break;
 
-    for (int i = 0; i < grades_and_weights [i][]; i++){
+    //for (int i = 0; i < grades_and_weights [i][]; i++){}
       // update avg grade
 	  avg_grade += grades_and_weights[index1][];
-    }
-	  
+	    //that just added all the grade values. need to divide it to be an average.
+  
       // update combined_weight
 	  combined_weight += grades_and_weights[][index2] ;
     })
