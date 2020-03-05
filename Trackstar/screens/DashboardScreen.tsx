@@ -51,8 +51,8 @@ const HomeScreen = (props) => {
     >
       <View style={{flexDirection: 'column', marginTop: 100}}>
         <Text style={{fontSize: 45, color: "white", textAlign: "center"}}>Welcome Back!</Text>
-        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Next Evaluation: COMP 3004 - Deliverable 3</Text>
-        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Due March 21st</Text>
+        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Next Evaluation: PHIL 1200 - Test 1</Text>
+        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Due March 10th</Text>
       </View>
       {/* TO DO: figure out how to raise this section */}
       <SectionList
