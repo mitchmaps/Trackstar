@@ -22,7 +22,7 @@ import {
 import { red100 } from "react-native-paper/lib/typescript/src/styles/colors";
 import { mockData_CourseDashboard } from "../mockData_CourseDashboard";
 import Styles from "../Styles/CoursesDashboardStyles";
-// import { iOSUIKit } from 'react-native-typography';
+import { iOSUIKit } from "react-native-typography";
 
 import Course from "../models/Course";
 
@@ -44,23 +44,23 @@ const CoursesDashboard = props => {
       return null;
     } else {
       return (
-        <Card
-          style={[{ backgroundColor: item.color }, Styles.container]}
-          onPress={() => {
-            navigation.navigate("Course", {
-              code: item.code,
-              name: item.title,
-              minGrade: item.minGrade
-            });
-          }}
-        >
-          <Card.Content style={{ flex: 1, flexDirection: "row" }}>
-            <View>
-              <Title style={Styles.titleText}>{item.code}</Title>
-              <Paragraph style={Styles.paragraphText}>{item.title}</Paragraph>
-            </View>
-          </Card.Content>
-        </Card>
+        <View style={{ paddingHorizontal: 20 }}>
+          <Card
+            onPress={() => {
+              navigation.navigate("Course", {
+                code: item.code,
+                name: item.title,
+                minGrade: item.minGrade
+              });
+            }}
+          >
+            <Card.Title
+              title={item.code}
+              subtitle={item.title}
+              style={{ width: "100%" }}
+            />
+          </Card>
+        </View>
       );
     }
   };
@@ -77,39 +77,24 @@ const CoursesDashboard = props => {
       }}
     >
       <View style={Styles.dashboardRowOne}>
-        <Text style={Styles.dashboardText}>Dashboard</Text>
-        <Text style={Styles.switchText}> Pre-Reqs </Text>
-        <Switch
-          value={oldCourses}
-          onValueChange={() => {
-            setOldCourses(!oldCourses);
-          }}
-        />
+        <Text style={iOSUIKit.largeTitleEmphasized}>Dashboard</Text>
       </View>
 
+      <View style={{ paddingBottom: 20 }}>
+        <Button
+          onPress={() => {
+            props.navigation.navigate("Add");
+          }}
+          mode="contained"
+        >
+          Add Course
+        </Button>
+      </View>
       <SectionList
         style={{ marginBottom: 10 }}
         sections={formattedCourseData}
         renderItem={SingleItem}
       />
-
-      <View style={Styles.buttonContentStyle}>
-        <TouchableOpacity
-          onPress={() => {
-            props.navigation.navigate("Add");
-          }}
-        >
-          <View style={Styles.buttonContentStyle}>
-            <Button
-              icon="plus-circle"
-              mode="contained"
-              contentStyle={{ marginLeft: 10 }}
-            >
-              add course
-            </Button>
-          </View>
-        </TouchableOpacity>
-      </View>
     </LinearGradient>
   );
 };
