@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
-import { Card, Divider, Title, Badge, Paragraph } from "react-native-paper";
+import {
+  Card,
+  Divider,
+  Title,
+  Badge,
+  Paragraph,
+  Button
+} from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
 import Evaluation from "../../models/Evaluation";
 
@@ -23,6 +30,10 @@ export default function CourseView({ code, name, term, minGrade }: Props) {
   const gradingSchemeMarkup = generateGradingSchemeMarkup(courseEvals);
   const evalMarkup = generateEvalMarkup(courseEvals);
 
+  const completedGradeText = `You have completed ${determineCompletedEvalWeight(
+    courseEvals
+  )}% of your total grade.`;
+
   return (
     <View style={{ flex: 1, alignSelf: "stretch" }}>
       <ScrollView
@@ -35,9 +46,13 @@ export default function CourseView({ code, name, term, minGrade }: Props) {
         <Text style={iOSUIKit.largeTitleEmphasized}>{code}</Text>
         <Text style={iOSUIKit.subhead}>{name}</Text>
         <Text style={iOSUIKit.title3Emphasized}>Evaluations</Text>
+        <Paragraph>{completedGradeText}</Paragraph>
         <View style={{ paddingVertical: 20 }}>{gradingSchemeMarkup}</View>
         <Text style={iOSUIKit.title3Emphasized}>Tasks</Text>
         {evalMarkup}
+        <Button mode="contained" onPress={() => {}}>
+          Add new task
+        </Button>
       </ScrollView>
     </View>
   );
@@ -47,9 +62,22 @@ function generateGradingSchemeMarkup(evals: Evaluation[]) {
   const gradingSchemeMarkup = evals.reduce((allEvals, currEval) => {
     const evalMarkup = (
       <Card.Content>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between"
+          }}
+        >
           <Paragraph>{currEval.title}</Paragraph>
-          <Badge visible={true} style={{backgroundColor: "#408ff7", fontWeight: 'bold', color: "#ffffff"}}>
+          <Badge
+            visible={true}
+            style={{
+              backgroundColor: "#408ff7",
+              fontWeight: "bold",
+              color: "#ffffff"
+            }}
+          >
             {`${currEval.weight}%`}
           </Badge>
         </View>
@@ -61,11 +89,7 @@ function generateGradingSchemeMarkup(evals: Evaluation[]) {
     return allEvals;
   }, []);
 
-  return (
-    <Card>
-      {gradingSchemeMarkup}
-    </Card>
-  );
+  return <Card>{gradingSchemeMarkup}</Card>;
 }
 
 function generateEvalMarkup(evals: Evaluation[]) {
@@ -131,6 +155,16 @@ function determineDaysUntilEval(evalDate: Date) {
       )) /
     oneDayInMs
   );
+}
+
+function determineCompletedEvalWeight(evals: Evaluation[]) {
+  let totalGradeCompleted = 0;
+
+  evals.forEach(currEval => {
+    totalGradeCompleted += currEval.grade;
+  });
+
+  return totalGradeCompleted;
 }
 
 async function retrieveEvalData(code: string) {
