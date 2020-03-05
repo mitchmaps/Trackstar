@@ -17,9 +17,9 @@ export default class Evaluation {
         this.title = t;
         this.due_date = d;
         this.weight = w;
-        this.grade = g;
-        this.complete = c;
         this.course_code = co;
+        this.complete = c;
+        this.grade = g;
     }
 
   // TO DO:
@@ -46,6 +46,25 @@ export default class Evaluation {
             })
         })
     })
+  }
+
+  static findByCourseCode(code) {
+    const db = SQLite.openDatabase("db.db");
+    const eval_objs = [];
+
+    return new Promise((resolve) => {
+      db.transaction(tx => {
+        tx.executeSql("select * from Evaluation where course_code = ?", [code], (_, {rows: { _array } }) => {
+          _array.forEach(currEval => {
+            eval_objs.push(new Evaluation(currEval.title, currEval.due_date, currEval.weight, currEval.grade));
+          })
+
+          console.log('in Eval');
+          console.log(eval_objs);
+          resolve(eval_objs)
+        });
+      });
+    });
   }
 
   static find(id) {

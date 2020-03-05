@@ -32,13 +32,9 @@ const CoursesDashboard = props => {
   const navigation = props.navigation;
 
   useEffect(() => {
-    const formattedCourses = formatData().then((data) => {
-      console.log("formatted");
-      console.log(data);
+    const formattedCourses = formatData().then(data => {
       setFormattedCourseData(data);
-      console.log('state');
-      console.log(formattedCourseData);
-    })
+    });
   }, []);
 
   const SingleItem = data => {
@@ -54,16 +50,14 @@ const CoursesDashboard = props => {
             navigation.navigate("Course", {
               code: item.code,
               name: item.title,
-              minGrade: item.minGrade,
+              minGrade: item.minGrade
             });
           }}
         >
           <Card.Content style={{ flex: 1, flexDirection: "row" }}>
             <View>
               <Title style={Styles.titleText}>{item.code}</Title>
-              <Paragraph style={Styles.paragraphText}>
-                {item.title}
-              </Paragraph>
+              <Paragraph style={Styles.paragraphText}>{item.title}</Paragraph>
             </View>
           </Card.Content>
         </Card>
