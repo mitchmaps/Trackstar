@@ -53,12 +53,13 @@ export default class Course {
         return new Promise((resolve) => {
           db.transaction(tx => {
             tx.executeSql("select * from Course where code = ?", [code], (_, { rows: { _array } }) => {
-              resolve(_array[0])
+                const returnObj: Course = new Course(_array[0].title, _array[0].code, _array[0].min_grade, _array[0].grade, _array[0].complete)
+                resolve(returnObj)
             })
           })
-        }).then((course) => { // for testing only
-          console.log("Found course:")
-          console.log(JSON.stringify(course))
-        })
+        })//.then((course) => { // for testing only
+        //   console.log("Found course:")
+        //   console.log(JSON.stringify(course))
+        // })
     }
 }

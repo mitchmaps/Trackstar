@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import CircleCheckBox, {LABEL_POSITION} from 'react-native-circle-checkbox';
 import Task from "../models/Task";
 import Evaluation from "../models/Evaluation";
+import Course from '../models/Course';
 
 const HomeScreen = (props) => {
   const [formattedTaskData, setFormattedTaskData] = useState([]);
@@ -29,7 +30,7 @@ const HomeScreen = (props) => {
       <Card style={{width: 350, marginBottom: 10}}>
           <Card.Title title={item.title}/>
           <Card.Content style={{flex: 1, flexDirection: 'row'}}>
-            <Text style={{flex: 8}}>{item.evaluation}</Text>
+            <Text style={{flex: 8}}>{item.course}-{item.evaluation}</Text>
             <CircleCheckBox
               style={{flex: 2}}
               // checked={item.title == "1. Read Chapter 3" ? true : false}
@@ -72,12 +73,15 @@ async function formatData() {
   for (let i = 0; i < rawData.length; i++) {
     let task = rawData[i];
     let evaluation: Evaluation = await Evaluation.find(task.evaluation_id);
+    let course: Course = await Course.find(evaluation.course_code);
+
     const taskInfo = {
       title: task.title,
       data: [
         {
           title: task.title,
-          evaluation: evaluation.title
+          evaluation: evaluation.title,
+          course: course.code
         }
       ]
     };

@@ -39,6 +39,10 @@ const TestScreen = (props) => {
         <Text>Add Course</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.button} onPress={() => {Course.find("COMP3008")}}>
+          <Text>Find Course 3008</Text>
+        </TouchableOpacity>
+
         <Text>Evaluation</Text>
         <TouchableOpacity style={styles.button} onPress={() => {Database.populateEvalTable()}}>
           <Text>Load Evaluations</Text>
