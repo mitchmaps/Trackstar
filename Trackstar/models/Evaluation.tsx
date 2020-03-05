@@ -1,8 +1,9 @@
 import Constants from 'expo-constants';
 import * as SQLite from 'expo-sqlite';
+import Task from './Task'
 
 export default class Evaluation {
-    // id:number;
+    id:number;
     title:string;
     due_date:string;
     complete:boolean;
@@ -12,8 +13,8 @@ export default class Evaluation {
 
     db = SQLite.openDatabase("db.db");
 
-    constructor(t:string, d:string, w:number, co:string, c:boolean = false, g:number = 0) {
-        // this.id = null;
+    constructor(t:string, d:string, w:number, co:string, c:boolean = false, g:number = 0, id:number = 0) {
+        this.id = id;
         this.title = t;
         this.due_date = d;
         this.weight = w;
@@ -33,6 +34,22 @@ export default class Evaluation {
     );
   };
 
+  tasks() {
+    return new Promise((resolve) => {
+      const task_objs = []
+      console.log("----------------------ID--------------")
+      console.log(this.id)
+      this.db.transaction(tx => {
+          tx.executeSql("select * from Task where evaluation_id = ?", [this.id], (_, { rows: { _array } }) => {
+              _array.forEach(task => {
+                  task_objs.push(new Task(task.title, task.due_date, task.est_duration, task.eval_id, task.complete, task.priority))
+              })
+              resolve(task_objs)
+          })
+      })
+  })
+  }
+
   static all() {
     const db = SQLite.openDatabase("db.db");
     return new Promise((resolve) => {
@@ -40,7 +57,7 @@ export default class Evaluation {
         db.transaction(tx => {
             tx.executeSql("select * from Evaluation", [], (_, { rows: { _array } }) => {
                 _array.forEach(evaluation => {
-                    eval_objs.push(new Evaluation(evaluation.title, evaluation.due_date, evaluation.weight, evaluation.course_code, evaluation.complete, evaluation.grade))
+                    eval_objs.push(new Evaluation(evaluation.title, evaluation.due_date, evaluation.weight, evaluation.course_code, evaluation.complete, evaluation.grade, evaluation.id))
                 })
                 resolve(eval_objs)
             })
@@ -56,7 +73,7 @@ export default class Evaluation {
       db.transaction(tx => {
         tx.executeSql("select * from Evaluation where course_code = ?", [code], (_, {rows: { _array } }) => {
           _array.forEach(currEval => {
-            eval_objs.push(new Evaluation(currEval.title, currEval.due_date, currEval.weight, currEval.grade));
+            eval_objs.push(new Evaluation(currEval.title, currEval.due_date, currEval.weight, currEval.grade, currEval.id));
           })
 
           console.log('in Eval');
@@ -72,7 +89,7 @@ export default class Evaluation {
     return new Promise((resolve) => {
       db.transaction(tx => {
         tx.executeSql("select * from Evaluation where id = ?", [id], (_, { rows: { _array } }) => {
-          const returnObj: Evaluation = new Evaluation(_array[0].title, _array[0].due_date, _array[0].weight, _array[0].course_code, _array[0].complete, _array[0].grade)
+          const returnObj: Evaluation = new Evaluation(_array[0].title, _array[0].due_date, _array[0].weight, _array[0].course_code, _array[0].complete, _array[0].grade, _array[0].id)
           resolve(returnObj)
         })
       })

@@ -14,11 +14,7 @@ const HomeScreen = (props) => {
 
   useEffect(() => {
     const formattedTasks = formatData().then((data) => {
-      console.log("formatted");
-      console.log(data);
       setFormattedTaskData(data);
-      console.log('state');
-      console.log(formattedTaskData);
     })
   }, []);
 
@@ -68,8 +64,6 @@ async function formatData() {
   const formattedData = [];
 
   let rawData: Task[] = await Task.all();
-  console.log("raw");
-  console.log(rawData);
 
   for (let i = 0; i < rawData.length; i++) {
     let task = rawData[i];

@@ -28,7 +28,7 @@ export default function CourseView({ code, name, term, minGrade }: Props) {
       setCourseEvals(data);
     });
 
-    const taskData = retrieveTaskData().then((data: Task[]) => {
+    const taskData = retrieveTaskData(code).then((data: Task[]) => {
       setTasks(data);
     })
   }, []);
@@ -188,8 +188,18 @@ async function retrieveEvalData(code: string) {
   return evals;
 }
 
-async function retrieveTaskData() {
-  const tasks = await Task.all();
+async function retrieveTaskData(code: string) {
+  const evals: Evaluation[] = await Evaluation.findByCourseCode(code);
+  let tasks: Task[] = [];
+  for (let i = 0; i < evals.length; i++) {
+    const curTasks: Task[] = await evals[i].tasks()
+    tasks = tasks.concat(curTasks);
+  }
+  console.log("!!!!!!!!!!!!!")
+  console.log("!!!!!!!!!!!!!")
+  console.log("!!!!!!!!!!!!!")
+  console.log("!!!!!!!!!!!!!")
 
+  console.log(tasks)
   return tasks;
 }
