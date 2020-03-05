@@ -53,12 +53,13 @@ export default class Evaluation {
     return new Promise((resolve) => {
       db.transaction(tx => {
         tx.executeSql("select * from Evaluation where id = ?", [id], (_, { rows: { _array } }) => {
-          resolve(_array[0])
+          const returnObj: Evaluation = new Evaluation(_array[0].title, _array[0].due_date, _array[0].weight, _array[0].course_code, _array[0].complete, _array[0].grade)
+          resolve(returnObj)
         })
       })
-    }).then((evaltn:[Evaluation]) => { // for testing only
-      console.log("Found evaluation:")
-      console.log(JSON.stringify(evaltn))
-    })
+    })//.then((evaltn:[Evaluation]) => { // for testing only
+    //   console.log("Found evaluation:")
+    //   console.log(JSON.stringify(evaltn))
+    // })
   }
 }

@@ -48,6 +48,10 @@ const TestScreen = (props) => {
           <Text>All Evaluations</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.button} onPress={() => {Evaluation.find(1)}}>
+          <Text>Find Evaluation 1</Text>
+        </TouchableOpacity>
+
         <Text>Task</Text>
 
         <TouchableOpacity style={styles.button} onPress={() => {Database.populateTaskTable()}}>
@@ -59,7 +63,7 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.wipe} onPress={() => {
-          // Database.deleteTaskTable()
+          Database.deleteTaskTable()
           Database.deleteEvalTable()
           Database.deleteCourseTable()
         }}>

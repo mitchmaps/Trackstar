@@ -27,11 +27,6 @@ export default class Course {
         this.db.transaction(
             tx => {
             tx.executeSql("insert into Course (code, title, min_grade) values (?, ?, ?)", [this.code, this.title, this.min_grade]);
-            // tx.executeSql("insert into Course (title, min_grade) values (?, ?, ?)", [this.title, this.min_grade]);
-
-            // tx.executeSql("select * from Course", [], (_, { rows }) =>
-            //   console.log(JSON.stringify(rows))
-            // );
             },
             null
         );

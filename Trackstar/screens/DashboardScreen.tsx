@@ -5,6 +5,7 @@ import { Card } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import CircleCheckBox, {LABEL_POSITION} from 'react-native-circle-checkbox';
 import Task from "../models/Task";
+import Evaluation from "../models/Evaluation";
 
 const HomeScreen = (props) => {
   const [formattedTaskData, setFormattedTaskData] = useState([]);
@@ -28,13 +29,13 @@ const HomeScreen = (props) => {
       <Card style={{width: 350, marginBottom: 10}}>
           <Card.Title title={item.title}/>
           <Card.Content style={{flex: 1, flexDirection: 'row'}}>
-            {/* <Text style={{flex: 8}}>{item.course}</Text> */}
+            <Text style={{flex: 8}}>{item.evaluation}</Text>
             <CircleCheckBox
               style={{flex: 2}}
               // checked={item.title == "1. Read Chapter 3" ? true : false}
               outerColor = {'#5273eb'}
               innerColor = {'#5273eb'}
-              // onToggle={(checked) => console.log('My state is: ', checked)}
+              onToggle={(checked) => console.log('My state is: ', checked)}
             />
           </Card.Content>
       </Card>
@@ -68,17 +69,20 @@ async function formatData() {
   console.log("raw");
   console.log(rawData);
 
-  rawData.forEach(task => {
+  for (let i = 0; i < rawData.length; i++) {
+    let task = rawData[i];
+    let evaluation: Evaluation = await Evaluation.find(task.evaluation_id);
     const taskInfo = {
       title: task.title,
       data: [
         {
           title: task.title,
+          evaluation: evaluation.title
         }
       ]
     };
     formattedData.push(taskInfo);
-  });
+  };
 
   return formattedData;
 }
