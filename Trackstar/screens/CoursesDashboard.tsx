@@ -44,8 +44,9 @@ const CoursesDashboard = props => {
       return null;
     } else {
       return (
-        <View style={{ paddingHorizontal: 20 }}>
+        <View style={{marginBottom:10 }}>
           <Card
+            style={{paddingVertical: 10}}
             onPress={() => {
               navigation.navigate("Course", {
                 code: item.code,
@@ -76,11 +77,17 @@ const CoursesDashboard = props => {
         alignItems: "center"
       }}
     >
-      <View style={Styles.dashboardRowOne}>
+      {/* <View style={Styles.dashboardRowOne}>
         <Text style={iOSUIKit.largeTitleEmphasized}>Dashboard</Text>
-      </View>
+      </View> */}
 
-      <View style={{ paddingBottom: 20 }}>
+      <SectionList
+        style={{ marginTop: 50 }}
+        sections={formattedCourseData}
+        renderItem={SingleItem}
+      />
+
+      <View style={{ paddingBottom: 100 }}>
         <Button
           onPress={() => {
             props.navigation.navigate("Add");
@@ -90,11 +97,6 @@ const CoursesDashboard = props => {
           Add Course
         </Button>
       </View>
-      <SectionList
-        style={{ marginBottom: 10 }}
-        sections={formattedCourseData}
-        renderItem={SingleItem}
-      />
     </LinearGradient>
   );
 };
