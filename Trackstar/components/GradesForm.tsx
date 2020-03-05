@@ -95,8 +95,8 @@ export default class GradesForm extends React.Component {
 
     for (let i = 0; i < this.state.grades_and_weights.length; i++) {
       let curEval = this.state.grades_and_weights[i];
-      if (curEval == undefined || curEval[0] == undefined || curEval[1] == undefined) {
-        continue; // for some reason this doesn't work
+      if (curEval == undefined || Number.isNaN(curEval[0]) || Number.isNaN(curEval[1]) || curEval[0] == undefined || curEval[1] == undefined) {
+        continue;
       }
 
       combined_grade += curEval[0]*(curEval[1]/100);
