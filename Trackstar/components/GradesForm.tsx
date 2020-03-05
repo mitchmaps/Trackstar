@@ -18,7 +18,7 @@ export default class GradesForm extends React.Component {
     this.field = this.field.bind(this);
     this.handle_submit = this.handle_submit.bind(this)
     this.calculate = this.calculate.bind(this)
-    this.clear_fields = this.clear_fields.bind(this)
+    // this.clear_fields = this.clear_fields.bind(this)
 
     this.state = {
       grades_and_weights: [], // looks like [ [grade1, weight1], [grade2, weight2], [grade3, weight3], ...]
@@ -70,7 +70,7 @@ export default class GradesForm extends React.Component {
             text: 'Back'
           }
         ]
-      ) 
+      )
     }
     else {
       Alert.alert(
@@ -84,46 +84,37 @@ export default class GradesForm extends React.Component {
       )
     }
   }
+
   // will be moved out to another file
-    // will be moved out to another file
   calculate() {
     let avg_grade = 0;
+    let combined_grade = 0;
     let combined_weight = 0;
     let needed_grade = 0;
     let remaining_weight = 0;
-    this.state.grades_and_weights.forEach(function(evaluation) {
-      // check if value is not undefined
-	  //which value? if (function(evaluation) != 0)
-	  
-    for (int i = 0; i < grades_and_weights [i][]; i++){
-      // update avg grade
-	  avg_grade += grades_and_weights [i][];
+
+    for (let i = 0; i < this.state.grades_and_weights.length; i++) {
+      let curEval = this.state.grades_and_weights[i];
+      if (curEval == undefined)
+        continue;
+
+      combined_grade += curEval[0]*(curEval[1]/100);
+      combined_weight += curEval[1];
     }
-	 
-      // update combined_weight
-	  combined_weight += grades_and_weights [] [i];
-    })
-	
-    // calculated needed_grade based on desired_grade
-	let current_grade = combined_weight*avg_grade;
-	needed_grade = desired_grade - current_grade;
-	
-    // remaining_weight based on combined_weight
-	remaining_weight = 100 - combined_weight;
-	
-/*
-//hard coded
-    //remove this when you're done implementing:
-    this.state.avg_grade = 85
-    this.state.combined_weight = 60
-    this.state.remaining_weight = 40
-    this.state.needed_grade = 97.5
-*/
+
+    avg_grade = combined_grade/(combined_weight/100);
+    remaining_weight = 100 - combined_weight;
+    needed_grade = (this.state.desired_grade - combined_grade)/(remaining_weight/100);
+
+    this.state.avg_grade = avg_grade;
+    this.state.combined_weight = combined_weight;
+    this.state.needed_grade = needed_grade;
+    this.state.remaining_weight = remaining_weight;
   }
 
-  clear_fields() {
-    // not sure how to do this yet
-  }
+  // clear_fields() {
+  //   // not sure how to do this yet
+  // }
 
   render() {
     return (
