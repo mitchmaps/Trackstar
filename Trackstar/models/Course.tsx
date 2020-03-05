@@ -27,11 +27,6 @@ export default class Course {
         this.db.transaction(
             tx => {
             tx.executeSql("insert into Course (code, title, min_grade) values (?, ?, ?)", [this.code, this.title, this.min_grade]);
-            // tx.executeSql("insert into Course (title, min_grade) values (?, ?, ?)", [this.title, this.min_grade]);
-
-            // tx.executeSql("select * from Course", [], (_, { rows }) =>
-            //   console.log(JSON.stringify(rows))
-            // );
             },
             null
         );
@@ -50,12 +45,6 @@ export default class Course {
                     resolve(course_objs)
                 })
             })
-            //.then((courses:[Course]) => { // for testing only
-            // console.log("All courses:")
-            // console.log(courses.length)
-            // courses.forEach(course => {
-            //     console.log(JSON.stringify(course))
-            // })
         })
     }
 
@@ -64,12 +53,13 @@ export default class Course {
         return new Promise((resolve) => {
           db.transaction(tx => {
             tx.executeSql("select * from Course where code = ?", [code], (_, { rows: { _array } }) => {
-              resolve(_array[0])
+                const returnObj: Course = new Course(_array[0].title, _array[0].code, _array[0].min_grade, _array[0].grade, _array[0].complete)
+                resolve(returnObj)
             })
           })
-        }).then((course) => { // for testing only
-          console.log("Found course:")
-          console.log(JSON.stringify(course))
-        })
+        })//.then((course) => { // for testing only
+        //   console.log("Found course:")
+        //   console.log(JSON.stringify(course))
+        // })
     }
 }

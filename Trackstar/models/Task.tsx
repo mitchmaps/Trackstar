@@ -36,21 +36,16 @@ export default class Task {
 
   static all() {
     const db = SQLite.openDatabase("db.db");
-    const task_objs = []
     return new Promise((resolve) => {
-      db.transaction(tx => {
-        tx.executeSql("select * from Task", [], (_, { rows: { _array } }) => {
-          _array.forEach(task => {
-            task_objs.push(task)
-          })
-          resolve(task_objs)
+        const task_objs = []
+        db.transaction(tx => {
+            tx.executeSql("select * from Task", [], (_, { rows: { _array } }) => {
+                _array.forEach(task => {
+                    task_objs.push(new Task(task.title, task.due_date, task.est_duration, task.eval_id, task.complete, task.priority))
+                })
+                resolve(task_objs)
+            })
         })
-      })
-    }).then((tasks:[Task]) => { // for testing only
-      console.log("All tasks:")
-      tasks.forEach(task => {
-        console.log(JSON.stringify(task))
-      })
     })
   }
 

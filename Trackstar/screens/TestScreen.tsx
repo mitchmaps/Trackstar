@@ -39,6 +39,10 @@ const TestScreen = (props) => {
         <Text>Add Course</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.button} onPress={() => {Course.find("COMP3008")}}>
+          <Text>Find Course 3008</Text>
+        </TouchableOpacity>
+
         <Text>Evaluation</Text>
         <TouchableOpacity style={styles.button} onPress={() => {Database.populateEvalTable()}}>
           <Text>Load Evaluations</Text>
@@ -46,6 +50,10 @@ const TestScreen = (props) => {
 
         <TouchableOpacity style={styles.button} onPress={() => {Evaluation.all()}}>
           <Text>All Evaluations</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {Evaluation.find(1)}}>
+          <Text>Find Evaluation 1</Text>
         </TouchableOpacity>
 
         <Text>Task</Text>
@@ -59,7 +67,7 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.wipe} onPress={() => {
-          // Database.deleteTaskTable()
+          Database.deleteTaskTable()
           Database.deleteEvalTable()
           Database.deleteCourseTable()
         }}>
@@ -71,7 +79,7 @@ const TestScreen = (props) => {
 
 const styles = StyleSheet.create({
   button: {
-    width: 100,
+    width: 200,
     backgroundColor: "pink",
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -79,7 +87,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   wipe: {
-    width: 100,
+    width: 200,
     backgroundColor: "red",
     paddingVertical: 8,
     paddingHorizontal: 16,
