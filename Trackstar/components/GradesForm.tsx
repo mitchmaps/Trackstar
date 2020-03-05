@@ -75,7 +75,7 @@ export default class GradesForm extends React.Component {
     else {
       Alert.alert(
       `Current average grade: ${this.state.avg_grade}%\nCombined weight: ${this.state.combined_weight}%`,
-      `In order to finish with a ${this.state.desired_grade}%, you need an average of ${this.state.needed_grade}% on the remaining ${this.state.remaining_weight}%`,
+      `In order to finish with a ${this.state.desired_grade}%, you need an average of ${this.state.needed_grade.toFixed(2)}% on the remaining ${this.state.remaining_weight}%`,
       [
         {
           text: 'Back'
@@ -95,8 +95,9 @@ export default class GradesForm extends React.Component {
 
     for (let i = 0; i < this.state.grades_and_weights.length; i++) {
       let curEval = this.state.grades_and_weights[i];
-      if (curEval == undefined)
-        continue;
+      if (curEval == undefined || curEval[0] == undefined || curEval[1] == undefined) {
+        continue; // for some reason this doesn't work
+      }
 
       combined_grade += curEval[0]*(curEval[1]/100);
       combined_weight += curEval[1];
@@ -106,10 +107,10 @@ export default class GradesForm extends React.Component {
     remaining_weight = 100 - combined_weight;
     needed_grade = (this.state.desired_grade - combined_grade)/(remaining_weight/100);
 
-    this.state.avg_grade = avg_grade;
-    this.state.combined_weight = combined_weight;
-    this.state.needed_grade = needed_grade;
-    this.state.remaining_weight = remaining_weight;
+    this.state.avg_grade = parseFloat(avg_grade.toFixed(2));
+    this.state.combined_weight = parseFloat(combined_weight.toFixed(2));
+    this.state.needed_grade = parseFloat(needed_grade.toFixed(2));
+    this.state.remaining_weight = parseFloat(remaining_weight.toFixed(2));
   }
 
   // clear_fields() {
