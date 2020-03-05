@@ -36,7 +36,7 @@ export default function CourseView({ code, name, term, minGrade }: Props) {
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
   // Fix after demo
   const filteredTasks = filterTasks(1, tasks);
-  const tasksMarkup = generateTaskMarkup(filteredTasks);
+  const tasksMarkup = generateTaskMarkup(courseEvals);
 
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
@@ -112,9 +112,9 @@ function filterTasks(evalId, allTasks: Task[]) {
   return evalTasks;
 }
 
-function generateTaskMarkup(tasks: Task[]) {
-  return tasks.reduce((allTasks, currTask) => {
-    const { title, due_date, est_duration } = currTask;
+function generateTaskMarkup(evals: Evaluation[]) {
+  return evals.reduce((allEvals, currEval) => {
+    const { title, due_date, weight} = currEval;
 
     const formattedDate = new Date(due_date);
     const subTitle = `Due on ${formattedDate.toDateString()}`;
@@ -141,7 +141,7 @@ function generateTaskMarkup(tasks: Task[]) {
       <View key={title} style={{ paddingVertical: 5 }}>
         <Card>
           <Card.Content>
-            <Card.Title title={title} subtitle={`Estimated ${est_duration} minutes`} />
+            <Card.Title title={title} subtitle={`Worth ${weight}%`} />
             <Text>{subTitle}</Text>
             {badgeMarkup}
           </Card.Content>
@@ -149,9 +149,9 @@ function generateTaskMarkup(tasks: Task[]) {
       </View>
     );
 
-    allTasks.push(taskMarkup);
+    allEvals.push(taskMarkup);
 
-    return allTasks;
+    return allEvals;
   }, []);
 }
 
