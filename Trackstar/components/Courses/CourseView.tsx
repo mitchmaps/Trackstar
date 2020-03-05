@@ -45,7 +45,7 @@ export default function CourseView({ code, name, term, minGrade }: Props) {
       >
         <Text style={iOSUIKit.largeTitleEmphasized}>{code}</Text>
         <Text style={iOSUIKit.subhead}>{name}</Text>
-        <Text style={iOSUIKit.title3Emphasized}>Evaluations</Text>
+        <View style={{paddingTop: 10}}><Text style={iOSUIKit.title3Emphasized}>Evaluations</Text></View>
         <Paragraph>{completedGradeText}</Paragraph>
         <View style={{ paddingVertical: 20 }}>{gradingSchemeMarkup}</View>
         <Text style={iOSUIKit.title3Emphasized}>Tasks</Text>
