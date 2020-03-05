@@ -88,6 +88,27 @@ export default class Database {
     task6.save()
   }
 
+  static deleteCourseData = () => {
+    const db = SQLite.openDatabase("db.db");
+    db.transaction(tx => {
+      tx.executeSql("delete from Course")
+    })
+  }
+
+  static deleteEvalData = () => {
+    const db = SQLite.openDatabase("db.db");
+    db.transaction(tx => {
+      tx.executeSql("delete from Evaluation")
+    })
+  }
+
+  static deleteTaskData = () => {
+    const db = SQLite.openDatabase("db.db");
+    db.transaction(tx => {
+      tx.executeSql("delete from Task")
+    })
+  }
+
   static deleteCourseTable = () => {
     const db = SQLite.openDatabase("db.db");
     db.transaction(tx => {
