@@ -42,8 +42,8 @@ export default class Database {
   }
 
   static populateEvalTable = () => {
-    let eval1  = new Evaluation ("Test", "March 1", 10, "COMP3008");
-    let eval2  = new Evaluation ("Project", "April 1", 90, "COMP3008");
+    let eval1  = new Evaluation ("Test 1", "March 1", 10, "COMP3008");
+    let eval2  = new Evaluation ("Project 2", "April 1", 90, "COMP3008");
     eval1.save()
     eval2.save()
   }

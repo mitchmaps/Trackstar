@@ -30,7 +30,7 @@ const HomeScreen = (props) => {
       <Card style={{width: 350, marginBottom: 10}}>
           <Card.Title title={item.title}/>
           <Card.Content style={{flex: 1, flexDirection: 'row'}}>
-            <Text style={{flex: 8}}>{item.course}-{item.evaluation}</Text>
+            <Text style={{flex: 8}}>{item.course} - {item.evaluation}</Text>
             <CircleCheckBox
               style={{flex: 2}}
               // checked={item.title == "1. Read Chapter 3" ? true : false}

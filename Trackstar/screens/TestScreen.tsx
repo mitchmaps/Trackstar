@@ -79,7 +79,7 @@ const TestScreen = (props) => {
 
 const styles = StyleSheet.create({
   button: {
-    width: 100,
+    width: 200,
     backgroundColor: "pink",
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   wipe: {
-    width: 100,
+    width: 200,
     backgroundColor: "red",
     paddingVertical: 8,
     paddingHorizontal: 16,
