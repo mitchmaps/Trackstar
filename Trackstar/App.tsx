@@ -58,7 +58,7 @@ function MyTabs() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Courses" component={CoursesStack} />
       <Tab.Screen name="Grades" component={GradesScreen} />
-      {/* <Tab.Screen name="Testing" component={TestScreen} /> */}
+      <Tab.Screen name="Testing" component={TestScreen} />
     </Tab.Navigator>
   );
 }
