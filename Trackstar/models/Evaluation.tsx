@@ -17,9 +17,9 @@ export default class Evaluation {
         this.title = t;
         this.due_date = d;
         this.weight = w;
-        this.grade = g;
-        this.complete = c;
         this.course_code = co;
+        this.complete = c;
+        this.grade = g;
     }
 
   // TO DO:
@@ -75,6 +75,9 @@ export default class Evaluation {
           _array.forEach(currEval => {
             eval_objs.push(new Evaluation(currEval.title, currEval.due_date, currEval.weight, currEval.grade));
           })
+
+          console.log('in Eval');
+          console.log(eval_objs);
           resolve(eval_objs)
         });
       });

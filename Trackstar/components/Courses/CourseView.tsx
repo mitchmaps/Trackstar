@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { View, Text, ScrollView } from "react-native";
 import { Card, Divider, Title, Badge } from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
@@ -11,36 +11,49 @@ export interface Props {
   minGrade: number;
 }
 
+// console.log(Evaluation.all());
+
 export default function CourseView({ code, name, term, minGrade }: Props) {
-  const fakeEvaluations: Evaluation[] = [
-    {
-      title: "Midterm",
-      due_date: new Date("2020-03-13"),
-      complete: false,
-      weight: 35,
-      grade: 0,
-      course_code: "BIOL 1902"
-    },
-    {
-      title: "Final",
-      due_date: new Date("2020-04-10"),
-      complete: false,
-      weight: 65,
-      grade: 0,
-      course_code: "BIOL 1902"
-    },
-    {
-      title: "Test",
-      due_date: new Date("2020-03-06"),
-      complete: false,
-      weight: 0,
-      grade: 0,
-      course_code: "BIOL 1902"
-    }
-  ];
+  // const fakeEvaluations: Evaluation[] = [
+  //   {
+  //     title: "Midterm",
+  //     due_date: new Date("2020-03-13"),
+  //     complete: false,
+  //     weight: 35,
+  //     grade: 0,
+  //     course_code: "BIOL 1902"
+  //   },
+  //   {
+  //     title: "Final",
+  //     due_date: new Date("2020-04-10"),
+  //     complete: false,
+  //     weight: 65,
+  //     grade: 0,
+  //     course_code: "BIOL 1902"
+  //   },
+  //   {
+  //     title: "Test",
+  //     due_date: new Date("2020-03-06"),
+  //     complete: false,
+  //     weight: 0,
+  //     grade: 0,
+  //     course_code: "BIOL 1902"
+  //   }
+  // ];
+
+  const [courseEvals, setCourseEvals] = useState([]);
+
+  useEffect(() => {
+    console.log(code);
+    const evalData = retrieveEvalData(code).then((data: Evaluation[]) => {
+      console.log('data from promise');
+      console.log(data);
+      setCourseEvals(data);
+    });
+  }, []);
 
   // replace with DB query when setup
-  const evalMarkup = generateEvalMarkup(fakeEvaluations);
+  const evalMarkup = generateEvalMarkup(courseEvals);
 
   return (
     <View style={{ flex: 1, alignSelf: "stretch" }}>
@@ -60,12 +73,14 @@ export default function CourseView({ code, name, term, minGrade }: Props) {
   );
 }
 
+// convert this to tasks
 function generateEvalMarkup(evals: Evaluation[]) {
   return evals.reduce((allEvals, currEval) => {
     const { title, due_date, weight } = currEval;
 
-    const subTitle = `Due on ${due_date.toDateString()}`;
-    const daysUntil = determineDaysUntilEval(due_date);
+    const formattedDate = new Date(due_date);
+    const subTitle = `Due on ${formattedDate.toDateString()}`;
+    const daysUntil = determineDaysUntilEval(formattedDate);
     const badgeText = `In ${daysUntil} days`;
 
     const badgeColor = (daysUntil > 10) ? (
@@ -121,4 +136,10 @@ function determineDaysUntilEval(evalDate: Date) {
       )) /
       oneDayInMs
   );
+}
+
+async function retrieveEvalData(code: string) {
+  const evals = await Evaluation.findByCourseCode(code);
+
+  return evals;
 }
