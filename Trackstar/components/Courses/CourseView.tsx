@@ -161,7 +161,9 @@ function determineCompletedEvalWeight(evals: Evaluation[]) {
   let totalGradeCompleted = 0;
 
   evals.forEach(currEval => {
-    totalGradeCompleted += currEval.grade;
+    if (currEval.complete) {
+      totalGradeCompleted += currEval.weight;
+    }
   });
 
   return totalGradeCompleted;
