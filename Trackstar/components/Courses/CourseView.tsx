@@ -10,6 +10,7 @@ import {
 } from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
 import Evaluation from "../../models/Evaluation";
+import Task from "../../models/Task";
 
 export interface Props {
   code: string;
@@ -20,15 +21,22 @@ export interface Props {
 
 export default function CourseView({ code, name, term, minGrade }: Props) {
   const [courseEvals, setCourseEvals] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     const evalData = retrieveEvalData(code).then((data: Evaluation[]) => {
       setCourseEvals(data);
     });
+
+    const taskData = retrieveTaskData().then((data: Task[]) => {
+      setTasks(data);
+    })
   }, []);
 
-  const gradingSchemeMarkup = generateGradingSchemeMarkup(courseEvals);
-  const evalMarkup = generateEvalMarkup(courseEvals);
+  const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
+  // Fix after demo
+  const filteredTasks = filterTasks(1, tasks);
+  const tasksMarkup = generateTaskMarkup(filteredTasks);
 
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
@@ -47,9 +55,9 @@ export default function CourseView({ code, name, term, minGrade }: Props) {
         <Text style={iOSUIKit.subhead}>{name}</Text>
         <View style={{paddingTop: 10}}><Text style={iOSUIKit.title3Emphasized}>Evaluations</Text></View>
         <Paragraph>{completedGradeText}</Paragraph>
-        <View style={{ paddingVertical: 20 }}>{gradingSchemeMarkup}</View>
+        <View style={{ paddingVertical: 20 }}>{evaluationsMarkup}</View>
         <Text style={iOSUIKit.title3Emphasized}>Tasks</Text>
-        {evalMarkup}
+        {tasksMarkup}
         <Button mode="contained" onPress={() => {}}>
           Add new task
         </Button>
@@ -58,7 +66,7 @@ export default function CourseView({ code, name, term, minGrade }: Props) {
   );
 }
 
-function generateGradingSchemeMarkup(evals: Evaluation[]) {
+function generateEvaluationMarkup(evals: Evaluation[]) {
   const gradingSchemeMarkup = evals.reduce((allEvals, currEval) => {
     const evalMarkup = (
       <Card.Content>
@@ -92,9 +100,21 @@ function generateGradingSchemeMarkup(evals: Evaluation[]) {
   return <Card>{gradingSchemeMarkup}</Card>;
 }
 
-function generateEvalMarkup(evals: Evaluation[]) {
-  return evals.reduce((allEvals, currEval) => {
-    const { title, due_date, weight } = currEval;
+function filterTasks(evalId, allTasks: Task[]) {
+  const evalTasks: Task[] = [];
+
+  allTasks.forEach((task) => {
+    if (task.evaluation_id === evalId) {
+      evalTasks.push(task);
+    }
+  });
+
+  return evalTasks;
+}
+
+function generateTaskMarkup(tasks: Task[]) {
+  return tasks.reduce((allTasks, currTask) => {
+    const { title, due_date, est_duration } = currTask;
 
     const formattedDate = new Date(due_date);
     const subTitle = `Due on ${formattedDate.toDateString()}`;
@@ -117,18 +137,11 @@ function generateEvalMarkup(evals: Evaluation[]) {
       </Badge>
     );
 
-    const titleMarkup = (
-      <View style={{ flex: 1, flexDirection: "row" }}>
-        <Title>{title}</Title>
-        {badgeMarkup}
-      </View>
-    );
-
-    const evalMarkup = (
+    const taskMarkup = (
       <View key={title} style={{ paddingVertical: 5 }}>
         <Card>
           <Card.Content>
-            <Card.Title title={title} subtitle={`Worth ${weight}%`} />
+            <Card.Title title={title} subtitle={`Estimated ${est_duration} minutes`} />
             <Text>{subTitle}</Text>
             {badgeMarkup}
           </Card.Content>
@@ -136,9 +149,9 @@ function generateEvalMarkup(evals: Evaluation[]) {
       </View>
     );
 
-    allEvals.push(evalMarkup);
+    allTasks.push(taskMarkup);
 
-    return allEvals;
+    return allTasks;
   }, []);
 }
 
@@ -173,4 +186,10 @@ async function retrieveEvalData(code: string) {
   const evals = await Evaluation.findByCourseCode(code);
 
   return evals;
+}
+
+async function retrieveTaskData() {
+  const tasks = await Task.all();
+
+  return tasks;
 }
