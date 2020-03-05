@@ -36,26 +36,56 @@ export default class Database {
     let course1  = new Course ("Object-Oriented Software Engineering", "COMP3004", 90);
     let course2  = new Course ("Database Management Systems", "COMP3005", 90);
     let course3  = new Course ("Human Computer Interaction", "COMP3008", 80);
+    let course4  = new Course ("The Meaning of Life", "PHIL1200", 90);
+
     course1.save()
     course2.save()
     course3.save()
+    course4.save()
   }
 
   static populateEvalTable = () => {
-    let eval1  = new Evaluation ("Test 1", "March 1", 10, "COMP3008");
-    let eval2  = new Evaluation ("Project 2", "April 1", 90, "COMP3008");
+    let eval1  = new Evaluation ("Project 1", "March 1", 20, "COMP3008");
+    let eval2  = new Evaluation ("Project 2", "April 1", 20, "COMP3008");
+    let eval3  = new Evaluation ("Midterm", "March 1", 20, "COMP3008");
+    let eval4  = new Evaluation ("Final", "April 1", 40, "COMP3008");
+
+    let eval5  = new Evaluation ("Deliverable 1", "March 1", 5, "COMP3004");
+    let eval6  = new Evaluation ("Deliverable 2", "March 1", 5, "COMP3004");
+    let eval7  = new Evaluation ("Deliverable 3", "March 1", 30, "COMP3004");
+    let eval8  = new Evaluation ("Deliverable 4", "March 1", 10, "COMP3004");
+    let eval9  = new Evaluation ("Deliverable 1", "March 1", 50, "COMP3004");
+
+    let eval10  = new Evaluation ("Test1", "March 1", 50, "PHIL1200");
+    let eval11  = new Evaluation ("Test2", "March 1", 50, "PHIL1200");
+
     eval1.save()
     eval2.save()
+    eval3.save()
+    eval4.save()
+    eval5.save()
+    eval6.save()
+    eval7.save()
+    eval8.save()
+    eval9.save()
+    eval10.save()
+    eval11.save()
   }
 
   static populateTaskTable = () => {
-    let task1  = new Task ("Study unit 1", "February 20", 120, 1);
-    let task2  = new Task ("Study unit 2", "February 25", 120, 1);
-    let task3  = new Task ("Brainstorm project ideas", "March 10", 30, 2);
+    let task1  = new Task ("Study unit 1", "February 20", 120, 10, false, 1);
+    let task2  = new Task ("Study unit 2", "February 25", 120, 10, false, 2);
+    let task3  = new Task ("Brainstorm project ideas", "March 10", 30, 2, false, 3);
+    let task4  = new Task ("Make class diagram", "March 10", 30, 7, false, 4);
+    let task5  = new Task ("Make sequence diagram", "March 10", 30, 7, false, 5);
+    let task6  = new Task ("Write pseudocode", "March 10", 30, 2, false, 6);
 
     task1.save()
     task2.save()
     task3.save()
+    task4.save()
+    task5.save()
+    task6.save()
   }
 
   static deleteCourseTable = () => {

@@ -24,11 +24,12 @@ const HomeScreen = (props) => {
 
   const singleItem = (data) => {
     const item = data.item
+    const formatted_title = `${item.priority}. ${item.title}`
     return (
       // TO DO: figure out if we wanna keep the alerts Haohao set up. I like it as opposed to going to a new screen
       // TO DO: align checkbox properly
       <Card style={{width: 350, marginBottom: 10}}>
-          <Card.Title title={item.title}/>
+          <Card.Title title={formatted_title}/>
           <Card.Content style={{flex: 1, flexDirection: 'row'}}>
             <Text style={{flex: 8}}>{item.course} - {item.evaluation}</Text>
             <CircleCheckBox
@@ -50,8 +51,8 @@ const HomeScreen = (props) => {
     >
       <View style={{flexDirection: 'column', marginTop: 100}}>
         <Text style={{fontSize: 45, color: "white", textAlign: "center"}}>Welcome Back!</Text>
-        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Next Evaluation: COMP 3008 Project 2</Text>
-        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Due March 28th</Text>
+        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Next Evaluation: PHIL 1200 - Test 1</Text>
+        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Due March 10th</Text>
       </View>
       {/* TO DO: figure out how to raise this section */}
       <SectionList
@@ -80,6 +81,7 @@ async function formatData() {
       data: [
         {
           title: task.title,
+          priority: task.priority,
           evaluation: evaluation.title,
           course: course.code
         }
