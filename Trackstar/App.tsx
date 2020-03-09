@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from 'react-navigation-stack';
 import { createStackNavigator } from '@react-navigation/stack';
 import {createAppContainer} from "react-navigation";
 import { AntDesign } from '@expo/vector-icons';
@@ -59,7 +58,7 @@ function MyTabs() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Courses" component={CoursesStack} />
       <Tab.Screen name="Grades" component={GradesScreen} />
-      {<Tab.Screen name="Testing" component={TestScreen} /> }
+      <Tab.Screen name="Testing" component={TestScreen} />
     </Tab.Navigator>
   );
 }

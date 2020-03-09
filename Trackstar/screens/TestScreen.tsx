@@ -67,11 +67,19 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.wipe} onPress={() => {
+          Database.deleteTaskData()
+          Database.deleteEvalData()
+          Database.deleteCourseData()
+        }}>
+          <Text>Delete Data</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.wipe} onPress={() => {
           Database.deleteTaskTable()
           Database.deleteEvalTable()
           Database.deleteCourseTable()
         }}>
-          <Text>Wipe DB</Text>
+          <Text>Drop Tables</Text>
         </TouchableOpacity>
       </View>
     );
@@ -93,7 +101,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 4,
     marginBottom: 10,
-    marginTop: 50
   }
 })
 

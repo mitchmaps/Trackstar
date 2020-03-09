@@ -1,0 +1,10 @@
+Gabrielle Pancu
+ID: 101104085
+
+Week 7: Feb 25 - March 3
+- adjustments to SQL that wasn't working (checks/constraints)
+- created component diagram
+- wrote demo description for d2
+- edited status report for d2
+- added bottom tag navigator with icons
+- redesigned home page
