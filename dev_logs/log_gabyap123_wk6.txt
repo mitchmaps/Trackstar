@@ -1,0 +1,7 @@
+Gabrielle Pancu
+ID: 101104085
+
+Week 6: Feb 18 - Feb 25
+- found a good sqlite tutorial for expo
+- created and tested database functions (create tables, save to table, find in table, get all from table, etc)
+- reviewed models created and integrated these db functions into each model

@@ -1,0 +1,12 @@
+Gabrielle Pancu
+ID: 101104085
+
+Week 8: March 3 - March 10
+- created test screen with database with methods for creating mock data, clearing tables, dropping tables, etc
+- updated database functions that weren't returning data
+- worked with Mitch to update course dashboard to use mock data from database, a lot of work on handling promises
+- changed home page to query mock data from database
+- made UI for grade calculator
+- implemented all backend / math for grade calculator
+- made script for presentation
+- some styling on course dashboard
