@@ -1,0 +1,10 @@
+Mitchell Soares
+ID: 101103889
+
+Week 6 log:
+
+- Finished work on course creation work flow including UI and database communication
+- Synched with team to see where we wanted to focus on for the D2 demo
+- Helped team members with typescript and react related questions
+- Began work on the specific course view page
+- Styling

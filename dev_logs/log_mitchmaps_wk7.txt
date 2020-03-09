@@ -1,0 +1,14 @@
+Mitchell Soares
+ID: 101103889
+
+Week 7 log:
+
+- Completed the UI for Course view with mock data
+- Paired with team members to sync everyones work onto the master branch to prepare for the demo on the Thursday
+- Redesigned a lot of the UI, file structure and code organization so everything is consistent across different parts of the code base
+- Paired with team members to figure out how to modify the DB from a seperate component
+- Connected the course dashboard to the DB to query for real course data
+- Paired with team members to fix an async issue with querying data from the DB where information wasn't available to other components
+- Connected the course view to the DB to get all the related information including evauations in one place
+- Prepped for demo with the team to ensure it went smoothly on Thursday
+- Demoed the app with the team at class
