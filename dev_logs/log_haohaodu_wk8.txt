@@ -1,0 +1,48 @@
+HaoHao Du
+ID: 101074491
+
+Week 6-8 Log:
+
+- Sorry the respective TA that has to mark these dev_logs, 
+I lost track of time so I will just be uploading a week 6 through 8 dev log
+- Was unsure of whether we had to keep updating these during reading week, between
+preparing for demo presentation and working on prototype, dev logs slipped my mind
+
+Things completed recently:
+
+Team Task Completions:
+
+- Helped construct basis for demo summary of prototype report,
+worked with team to split up roles/tasks for presentation
+- Met up with Gaby to try and gain a more in depth understanding of databases section 
+of application, that way when I work with databases it will be easier to understand
+with some background knowledge, as opposed to being thrown code
+- Met up with Mitch to merge my work successfully with everyone elses branches / work
+so that navigation was smooth and seamless
+- Worked with team to come up with an overall design for prototype 
+- Peer reviewed teammates code, and vice versa, making comments where needed and 
+changes in my own code where advised 
+
+Development Task Completions:
+
+- Through the development of the UI front end for the courses dashboard, 
+learned fundamentals for React lifecycles and state
+- Found and followed a react-native workshop to navigate between different screens,
+different pages between those screens, and how to consistently re-render components
+based off of page state
+- Designed and implemented the courses dashboard with own design of dashboard page
+made on draw.io
+- Took criticism and constructive feedback from peers to re-design dashboard page
+
+Verbal Assesment Preparation:
+
+- Architecture Styles 
+  - Main Program + Subroutine does NOT look like the style we are using
+  - Object Oriented Programming is fairly familiar and aligns with our goals
+
+Goals for Next Week:
+
+- Continue to look up architecture Styles
+- Continue development based off of team goals
+- Gain a better understanding of databases work
+- Make sure not to be late on dev logs again and to stay on top of my game

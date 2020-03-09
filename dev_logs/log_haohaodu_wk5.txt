@@ -5,6 +5,5 @@ Week 5 Log:
 
 - built small functional ui prototype for course dashboard
 - met up with team to figure out how to demo prototype
-- worked with team to merge my last branches
 - goals for next week would be to try and make course dashboard similar to design
 - interlink the pages on the same tab in order to connect with other team memmbers
