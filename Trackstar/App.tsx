@@ -10,6 +10,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 import HomeScreen from './screens/DashboardScreen';
 import GradesScreen from './screens/GradesScreen';
+import CoursesScreen from './screens/CoursesScreen';
 import CoursesDashboard from './screens/CoursesDashboard';
 import TestScreen from './screens/TestScreen';
 
@@ -18,49 +19,41 @@ import CourseCreate from './screens/CourseCreate';
 
 const Stack = createStackNavigator();
 
-// Dashboard Stack Navigation - HaoHao
-const CoursesStack = () => {
-  return(
-    <Stack.Navigator>
-      <Stack.Screen name="Dashboard" component={CoursesDashboard} />
-      <Stack.Screen name="Course" component={ViewCourseScreen} />
-      <Stack.Screen name="Add" component={CourseCreate} />
-    </Stack.Navigator>
-  );
-}
-
+// change this into a seperate class component
 const Tab = createBottomTabNavigator();
-function MyTabs() {
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-
-          if (route.name === 'Home') {
-            iconName = 'home';
-          } else if (route.name === 'Courses') {
-            iconName = 'book';
-          } else {
-            iconName = 'calculator';
-          }
-
-          // You can return any component that you like here!
-          return <AntDesign name={iconName} size={size} color={color} />;
-        },
-      })}
-      tabBarOptions={{
-        activeTintColor: '#5273eb',
-        inactiveTintColor: 'gray',
-      }}
-    >
-
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Courses" component={CoursesStack} />
-      <Tab.Screen name="Grades" component={GradesScreen} />
-      <Tab.Screen name="Testing" component={TestScreen} />
-    </Tab.Navigator>
-  );
+class TabNavigator extends React.Component{
+  render() {
+    return (
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+  
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Courses') {
+              iconName = 'book';
+            } else {
+              iconName = 'calculator';
+            }
+  
+            // You can return any component that you like here!
+            return <AntDesign name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: '#5273eb',
+          inactiveTintColor: 'gray',
+        }}
+      >
+  
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Courses" component={CoursesScreen} />
+        <Tab.Screen name="Grades" component={GradesScreen} />
+        <Tab.Screen name="Testing" component={TestScreen} />
+      </Tab.Navigator>
+    ); 
+  }
 }
 
 export default class App extends React.Component {
@@ -77,7 +70,7 @@ export default class App extends React.Component {
     return (
       <PaperProvider theme={theme}>
         <NavigationContainer>
-          <MyTabs />
+          <TabNavigator />
         </NavigationContainer>
       </PaperProvider>
     )
