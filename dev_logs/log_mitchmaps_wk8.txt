@@ -1,0 +1,12 @@
+Mitchell Soares
+ID: 101103889
+
+Week 8 log:
+
+- Collaborated w/ the team to decide on architectural styles and design patterns to explore for D3
+- Researched patterns individually, and owned half of the design patterns section of the deliverable
+- Mapped current implementation to the State design pattern
+- Wrote up explanation for State design pattern for D3
+- Created diagram for State design pattern for D3
+- Collaborated w/ the team to finalize D3
+- Prepped for D3 interview
