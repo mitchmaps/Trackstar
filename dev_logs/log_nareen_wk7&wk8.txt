@@ -1,0 +1,22 @@
+Nareen Khurshid
+101029589
+
+Week 7 & 8 up to the hand-in of d3
+-------------------------------------
+-completed presentation
+
+-In person meeting with all members
+-divided tasks for d3
+-Presented our findings to each other
+-discussed design styles
+-In class Gaby asked for clarification on d3
+this qustion related to the diagram for OO and the diagrams for design styles
+which we would both work on
+-Worked on Architecture styles
+
+week 8
+-Created class diagram, draw.io
+-Wrote up D3. Architecure stlyes Object Oriented
+-Asked for and received feedback from Mitch on Object Oriented Architecture
+-Took a look at Mitch's description of state
+-Worked with Gaby on D3
