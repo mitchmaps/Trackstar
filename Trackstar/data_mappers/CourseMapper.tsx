@@ -1,9 +1,9 @@
 import Course from "../models/Course";
 
 export interface CourseMapper {
-  insert(course: Course): void;
-  update(course: Course): void;
-  delete(course: Course): void;
+  insert(c: Course): void;
+  update(c: Course): void;
+  delete(c: Course): void;
   all(): Course[];
   find(): Course;
 }
