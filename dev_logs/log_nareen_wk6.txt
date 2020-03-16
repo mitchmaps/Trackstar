@@ -9,3 +9,8 @@ March
 -Worked on GradesForm.tsx
 -Wednesday videocall meeting
 -GradesFrom, error in calculate()
+
+-Discussed in class presentation
+-rehearsed in-class presentation demo
+-presented with all members
+-discussed changes for home page
