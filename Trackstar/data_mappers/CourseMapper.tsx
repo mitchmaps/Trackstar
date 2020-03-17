@@ -5,5 +5,5 @@ export default interface CourseMapper {
   update(c: Course): void;
   delete(c: Course): void;
   all(): Course[];
-  find(): Course;
+  find(c: string): Course;
 }

@@ -44,21 +44,24 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
-          let newCourse = new Course("COMP3004", "OOP", 90)
+          let newCourse = new Course("OOP", "COMP3004", 90)
           courseMapper.insert(newCourse)
         }}>
         <Text>Add 3004</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
-          let newCourse = new Course("COMP3004", "OOP", 90)
+          let newCourse = new Course("OOP", "COMP3004", 90)
           courseMapper.delete(newCourse)
         }}>
           <Text>Delete 3004</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => {Course.find("COMP3008")}}>
-          <Text>Find Course 3008</Text>
+        <TouchableOpacity style={styles.button} onPress={() => {
+          let  course = courseMapper.find("COMP3004")
+          console.log(`found: ${course.code}`)
+        }}>
+          <Text>Find Course 3004</Text>
         </TouchableOpacity>
 
         <Text>Evaluation</Text>
