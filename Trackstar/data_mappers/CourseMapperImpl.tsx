@@ -47,13 +47,14 @@ export default class CourseMapperImpl implements CourseMapper {
   };
 
   find(): Course {
+    // TODO: figure out call backs
     //  new Promise((resolve) => {
-    //   this.db.transaction(tx => {
-    //     tx.executeSql("select * from Course where code = ?", [code], (_, { rows: { _array } }) => {
-    //         const returnObj: Course = new Course(_array[0].title, _array[0].code, _array[0].min_grade, _array[0].grade, _array[0].complete)
-    //         resolve(returnObj)s
-    //     })
-    //   })
+      this.db.transaction(tx => {
+        tx.executeSql("select * from Course where code = ?", [code], (_, { rows: { _array } }) => {
+            const returnObj: Course = new Course(_array[0].title, _array[0].code, _array[0].min_grade, _array[0].grade, _array[0].complete)
+            // resolve(returnObj)s
+        })
+      })
     // })//.then((course) => { // for testing only
     // //   console.log("Found course:")
     // //   console.log(JSON.stringify(course))
