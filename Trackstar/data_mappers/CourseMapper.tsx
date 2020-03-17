@@ -1,6 +1,6 @@
 import Course from "../models/Course";
 
-export interface CourseMapper {
+export default interface CourseMapper {
   insert(c: Course): void;
   update(c: Course): void;
   delete(c: Course): void;

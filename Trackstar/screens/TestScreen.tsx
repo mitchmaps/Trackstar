@@ -4,20 +4,31 @@ import Course from '../models/Course';
 import Evaluation from '../models/Evaluation';
 import Task from '../models/Task';
 import Database from '../Database';
+import CourseMapperImpl from '../data_mappers/CourseMapperImpl';
+import CourseMapper from '../data_mappers/CourseMapper';
 
 const TestScreen = (props) => {
   const navigation = props.navigation;
+  let courseMapper: CourseMapper = new CourseMapperImpl
+
     return (
       <View style={{marginTop: 100}}>
-        <TouchableOpacity style={styles.button} onPress={() => {Database.init()}}>
+        {/* <TouchableOpacity style={styles.button} onPress={() => {Database.init()}}>
           <Text>Init DB</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <Text>Course</Text>
 
-        <TouchableOpacity style={styles.button} onPress={() => {Database.populateCourseTable()}}>
-          <Text>Load Courses</Text>
+        <TouchableOpacity style={styles.button} onPress={() => {
+          let mapper = new CourseMapperImpl
+          mapper.createTable()
+        }}>
+          <Text>Init</Text>
         </TouchableOpacity>
+
+        {/* <TouchableOpacity style={styles.button} onPress={() => {Database.populateCourseTable()}}>
+          <Text>Load Courses</Text>
+        </TouchableOpacity> */}
 
         <TouchableOpacity style={styles.button} onPress={() => {
           Course.all().then((data) => {
@@ -34,9 +45,16 @@ const TestScreen = (props) => {
 
         <TouchableOpacity style={styles.button} onPress={() => {
           let newCourse = new Course("COMP3004", "OOP", 90)
-          newCourse.save()
+          courseMapper.insert(newCourse)
         }}>
-        <Text>Add Course</Text>
+        <Text>Add 3004</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
+          let newCourse = new Course("COMP3004", "OOP", 90)
+          courseMapper.delete(newCourse)
+        }}>
+          <Text>Delete 3004</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {Course.find("COMP3008")}}>
