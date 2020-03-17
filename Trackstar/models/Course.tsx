@@ -22,44 +22,4 @@ export default class Course {
     // cur_grade(){
     //     return Evaluation.grade;
     // }
-
-    save() {
-        this.db.transaction(
-            tx => {
-            tx.executeSql("insert into Course (code, title, min_grade) values (?, ?, ?)", [this.code, this.title, this.min_grade]);
-            },
-            null
-        );
-    };
-
-    // returns a promise
-    static all() {
-        const db = SQLite.openDatabase("db.db");
-        return new Promise((resolve) => {
-            const course_objs = []
-            db.transaction(tx => {
-                tx.executeSql("select * from Course", [], (_, { rows: { _array } }) => {
-                    _array.forEach(course => {
-                        course_objs.push(new Course(course.title, course.code, course.min_grade, course.grade, course.complete))
-                    })
-                    resolve(course_objs)
-                })
-            })
-        })
-    }
-
-    static find(code) {
-        const db = SQLite.openDatabase("db.db");
-        return new Promise((resolve) => {
-          db.transaction(tx => {
-            tx.executeSql("select * from Course where code = ?", [code], (_, { rows: { _array } }) => {
-                const returnObj: Course = new Course(_array[0].title, _array[0].code, _array[0].min_grade, _array[0].grade, _array[0].complete)
-                resolve(returnObj)
-            })
-          })
-        })//.then((course) => { // for testing only
-        //   console.log("Found course:")
-        //   console.log(JSON.stringify(course))
-        // })
-    }
 }

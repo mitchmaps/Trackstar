@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import * as SQLite from 'expo-sqlite';
 
 export default class Evaluation {
-    // id:number;
+    id:number;
     title:string;
     due_date:string;
     complete:boolean;
@@ -12,18 +12,16 @@ export default class Evaluation {
 
     db = SQLite.openDatabase("db.db");
 
-    constructor(t:string, d:string, w:number, co:string, c:boolean = false, g:number = 0) {
-        // this.id = null;
+    constructor(t:string, d:string, w:number, co:string, c:boolean = false, g:number = 0, id:number = null) {
         this.title = t;
         this.due_date = d;
         this.weight = w;
         this.course_code = co;
         this.complete = c;
         this.grade = g;
+        this.id = id;
     }
 
-  // TO DO:
-  // come back to this ID setting code
   save() {
     this.db.transaction(
       tx => {

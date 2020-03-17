@@ -1,4 +1,4 @@
-import { CourseMapper } from "./CourseMapper";
+import CourseMapper from "./CourseMapper";
 import Course from "../models/Course";
 import DBConnection from "../DBConnection";
 
