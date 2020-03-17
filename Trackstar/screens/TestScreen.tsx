@@ -31,7 +31,7 @@ const TestScreen = (props) => {
         </TouchableOpacity> */}
 
         <TouchableOpacity style={styles.button} onPress={() => {
-          Course.all().then((data) => {
+          courseMapper.all().then((data) => {
             let courses: Course[] = data;
             console.log("All courses:")
             console.log(courses.length)
@@ -58,8 +58,9 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
-          let  course = courseMapper.find("COMP3004")
-          console.log(`found: ${course.code}`)
+          courseMapper.find("COMP3004").then ((course) => {
+            console.log(`found: ${course.code}`)
+          })
         }}>
           <Text>Find Course 3004</Text>
         </TouchableOpacity>
