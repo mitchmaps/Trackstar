@@ -12,14 +12,16 @@ import { iOSUIKit } from "react-native-typography";
 import Evaluation from "../../models/Evaluation";
 import Task from "../../models/Task";
 
-export interface Props {
-  code: string;
-  name: string;
-  term: string;
-  minGrade: number;
-}
+// export interface Props {
+//   code: string;
+//   name: string;
+//   term: string;
+//   minGrade: number;
+// }
 
-export default function CourseView({ code, name, term, minGrade }: Props) {
+export default function CourseView(props) {
+
+  const {code, name, term, minGrade} = props.route.params;
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
 
