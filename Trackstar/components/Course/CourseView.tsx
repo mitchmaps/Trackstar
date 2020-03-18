@@ -12,13 +12,6 @@ import { iOSUIKit } from "react-native-typography";
 import Evaluation from "../../models/Evaluation";
 import Task from "../../models/Task";
 
-// export interface Props {
-//   code: string;
-//   name: string;
-//   term: string;
-//   minGrade: number;
-// }
-
 export default function CourseView(props) {
 
   const {code, name, term, minGrade} = props.route.params;
@@ -60,10 +53,10 @@ export default function CourseView(props) {
         <View style={{ paddingVertical: 20 }}>{evaluationsMarkup}</View>
         <Text style={iOSUIKit.title3Emphasized}>Tasks</Text>
         {tasksMarkup}
-        <Button mode="contained" onPress={() => {}}>
-          Add new task
-        </Button>
       </ScrollView>
+      <Button mode="contained" onPress={() => {props.navigation.navigate("Create task")}}>
+        Add new task
+      </Button>
     </View>
   );
 }
