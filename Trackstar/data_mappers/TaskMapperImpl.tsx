@@ -10,7 +10,7 @@ export default class TaskMapperImpl implements TaskMapper {
   insert(t: Task): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into Task (title, due_date, est_duration, priority, complete, eval_id) values (?, ?, ?, ?, ?, ?)", [this.title, this.due_date, this.est_duration, this.priority, this.complete, this.evaluation_id]);
+        tx.executeSql("insert into Task (title, due_date, est_duration, priority, complete, eval_id, id) values (?, ?, ?, ?, ?, ?, ?)", [t.title, t.due_date, t.est_duration, t.priority, t.complete, t.evaluation_id, t.id]);
       },
       null
     );
@@ -37,7 +37,7 @@ export default class TaskMapperImpl implements TaskMapper {
       this.db.transaction(tx => {
         tx.executeSql("select * from Task", [], (_, { rows: { _array } }) => {
           _array.forEach(task => {
-            task_objs.push(new Task(task.title, task.due_date, task.est_duration, task.eval_id, task.complete, task.priority))
+            task_objs.push(new Task(task.title, task.due_date, task.est_duration, task.eval_id, task.complete, task.priority, task.id))
           })
           resolve(task_objs)
         })

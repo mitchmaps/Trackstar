@@ -10,7 +10,7 @@ export default class EvaluationMapperImpl implements EvaluationMapper {
   insert(e: Evaluation): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into Evaluation (title, due_date, weight, grade, complete, course_code) values (?, ?, ?, ?, ?, ?)", [e.title, e.due_date, e.weight, e.grade, e.complete, e.course_code]);
+        tx.executeSql("insert into Evaluation (title, due_date, weight, grade, complete, course_code, id) values (?, ?, ?, ?, ?, ?, ?)", [e.title, e.due_date, e.weight, e.grade, e.complete, e.course_code, e.id]);
       },
       null
     );

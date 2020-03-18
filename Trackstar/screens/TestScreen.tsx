@@ -6,29 +6,35 @@ import Task from '../models/Task';
 import Database from '../Database';
 import CourseMapperImpl from '../data_mappers/CourseMapperImpl';
 import CourseMapper from '../data_mappers/CourseMapper';
+import EvaluationMapper from '../data_mappers/EvaluationMapper';
+import TaskMapper from '../data_mappers/TaskMapper';
+import TaskMapperImpl from '../data_mappers/TaskMapperImpl';
+import EvaluationMapperImpl from '../data_mappers/EvaluationMapperImpl';
 
 const TestScreen = (props) => {
   const navigation = props.navigation;
   let courseMapper: CourseMapper = new CourseMapperImpl
+  let evalMapper: EvaluationMapper = new EvaluationMapperImpl
+  let taskMapper: TaskMapper = new TaskMapperImpl
 
     return (
       <View style={{marginTop: 100}}>
-        {/* <TouchableOpacity style={styles.button} onPress={() => {Database.init()}}>
+        <TouchableOpacity style={styles.button} onPress={() => {
+          let cmapper = new CourseMapperImpl
+          cmapper.createTable()
+          let emapper = new EvaluationMapperImpl
+          emapper.createTable()
+          let tmapper = new TaskMapperImpl
+          tmapper.createTable()
+        }}>
           <Text>Init DB</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
 
         <Text>Course</Text>
 
-        <TouchableOpacity style={styles.button} onPress={() => {
-          let mapper = new CourseMapperImpl
-          mapper.createTable()
-        }}>
-          <Text>Init</Text>
-        </TouchableOpacity>
-
-        {/* <TouchableOpacity style={styles.button} onPress={() => {Database.populateCourseTable()}}>
+        <TouchableOpacity style={styles.button} onPress={() => {Database.populateCourseTable()}}>
           <Text>Load Courses</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
           courseMapper.all().then((data) => {
@@ -70,11 +76,24 @@ const TestScreen = (props) => {
           <Text>Load Evaluations</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => {Evaluation.all()}}>
+        <TouchableOpacity style={styles.button} onPress={() => {
+          evalMapper.all().then((data) => {
+            let evals: Evaluation[] = data;
+            console.log("All evals:")
+            console.log(evals.length)
+            evals.forEach(evaltn => {
+              console.log(evaltn)
+            })
+          })
+        }}>
           <Text>All Evaluations</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => {Evaluation.find(1)}}>
+        <TouchableOpacity style={styles.button} onPress={() => {
+          evalMapper.find(1).then ((evaltn) => {
+            console.log(`found: ${evaltn.title}`)
+          })
+        }}>
           <Text>Find Evaluation 1</Text>
         </TouchableOpacity>
 
@@ -84,8 +103,25 @@ const TestScreen = (props) => {
           <Text>Load Tasks</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => {Task.all()}}>
+        <TouchableOpacity style={styles.button} onPress={() => {
+          taskMapper.all().then((data) => {
+            let tasks: Task[] = data;
+            console.log("All tasks:")
+            console.log(tasks.length)
+            tasks.forEach(task => {
+              console.log(task)
+            })
+          })
+        }}>
           <Text>All Tasks</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
+          taskMapper.find(1).then ((task) => {
+            console.log(`found: ${task.title}`)
+          })
+        }}>
+          <Text>Find Task 1</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.wipe} onPress={() => {
