@@ -64,7 +64,7 @@ export default class EvaluationMapperImpl implements EvaluationMapper {
     return new Promise((resolve) => {
       const eval_objs = []
       this.db.transaction(tx => {
-        tx.executeSql("select * from Evaluation where course_code = code", [], (_, { rows: { _array } }) => {
+        tx.executeSql("select * from Evaluation where course_code = ?", [code], (_, { rows: { _array } }) => {
           _array.forEach(evaluation => {
               eval_objs.push(new Evaluation(evaluation.title, evaluation.due_date, evaluation.weight, evaluation.course_code, evaluation.complete, evaluation.grade, evaluation.id))
           })

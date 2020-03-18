@@ -9,7 +9,6 @@ export default class Course {
     min_grade:number;
     grade:number;
     complete:boolean;
-    db = SQLite.openDatabase("db.db");
 
     constructor(t: string, c: string, min_g: number, g: number = 0, cp: boolean = false) {
         this.title = t;

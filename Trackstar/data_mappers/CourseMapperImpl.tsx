@@ -35,12 +35,12 @@ export default class CourseMapperImpl implements CourseMapper {
     return new Promise((resolve) => {
       const course_objs = []
       this.db.transaction(tx => {
-          tx.executeSql("select * from Course", [], (_, { rows: { _array } }) => {
-              _array.forEach(course => {
-                  course_objs.push(new Course(course.title, course.code, course.min_grade, course.grade, course.complete))
-              })
-              resolve(course_objs)
+        tx.executeSql("select * from Course", [], (_, { rows: { _array } }) => {
+          _array.forEach(course => {
+            course_objs.push(new Course(course.title, course.code, course.min_grade, course.grade, course.complete))
           })
+          resolve(course_objs)
+        })
       })
     })
   };
