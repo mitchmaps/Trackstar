@@ -13,8 +13,7 @@ import Evaluation from "../../models/Evaluation";
 import Task from "../../models/Task";
 
 export default function CourseView(props) {
-
-  const {code, name, term, minGrade} = props.route.params;
+  const { code, name, term, minGrade } = props.route.params;
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
 
@@ -25,7 +24,7 @@ export default function CourseView(props) {
 
     const taskData = retrieveTaskData().then((data: Task[]) => {
       setTasks(data);
-    })
+    });
   }, []);
 
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
@@ -48,13 +47,22 @@ export default function CourseView(props) {
       >
         <Text style={iOSUIKit.largeTitleEmphasized}>{code}</Text>
         <Text style={iOSUIKit.subhead}>{name}</Text>
-        <View style={{paddingTop: 10}}><Text style={iOSUIKit.title3Emphasized}>Evaluations</Text></View>
+        <View style={{ paddingTop: 10 }}>
+          <Text style={iOSUIKit.title3Emphasized}>Evaluations</Text>
+        </View>
         <Paragraph>{completedGradeText}</Paragraph>
         <View style={{ paddingVertical: 20 }}>{evaluationsMarkup}</View>
         <Text style={iOSUIKit.title3Emphasized}>Tasks</Text>
         {tasksMarkup}
       </ScrollView>
-      <Button mode="contained" onPress={() => {props.navigation.navigate("Create task")}}>
+      <Button
+        mode="contained"
+        onPress={() => {
+          props.navigation.navigate("Create task", {
+            evals: courseEvals
+          });
+        }}
+      >
         Add new task
       </Button>
     </View>
@@ -98,7 +106,7 @@ function generateEvaluationMarkup(evals: Evaluation[]) {
 function filterTasks(evalId, allTasks: Task[]) {
   const evalTasks: Task[] = [];
 
-  allTasks.forEach((task) => {
+  allTasks.forEach(task => {
     if (task.evaluation_id === evalId) {
       evalTasks.push(task);
     }
@@ -109,7 +117,7 @@ function filterTasks(evalId, allTasks: Task[]) {
 
 function generateTaskMarkup(evals: Evaluation[]) {
   return evals.reduce((allEvals, currEval) => {
-    const { title, due_date, weight} = currEval;
+    const { title, due_date, weight } = currEval;
 
     const formattedDate = new Date(due_date);
     const subTitle = `Due on ${formattedDate.toDateString()}`;
