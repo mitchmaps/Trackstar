@@ -29,7 +29,7 @@ const TestScreen = (props) => {
         }}>
           <Text>Init DB</Text>
         </TouchableOpacity>
-
+{/*
         <Text>Course</Text>
 
         <TouchableOpacity style={styles.button} onPress={() => {Database.populateCourseTable()}}>
@@ -69,7 +69,7 @@ const TestScreen = (props) => {
           })
         }}>
           <Text>Find Course 3004</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <Text>Evaluation</Text>
         <TouchableOpacity style={styles.button} onPress={() => {Database.populateEvalTable()}}>
@@ -148,6 +148,19 @@ const TestScreen = (props) => {
           })
         }}>
           <Text>Find Task 1</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
+          taskMapper.find(1).then((task1) => {
+            console.log(`complete (before): ${task1.complete}`)
+            task1.complete = true;
+            taskMapper.update(task1);
+            taskMapper.find(1).then((task2) => {
+              console.log(`complete (after): ${task2.complete}`)
+            })
+          })
+        }}>
+          <Text>Update Task 1</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.wipe} onPress={() => {
