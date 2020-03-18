@@ -90,6 +90,19 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
+          evalMapper.findByCourse("COMP3004").then((data) => {
+            let evals: Evaluation[] = data;
+            console.log("Evals for COMP3004:")
+            console.log(evals.length)
+            evals.forEach(evaltn => {
+              console.log(evaltn)
+            })
+          })
+        }}>
+          <Text>Find for course 3004</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
           evalMapper.find(1).then ((evaltn) => {
             console.log(`found: ${evaltn.title}`)
           })
@@ -114,6 +127,19 @@ const TestScreen = (props) => {
           })
         }}>
           <Text>All Tasks</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
+          taskMapper.findByEval(10).then((data) => {
+            let tasks: Task[] = data;
+            console.log("Task for eval 10:")
+            console.log(tasks.length)
+            tasks.forEach(task => {
+              console.log(task)
+            })
+          })
+        }}>
+          <Text>Find for eval 10</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
