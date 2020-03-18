@@ -20,9 +20,12 @@ export default class EvaluationMapperImpl implements EvaluationMapper {
   };
 
   update(e: Evaluation): void {
-    // use find() to find the course
-    // compare the two
-    // update
+    this.db.transaction(
+      tx => {
+        tx.executeSql("update Evaluation set title=?, due_date=?, weight=?, complete=?, grade=? where id=?", [e.title, e.due_date, e.weight, e.complete, e.grade, e.id]);
+      },
+      null
+    );
   };
 
   delete(e: Evaluation): void {

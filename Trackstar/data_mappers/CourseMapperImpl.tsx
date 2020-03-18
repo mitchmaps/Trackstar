@@ -20,9 +20,12 @@ export default class CourseMapperImpl implements CourseMapper {
   };
 
   update(c: Course): void {
-    // use find() to find the course
-    // compare the two
-    // update
+    this.db.transaction(
+      tx => {
+        tx.executeSql("update Course set title=?, min_grade=?, grade=?, complete=? where code=?", [c.title, c.min_grade, c.grade, c.complete, c.code]);
+      },
+      null
+    );
   };
 
   delete(c: Course): void {

@@ -29,7 +29,7 @@ const TestScreen = (props) => {
         }}>
           <Text>Init DB</Text>
         </TouchableOpacity>
-{/*
+
         <Text>Course</Text>
 
         <TouchableOpacity style={styles.button} onPress={() => {Database.populateCourseTable()}}>
@@ -69,7 +69,20 @@ const TestScreen = (props) => {
           })
         }}>
           <Text>Find Course 3004</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
+          courseMapper.find("COMP3004").then((c1) => {
+            console.log(`complete (before): ${c1.complete}`)
+            c1.complete = true;
+            courseMapper.update(c1);
+            courseMapper.find("COMP3004").then((c2) => {
+              console.log(`complete (after): ${c2.complete}`)
+            })
+          })
+        }}>
+          <Text>Update 3004</Text>
+        </TouchableOpacity>
 
         <Text>Evaluation</Text>
         <TouchableOpacity style={styles.button} onPress={() => {Database.populateEvalTable()}}>
@@ -108,6 +121,19 @@ const TestScreen = (props) => {
           })
         }}>
           <Text>Find Evaluation 1</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
+          evalMapper.find(1).then((e1) => {
+            console.log(`complete (before): ${e1.complete}`)
+            e1.complete = true;
+            evalMapper.update(e1);
+            evalMapper.find(1).then((e2) => {
+              console.log(`complete (after): ${e2.complete}`)
+            })
+          })
+        }}>
+          <Text>Update Eval 1</Text>
         </TouchableOpacity>
 
         <Text>Task</Text>
