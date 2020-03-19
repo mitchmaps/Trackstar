@@ -1,3 +1,5 @@
+import TaskPrioritizer from './TaskPrioritizer';
+
 export default class Task {
   title:string;
   due_date:Date;
@@ -6,6 +8,7 @@ export default class Task {
   priority:number;
   evaluation_id:number;
   id:number;
+  static prioritizer: TaskPrioritizer = new TaskPrioritizer();
 
   constructor(t:string, d:Date, ed:number, ei:number, c:boolean = false, p:number=0, id:number=null) {
       this.title = t;
