@@ -101,12 +101,21 @@ export default class TaskMapperImpl implements TaskMapper {
     return true
   }
 
+  private updatePriority(t: Task): void {
+    this.db.transaction(
+      tx => {
+        tx.executeSql("update Task set priority=? where id=?", [t.priority, t.id], null, this.errorHandler);
+      },
+      null
+    );
+  };
+
   private updatePriorities(): void {
     this.all().then((tasks) => {
       let sortedTasks: Task[] = Task.prioritizer.prioritize(tasks)
-      for (let i: number = 0; i < sortedTasks.length, i++) {
+      for (let i: number = 0; i < sortedTasks.length; i++) {
         sortedTasks[i].priority = i + 1;
-        this.update(sortedTasks[i]);
+        this.updatePriority(sortedTasks[i]);
       }
     })
   }
