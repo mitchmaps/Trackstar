@@ -55,19 +55,19 @@ export default class Database {
   static populateEvalTable = () => {
     let evalMapper: EvaluationMapper = new EvaluationMapperImpl
 
-    let eval1  = new Evaluation ("Project 1", "2020-03-16", 20, "COMP3008");
-    let eval2  = new Evaluation ("Project 2", "2020-04-16", 20, "COMP3008");
-    let eval3  = new Evaluation ("Midterm", "2020-04-20", 20, "COMP3008");
-    let eval4  = new Evaluation ("Final", "2020-04-25", 40, "COMP3008");
+    let eval1  = new Evaluation ("Project 1", new Date(), 20, "COMP3008");
+    let eval2  = new Evaluation ("Project 2", new Date(), 20, "COMP3008");
+    let eval3  = new Evaluation ("Midterm", new Date(), 20, "COMP3008");
+    let eval4  = new Evaluation ("Final", new Date(), 40, "COMP3008");
 
-    let eval5  = new Evaluation ("Deliverable 1", "2020-04-25", 5, "COMP3004");
-    let eval6  = new Evaluation ("Deliverable 2", "2020-04-25", 5, "COMP3004");
-    let eval7  = new Evaluation ("Deliverable 3", "2020-04-25", 30, "COMP3004");
-    let eval8  = new Evaluation ("Deliverable 4", "2020-04-25", 10, "COMP3004");
-    let eval9  = new Evaluation ("Deliverable 5", "2020-04-25", 50, "COMP3004");
+    let eval5  = new Evaluation ("Deliverable 1", new Date(), 5, "COMP3004");
+    let eval6  = new Evaluation ("Deliverable 2", new Date(), 5, "COMP3004");
+    let eval7  = new Evaluation ("Deliverable 3", new Date(), 30, "COMP3004");
+    let eval8  = new Evaluation ("Deliverable 4", new Date(), 10, "COMP3004");
+    let eval9  = new Evaluation ("Deliverable 5", new Date(), 50, "COMP3004");
 
-    let eval10  = new Evaluation ("Test1", "2020-04-25", 50, "PHIL1200");
-    let eval11  = new Evaluation ("Test2", "2020-04-25", 50, "PHIL1200");
+    let eval10  = new Evaluation ("Test1", new Date(), 50, "PHIL1200");
+    let eval11  = new Evaluation ("Test2", new Date(), 50, "PHIL1200");
 
     evalMapper.insert(eval1)
     evalMapper.insert(eval2)
@@ -86,12 +86,12 @@ export default class Database {
   static populateTaskTable = () => {
     let taskMapper: TaskMapper = new TaskMapperImpl
 
-    let task1  = new Task ("Study unit 1", "2020-03-25", 120, 10, false, 1);
-    let task2  = new Task ("Study unit 2", "2020-03-25", 120, 10, false, 2);
-    let task3  = new Task ("Brainstorm project ideas", "2020-03-10", 30, 2, false, 3);
-    let task4  = new Task ("Make class diagram", "2020-03-10", 30, 7, false, 4);
-    let task5  = new Task ("Make sequence diagram", "2020-03-10", 30, 7, false, 5);
-    let task6  = new Task ("Write pseudocode", "2020-03-10", 30, 2, false, 6);
+    let task1  = new Task ("Study unit 1", new Date(), 120, 10, false, 1);
+    let task2  = new Task ("Study unit 2", new Date(), 120, 10, false, 2);
+    let task3  = new Task ("Brainstorm project ideas", new Date(), 30, 2, false, 3);
+    let task4  = new Task ("Make class diagram", new Date(), 30, 7, false, 4);
+    let task5  = new Task ("Make sequence diagram", new Date(), 30, 7, false, 5);
+    let task6  = new Task ("Write pseudocode", new Date(), 30, 2, false, 6);
 
     taskMapper.insert(task1)
     taskMapper.insert(task2)
