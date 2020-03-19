@@ -59,7 +59,7 @@ function duration_levels(value){
 
 import Task from './Task';
 
-export default class taskPrioritizer{
+export default class TaskPrioritizer{
 
     prioritize = (t: Task[]) => {
 
