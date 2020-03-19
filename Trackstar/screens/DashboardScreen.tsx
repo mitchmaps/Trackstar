@@ -99,8 +99,26 @@ console.log("CALLING DATABASE INITT --------------------------------------------
   
   for (let i = 0; i < rawData.length; i++) {
     let task = rawData[i];
-    let evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
-    let course: Course = await Course.find(evaluation.course_code);
+    
+    let evaluation: Evaluation = evalMapper.all().then((data) => {
+      let evals: Evaluation[];
+      data.forEach(element => {
+        if(element.id == task.evaluation_id)
+          evals.push(element);
+      })
+      return evals;
+    })
+
+    let course: Course = courseMapper.all().then((data) => {
+      let courses: Course[];
+      data.forEach(element => {
+        if(element.code == evaluation.course_code)
+          courses.push(element);
+      })
+      return courses;
+    })
+
+
 
     const taskInfo = {
       title: task.title,
