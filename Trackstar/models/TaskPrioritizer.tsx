@@ -31,12 +31,11 @@ export default class TaskPrioritizer{
             priorityCounter += this.duration_levels(t[index].est_duration)
             // priorityCounter += this.weighting_levels(evaluation.weight);
 
-            // find average and redefine the priority as that number
+            // final calculation of priority
             priorityCounter/=3;
-            t[index].priority = parseInt(priorityCounter.toFixed(2));
 
             // pass in the priority values into a list 
-            sortList = this.insertList(sortList, parseInt(priorityCounter.toFixed(2)), t[index])
+            sortList = this.insertList(sortList, parseInt(priorityCounter.toFixed(2)))
             
             // pass in the priority value as key, and object as value
             mappingList = this.insertKey(mappingList, parseInt(priorityCounter.toFixed(2)), t[index])
@@ -70,13 +69,12 @@ export default class TaskPrioritizer{
             }
             else
             {
-                value.priority = key;
                 tempMap.set(key, value)
                 return tempMap;
             }
         }
     }
-    insertList = (tempList, value, task) => {
+    insertList = (tempList, value) => {
         while(true){
             if(tempList.includes(value))
             {   
@@ -84,7 +82,6 @@ export default class TaskPrioritizer{
             }
             else
             {
-                task.priority = value;
                 tempList.push(value)
                 return tempList;
             }
