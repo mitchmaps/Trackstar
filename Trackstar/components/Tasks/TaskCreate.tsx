@@ -34,9 +34,6 @@ export default class TaskCreate extends React.Component {
     const { title, selectedEval, dueDate, duration } = this.state;
     const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params;
 
-    console.log('in here');
-    console.log(this.props.route.params.evals);
-
     const evalSelectionMarkup = this.generateEvalSelectionMarkup(this.props.route.params.evals);
 
     // add error checking for ensuring the due date for the task can't be after the due date for the eval
@@ -99,9 +96,7 @@ export default class TaskCreate extends React.Component {
 
     const taskMapper: TaskMapper = new TaskMapperImpl();
     const newTask = new Task(title, dueDate, +duration, selectedEval);
-    console.log(newTask);
     taskMapper.insert(newTask);
-    console.log(taskMapper.all());
 
     this.props.navigation.navigate("Course view", {
       code: courseCode,
@@ -113,13 +108,13 @@ export default class TaskCreate extends React.Component {
 
   generateEvalSelectionMarkup(evals: Evaluation[]) {
     const evalSelectionMarkup = [];
-    evals.reduce((currEval: Evaluation, allEvals) => {
+    evals.forEach((currEval) => {
       const {id, course_code, due_date, title, weight} = currEval;
       const evalMarkup = (
         <Picker.Item label={title} value={id} />
       );
+
       evalSelectionMarkup.push(evalMarkup);
-      return allEvals;
     });
 
     return evalSelectionMarkup;

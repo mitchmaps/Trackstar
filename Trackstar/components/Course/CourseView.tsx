@@ -31,14 +31,16 @@ export default function CourseView(props) {
     });
 
     const taskData = retrieveTaskData().then((data: Task[]) => {
+      console.log(data);
       setTasks(data);
     });
+
   }, []);
 
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
   // Fix after demo
-  const filteredTasks = filterTasks(1, tasks);
-  const tasksMarkup = generateTaskMarkup(courseEvals);
+  const filteredTasks = filterTasks(courseEvals, tasks);
+  const tasksMarkup = generateTaskMarkup(filteredTasks);
 
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
@@ -115,21 +117,22 @@ function generateEvaluationMarkup(evals: Evaluation[]) {
   return <Card>{gradingSchemeMarkup}</Card>;
 }
 
-function filterTasks(evalId, allTasks: Task[]) {
-  const evalTasks: Task[] = [];
-
-  allTasks.forEach(task => {
-    if (task.evaluation_id === evalId) {
-      evalTasks.push(task);
-    }
+function filterTasks(evaluations: Evaluation[], allTasks: Task[]) {
+  const courseTasks: Task[] = [];
+  evaluations.forEach((evaluation) => {
+    allTasks.forEach((task) => {
+      if (task.evaluation_id === evaluation.id) {
+        courseTasks.push(task);
+      }
+    })
   });
 
-  return evalTasks;
+  return courseTasks;
 }
 
-function generateTaskMarkup(evals: Evaluation[]) {
-  return evals.reduce((allEvals, currEval) => {
-    const { title, due_date, weight } = currEval;
+function generateTaskMarkup(tasks: Task[]) {
+  return tasks.reduce((allTasks, currTask) => {
+    const { title, due_date, est_duration } = currTask;
 
     const formattedDate = new Date(due_date);
     const subTitle = `Due on ${formattedDate.toDateString()}`;
@@ -156,17 +159,16 @@ function generateTaskMarkup(evals: Evaluation[]) {
       <View key={title} style={{ paddingVertical: 5 }}>
         <Card>
           <Card.Content>
-            <Card.Title title={title} subtitle={`Worth ${weight}%`} />
-            <Text>{subTitle}</Text>
+            <Text>{title}</Text>
             {badgeMarkup}
           </Card.Content>
         </Card>
       </View>
     );
 
-    allEvals.push(taskMarkup);
+    allTasks.push(taskMarkup);
 
-    return allEvals;
+    return allTasks;
   }, []);
 }
 
