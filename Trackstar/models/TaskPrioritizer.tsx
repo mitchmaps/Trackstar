@@ -1,7 +1,4 @@
-
-
 import Task from './Task';
-import Evaluation from './Evaluation';
 
 export default class TaskPrioritizer{
 
@@ -11,19 +8,18 @@ export default class TaskPrioritizer{
         let mappingList = new Map();
 
         let DueDate;
-        let evaluation
         let priorityCounter = 0;
 
         for (let index = 0; index < t.length; index++) {
             
             // find metrics to be later put into buckets
-            DueDate = this.date_diff_indays(new Date(),t[index].due_date) // days from now unti due_date
-            evaluation = await Evaluation.find(t[index].evaluation_id); // find evaluation weight
+            DueDate = this.date_diff_indays(new Date(),t[index].due_date); 
+            // let evaluation: Evaluation  = evalMapper.find(t[index].evaluation_id); 
 
             // calculate priority
             priorityCounter += this.due_date_levels(DueDate)
             priorityCounter += this.duration_levels(t[index].est_duration)
-            priorityCounter += this.weighting_levels(evaluation.weight);
+            // priorityCounter += this.weighting_levels(evaluation.weight);
 
             // find average and redefine the priority as that number
             priorityCounter/=3;
@@ -38,25 +34,25 @@ export default class TaskPrioritizer{
 
         // sort the priority values list
         sortList.sort(function(a,b){return b-a});
-        // console.log(mappingList)
 
-        // populate a new sorted list of the objects based off of priority
+        // populate a new sorted list of tasks based off of priority
         let returnValue = [];
         sortList.forEach(element => {
             returnValue.push(mappingList.get(element))
         });
+        
+        // return the sorted tasks list as well
         return returnValue;
-        // console.log(returnValue)
     }
 
 
-    date_diff_indays = (date1: Date, date2: Date) => {
+    private date_diff_indays = (date1: Date, date2: Date) => {
         let dt1 = new Date(date1);
         let dt2 = new Date(date2);
         return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
     }
 
-    insertKey = (tempMap: Map<number, Task>, key: number, value: Task) => {
+    private insertKey = (tempMap: Map<number, Task>, key: number, value: Task) => {
         while(true){
             if(tempMap.has(key))
             {
@@ -70,7 +66,7 @@ export default class TaskPrioritizer{
             }
         }
     }
-    insertList = (tempList: number[], value: number, task: Task){
+    private insertList = (tempList, value, task) => {
         while(true){
             if(tempList.includes(value))
             {   
@@ -85,7 +81,7 @@ export default class TaskPrioritizer{
         }
     }
     
-    due_date_levels = value => {
+    private due_date_levels = value => {
         if(value<=3)return 5
         else if (value<=7)return 4
         else if (value<=14)return 3
@@ -93,6 +89,7 @@ export default class TaskPrioritizer{
         else return 1
     }
     
+    /*
     weighting_levels = value =>{
         if(value<=5)return 1
         else if (value<=10)return 2
@@ -100,8 +97,9 @@ export default class TaskPrioritizer{
         else if (value<=40)return 4
         else return 5
     }
+    */
 
-    duration_levels = value => {
+    private duration_levels = value => {
         if(value<=30)return 1
         else if (value<=60)return 2
         else if (value<=120)return 3
@@ -109,7 +107,3 @@ export default class TaskPrioritizer{
         else return 5
     }
 }
-
-
-
-
