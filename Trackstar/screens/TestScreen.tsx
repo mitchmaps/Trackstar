@@ -62,7 +62,12 @@ const TestScreen = (props) => {
 
         <TouchableOpacity style={styles.button} onPress={() => {
           courseMapper.find("COMP3004").then ((course) => {
-            console.log(`found: ${course.code}`)
+            if (course == null) {
+              console.log("Course not found")
+            }
+            else {
+              console.log(`found: ${course.code}`)
+            }
           })
         }}>
           <Text>Find Course 3004</Text>
