@@ -1,4 +1,4 @@
-import Course from "../models/Course";
+import {Course} from "../models";
 
 export default interface CourseMapper {
   insert(c: Course): void;

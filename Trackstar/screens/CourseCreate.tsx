@@ -4,9 +4,7 @@ import { Divider, Card, TextInput, Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { iOSUIKit } from 'react-native-typography';
 
-import Course from '../models/Course';
-import Evaluation from '../models/Evaluation';
-
+import {Course, Evaluation} from '../models';
 import {CourseMapper, CourseMapperImpl, EvaluationMapper, EvaluationMapperImpl} from '../data_mappers';
 
 import styles from '../Styles/CourseCreateStyles';

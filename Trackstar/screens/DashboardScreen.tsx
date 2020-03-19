@@ -11,9 +11,7 @@ import { Card } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import CircleCheckBox, { LABEL_POSITION } from "react-native-circle-checkbox";
 
-import Task from "../models/Task";
-import Evaluation from "../models/Evaluation";
-import Course from "../models/Course";
+import {Task, Evaluation, Course} from '../models';
 import {
   CourseMapper,
   CourseMapperImpl,

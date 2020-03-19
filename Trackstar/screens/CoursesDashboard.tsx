@@ -24,7 +24,7 @@ import { mockData_CourseDashboard } from "../mockData_CourseDashboard";
 import Styles from "../Styles/CoursesDashboardStyles";
 import { iOSUIKit } from "react-native-typography";
 
-import Course from "../models/Course";
+import {Course} from "../models";
 import { CourseMapper, CourseMapperImpl } from "../data_mappers";
 
 const CoursesDashboard = props => {
