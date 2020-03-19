@@ -59,8 +59,13 @@ export default class CourseMapperImpl implements CourseMapper {
       this.db.transaction(tx => {
         tx.executeSql("select * from Course where code = ?", [c],
         (_, { rows: { _array } }) => {
-            const course: Course = new Course(_array[0].title, _array[0].code, _array[0].min_grade, _array[0].grade, _array[0].complete)
-            resolve(course)
+            if (_array[0] == undefined) {
+              resolve(null)
+            }
+            else {
+              const course: Course = new Course(_array[0].title, _array[0].code, _array[0].min_grade, _array[0].grade, _array[0].complete)
+              resolve(course)
+            }
         }),
         this.errorHandler
       })

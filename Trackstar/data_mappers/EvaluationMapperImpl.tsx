@@ -63,8 +63,13 @@ export default class EvaluationMapperImpl implements EvaluationMapper {
       this.db.transaction(tx => {
         tx.executeSql("select * from Evaluation where id = ?", [id],
           (_, { rows: { _array } }) => {
-            const evaluation: Evaluation = new Evaluation(_array[0].title, new Date(JSON.parse(_array[0].due_date)), _array[0].weight, _array[0].course_code, _array[0].complete, _array[0].grade, _array[0].id)
-            resolve(evaluation)
+            if (_array[0] == undefined) {
+              resolve(null)
+            }
+            else {
+              const evaluation: Evaluation = new Evaluation(_array[0].title, new Date(JSON.parse(_array[0].due_date)), _array[0].weight, _array[0].course_code, _array[0].complete, _array[0].grade, _array[0].id)
+              resolve(evaluation)
+            }
           },
           this.errorHandler
         )

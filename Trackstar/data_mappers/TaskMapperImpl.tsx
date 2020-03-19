@@ -59,7 +59,13 @@ export default class TaskMapperImpl implements TaskMapper {
       this.db.transaction(tx => {
         tx.executeSql("select * from Task where id = ?", [id],
           (_, { rows: { _array } }) => {
-            resolve(_array[0])
+            if (_array[0] == undefined) {
+              resolve(null)
+            }
+            else {
+              const task: Task = new Task(_array[0].title, new Date(JSON.parse(_array[0].due_date)), _array[0].est_duration, _array[0].eval_id, _array[0].complete, _array[0].priority, _array[0].id)
+              resolve(task)
+            }
           },
           this.errorHandler
         )
