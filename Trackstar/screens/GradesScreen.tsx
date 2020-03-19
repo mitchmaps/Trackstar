@@ -4,11 +4,11 @@ import { Text, View } from 'react-native';
 import GradesForm from '../components/GradesForm';
 
 // TO DO:
-// error detection (right now we handle it but don't bug the user about it)
 //  - non-numerical/empty values
-//  - not adding up to 100
 //  - skipping rows
+
 // auto-population
+
 const GradesScreen = (props) => {
   const navigation = props.navigation;
     return (
