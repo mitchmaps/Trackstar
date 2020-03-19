@@ -21,11 +21,8 @@ const TestScreen = (props) => {
       <View style={{marginTop: 100}}>
         <TouchableOpacity style={styles.button} onPress={() => {
           let cmapper = new CourseMapperImpl
-          cmapper.createTable()
           let emapper = new EvaluationMapperImpl
-          emapper.createTable()
           let tmapper = new TaskMapperImpl
-          tmapper.createTable()
         }}>
           <Text>Init DB</Text>
         </TouchableOpacity>
