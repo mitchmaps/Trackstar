@@ -64,7 +64,7 @@ export default class TaskMapperImpl implements TaskMapper {
             }
             else {
               const task: Task = new Task(_array[0].title, new Date(JSON.parse(_array[0].due_date)), _array[0].est_duration, _array[0].eval_id, _array[0].complete, _array[0].priority, _array[0].id)
-              resolve(_array[0])
+              resolve(task)
             }
           },
           this.errorHandler

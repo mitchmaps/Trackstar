@@ -119,7 +119,12 @@ const TestScreen = (props) => {
 
         <TouchableOpacity style={styles.button} onPress={() => {
           evalMapper.find(1).then ((evaltn) => {
-            console.log(`found: ${evaltn.title}`)
+            if (evaltn == null) {
+              console.log("Eval not found")
+            }
+            else {
+              console.log(`found: ${evaltn.title}`)
+            }
           })
         }}>
           <Text>Find Evaluation 1</Text>
@@ -172,7 +177,12 @@ const TestScreen = (props) => {
 
         <TouchableOpacity style={styles.button} onPress={() => {
           taskMapper.find(1).then ((task) => {
-            console.log(`found: ${task.title}`)
+            if (task == null) {
+              console.log("task not found")
+            }
+            else {
+              console.log(`found: ${task.title}`)
+            }
           })
         }}>
           <Text>Find Task 1</Text>
