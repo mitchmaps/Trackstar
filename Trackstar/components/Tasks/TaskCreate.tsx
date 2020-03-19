@@ -69,6 +69,7 @@ export default class TaskCreate extends React.Component {
             onChangeText={(text) => {this.setState({duration: text})}}
             value={duration}
           />
+          {/*/render message about estimation accuracy here */}
         </Card.Content>
       </Card>
     );
