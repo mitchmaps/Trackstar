@@ -1,9 +1,4 @@
 import Task from './Task';
-import Evaluation from './Evaluation';
-import TaskMapperImpl from '../data_mappers/TaskMapperImpl';
-import TaskMapper from '../data_mappers/TaskMapper';
-import EvaluationMapper from '../data_mappers/EvaluationMapper';
-import EvaluationMapperImpl from '../data_mappers/EvaluationMapperImpl';
 
 export default class TaskPrioritizer{
 
@@ -13,12 +8,7 @@ export default class TaskPrioritizer{
         let mappingList = new Map();
 
         let DueDate;
-        let evaluation
         let priorityCounter = 0;
-
-        // let taskMapper: TaskMapper = new TaskMapperImpl;
-        // let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
-
 
         for (let index = 0; index < t.length; index++) {
             
@@ -44,25 +34,25 @@ export default class TaskPrioritizer{
 
         // sort the priority values list
         sortList.sort(function(a,b){return b-a});
-        // console.log(mappingList)
 
-        // populate a new sorted list of the objects based off of priority
+        // populate a new sorted list of tasks based off of priority
         let returnValue = [];
         sortList.forEach(element => {
             returnValue.push(mappingList.get(element))
         });
+        
+        // return the sorted tasks list as well
         return returnValue;
-        // console.log(returnValue)
     }
 
 
-    date_diff_indays = (date1: Date, date2: Date) => {
+    private date_diff_indays = (date1: Date, date2: Date) => {
         let dt1 = new Date(date1);
         let dt2 = new Date(date2);
         return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
     }
 
-    insertKey = (tempMap: Map<number, Task>, key: number, value: Task) => {
+    private insertKey = (tempMap: Map<number, Task>, key: number, value: Task) => {
         while(true){
             if(tempMap.has(key))
             {
@@ -76,7 +66,7 @@ export default class TaskPrioritizer{
             }
         }
     }
-    insertList = (tempList, value, task) => {
+    private insertList = (tempList, value, task) => {
         while(true){
             if(tempList.includes(value))
             {   
@@ -91,7 +81,7 @@ export default class TaskPrioritizer{
         }
     }
     
-    due_date_levels = value => {
+    private due_date_levels = value => {
         if(value<=3)return 5
         else if (value<=7)return 4
         else if (value<=14)return 3
@@ -109,7 +99,7 @@ export default class TaskPrioritizer{
     }
     */
 
-    duration_levels = value => {
+    private duration_levels = value => {
         if(value<=30)return 1
         else if (value<=60)return 2
         else if (value<=120)return 3
