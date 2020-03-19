@@ -3,6 +3,12 @@ import * as SQLite from 'expo-sqlite';
 import Course from './models/Course';
 import Evaluation from './models/Evaluation';
 import Task from './models/Task';
+import CourseMapper from './data_mappers/CourseMapper';
+import CourseMapperImpl from './data_mappers/CourseMapperImpl';
+import EvaluationMapper from './data_mappers/EvaluationMapper';
+import EvaluationMapperImpl from './data_mappers/EvaluationMapperImpl';
+import TaskMapperImpl from './data_mappers/TaskMapperImpl';
+import TaskMapper from './data_mappers/TaskMapper';
 
 export default class Database {
   // TODO:
@@ -33,18 +39,22 @@ export default class Database {
   )}
 
   static populateCourseTable = () => {
+    let courseMapper: CourseMapper = new CourseMapperImpl
     let course1  = new Course ("Object-Oriented Software Engineering", "COMP3004", 90);
     let course2  = new Course ("Database Management Systems", "COMP3005", 90);
     let course3  = new Course ("Human Computer Interaction", "COMP3008", 80);
     let course4  = new Course ("The Meaning of Life", "PHIL1200", 90);
 
-    course1.save()
-    course2.save()
-    course3.save()
-    course4.save()
+    courseMapper.insert(course1)
+    courseMapper.insert(course2)
+    courseMapper.insert(course3)
+    courseMapper.insert(course4)
+
   }
 
   static populateEvalTable = () => {
+    let evalMapper: EvaluationMapper = new EvaluationMapperImpl
+
     let eval1  = new Evaluation ("Project 1", "2020-03-16", 20, "COMP3008");
     let eval2  = new Evaluation ("Project 2", "2020-04-16", 20, "COMP3008");
     let eval3  = new Evaluation ("Midterm", "2020-04-20", 20, "COMP3008");
@@ -59,20 +69,23 @@ export default class Database {
     let eval10  = new Evaluation ("Test1", "2020-04-25", 50, "PHIL1200");
     let eval11  = new Evaluation ("Test2", "2020-04-25", 50, "PHIL1200");
 
-    eval1.save()
-    eval2.save()
-    eval3.save()
-    eval4.save()
-    eval5.save()
-    eval6.save()
-    eval7.save()
-    eval8.save()
-    eval9.save()
-    eval10.save()
-    eval11.save()
+    evalMapper.insert(eval1)
+    evalMapper.insert(eval2)
+    evalMapper.insert(eval3)
+    evalMapper.insert(eval4)
+    evalMapper.insert(eval5)
+    evalMapper.insert(eval6)
+    evalMapper.insert(eval7)
+    evalMapper.insert(eval8)
+    evalMapper.insert(eval9)
+    evalMapper.insert(eval10)
+    evalMapper.insert(eval11)
+
   }
 
   static populateTaskTable = () => {
+    let taskMapper: TaskMapper = new TaskMapperImpl
+
     let task1  = new Task ("Study unit 1", "2020-03-25", 120, 10, false, 1);
     let task2  = new Task ("Study unit 2", "2020-03-25", 120, 10, false, 2);
     let task3  = new Task ("Brainstorm project ideas", "2020-03-10", 30, 2, false, 3);
@@ -80,12 +93,12 @@ export default class Database {
     let task5  = new Task ("Make sequence diagram", "2020-03-10", 30, 7, false, 5);
     let task6  = new Task ("Write pseudocode", "2020-03-10", 30, 2, false, 6);
 
-    task1.save()
-    task2.save()
-    task3.save()
-    task4.save()
-    task5.save()
-    task6.save()
+    taskMapper.insert(task1)
+    taskMapper.insert(task2)
+    taskMapper.insert(task3)
+    taskMapper.insert(task4)
+    taskMapper.insert(task5)
+    taskMapper.insert(task6)
   }
 
   static deleteCourseData = () => {
