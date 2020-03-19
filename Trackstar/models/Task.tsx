@@ -1,6 +1,3 @@
-import Constants from 'expo-constants';
-import * as SQLite from 'expo-sqlite';
-
 export default class Task {
   title:string;
   due_date:Date;
