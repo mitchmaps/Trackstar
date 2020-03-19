@@ -13,19 +13,16 @@ export default class TaskMapperImpl implements TaskMapper {
   insert(t: Task): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into Task (title, due_date, est_duration, priority, complete, eval_id, id) values (?, ?, ?, ?, ?, ?, ?)", [t.title, JSON.stringify(t.due_date), t.est_duration, t.priority, t.complete, t.evaluation_id, t.id], null, this.errorHandler);
+        tx.executeSql("insert into Task (title, due_date, est_duration, priority, complete, eval_id, id) values (?, ?, ?, ?, ?, ?, ?)", [t.title, JSON.stringify(t.due_date), t.est_duration, t.priority, t.complete, t.evaluation_id, t.id], this.updatePriorities, this.errorHandler);
       },
       null
     );
-    this.all().then((tasks) => {
-      console.log(Task.prioritizer.prioritize(tasks))
-    })
   };
 
   update(t: Task): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("update Task set title=?, due_date=?, est_duration=?, priority=?, complete=? where id=?", [t.title, JSON.stringify(t.due_date), t.est_duration, t.priority, t.complete, t.id], null, this.errorHandler);
+        tx.executeSql("update Task set title=?, due_date=?, est_duration=?, priority=?, complete=? where id=?", [t.title, JSON.stringify(t.due_date), t.est_duration, t.priority, t.complete, t.id], this.updatePriorities, this.errorHandler);
       },
       null
     );
@@ -34,7 +31,7 @@ export default class TaskMapperImpl implements TaskMapper {
   delete(t: Task): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("delete from Task where id=?", [t.id], null, this.errorHandler);
+        tx.executeSql("delete from Task where id=?", [t.id], this.updatePriorities, this.errorHandler);
       },
       null
     );
@@ -90,7 +87,7 @@ export default class TaskMapperImpl implements TaskMapper {
           this.errorHandler
         )
       })
-  })
+    })
   }
 
   private createTable(): void {
@@ -102,5 +99,15 @@ export default class TaskMapperImpl implements TaskMapper {
   private errorHandler(transaction, error): boolean {
     console.log(error);
     return true
+  }
+
+  private updatePriorities(): void {
+    this.all().then((tasks) => {
+      let sortedTasks: Task[] = Task.prioritizer.prioritize(tasks)
+      for (let i: number = 0; i < sortedTasks.length, i++) {
+        sortedTasks[i].priority = i + 1;
+        this.update(sortedTasks[i]);
+      }
+    })
   }
 }
