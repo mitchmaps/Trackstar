@@ -17,6 +17,9 @@ export default class TaskMapperImpl implements TaskMapper {
       },
       null
     );
+    this.all().then((tasks) => {
+      console.log(Task.prioritizer.prioritize(tasks))
+    })
   };
 
   update(t: Task): void {
