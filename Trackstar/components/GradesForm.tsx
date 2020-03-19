@@ -19,6 +19,7 @@ export default class GradesForm extends React.Component {
     this.handle_submit = this.handle_submit.bind(this)
     this.calculate = this.calculate.bind(this)
     // this.clear_fields = this.clear_fields.bind(this)
+    // this.auto_fields = this.auto_fields.bind(this)
 
     this.state = {
       grades_and_weights: [], // looks like [ [grade1, weight1], [grade2, weight2], [grade3, weight3], ...]
