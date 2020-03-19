@@ -13,7 +13,7 @@ export default class TaskMapperImpl implements TaskMapper {
   insert(t: Task): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into Task (title, due_date, est_duration, priority, complete, eval_id, id) values (?, ?, ?, ?, ?, ?, ?)", [t.title, t.due_date, t.est_duration, t.priority, t.complete, t.evaluation_id, t.id]);
+        tx.executeSql("insert into Task (title, due_date, est_duration, priority, complete, eval_id, id) values (?, ?, ?, ?, ?, ?, ?)", [t.title, JSON.stringify(t.due_date), t.est_duration, t.priority, t.complete, t.evaluation_id, t.id]);
       },
       null
     );
@@ -22,7 +22,7 @@ export default class TaskMapperImpl implements TaskMapper {
   update(t: Task): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("update Task set title=?, due_date=?, est_duration=?, priority=?, complete=? where id=?", [t.title, t.due_date, t.est_duration, t.priority, t.complete, t.id]);
+        tx.executeSql("update Task set title=?, due_date=?, est_duration=?, priority=?, complete=? where id=?", [t.title, JSON.stringify(t.due_date), t.est_duration, t.priority, t.complete, t.id]);
       },
       null
     );
@@ -43,7 +43,7 @@ export default class TaskMapperImpl implements TaskMapper {
       this.db.transaction(tx => {
         tx.executeSql("select * from Task", [], (_, { rows: { _array } }) => {
           _array.forEach(task => {
-            task_objs.push(new Task(task.title, task.due_date, task.est_duration, task.eval_id, task.complete, task.priority, task.id))
+            task_objs.push(new Task(task.title, new Date(JSON.parse(task.due_date)), task.est_duration, task.eval_id, task.complete, task.priority, task.id))
           })
           resolve(task_objs)
         })
@@ -67,7 +67,7 @@ export default class TaskMapperImpl implements TaskMapper {
       this.db.transaction(tx => {
         tx.executeSql("select * from Task where eval_id = ?", [evalID], (_, { rows: { _array } }) => {
           _array.forEach(task => {
-            task_objs.push(new Task(task.title, task.due_date, task.est_duration, task.eval_id, task.complete, task.priority, task.id))
+            task_objs.push(new Task(task.title, new Date(JSON.parse(task.due_date)), task.est_duration, task.eval_id, task.complete, task.priority, task.id))
           })
           resolve(task_objs)
         })
