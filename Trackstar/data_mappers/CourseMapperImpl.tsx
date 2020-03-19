@@ -1,5 +1,5 @@
 import CourseMapper from "./CourseMapper";
-import Course from "../models/Course";
+import {Course} from "../models";
 import DBConnection from "../DBConnection";
 
 
