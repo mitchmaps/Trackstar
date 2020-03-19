@@ -18,7 +18,7 @@ export default class GradesForm extends React.Component {
     this.field = this.field.bind(this);
     this.handle_submit = this.handle_submit.bind(this)
     this.calculate = this.calculate.bind(this)
-    // this.clear_fields = this.clear_fields.bind(this)
+    this.clear_fields = this.clear_fields.bind(this)
     // this.auto_fields = this.auto_fields.bind(this)
 
     this.state = {
@@ -116,9 +116,16 @@ export default class GradesForm extends React.Component {
     this.state.remaining_weight = parseFloat(remaining_weight.toFixed(2));
   }
 
-  // clear_fields() {
-  //   // not sure how to do this
-  // }
+   clear_fields() {
+     // currently implementing, does not work
+	 /*
+        this.state.avg_grade = ({ text: ''});
+		this.state.combined_weight = '';
+		this.state.needed_grade = '';
+		this.state.remaining_weight = '';
+        this.state.desired_grade= 0;
+		*/
+   }
 
   render() {
     return (
@@ -164,7 +171,3 @@ export default class GradesForm extends React.Component {
     )
   }
 }
-
-
-
-
