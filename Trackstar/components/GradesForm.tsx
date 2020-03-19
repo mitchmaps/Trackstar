@@ -72,6 +72,8 @@ export default class GradesForm extends React.Component {
         ]
       )
     }
+    //adding more error cases in an elseif here
+    
     else {
       Alert.alert(
       `Current average grade: ${this.state.avg_grade}%\nCombined weight: ${this.state.combined_weight}%`,
@@ -114,7 +116,7 @@ export default class GradesForm extends React.Component {
   }
 
   // clear_fields() {
-  //   // not sure how to do this yet
+  //   // not sure how to do this
   // }
 
   render() {
@@ -136,7 +138,7 @@ export default class GradesForm extends React.Component {
         {this.field(6)}
         {this.field(7)}
 
-        {/*ADD + BUTTON TO ADD MORE FIELDS */}
+        {/*ADD + BUTTON TO ADD MORE FIELDS NEXT STEP*/}
 
         <View style={{alignItems: 'center'}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}>
