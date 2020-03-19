@@ -16,20 +16,20 @@ export default class TaskPrioritizer{
         let evaluation
         let priorityCounter = 0;
 
-        let taskMapper: TaskMapper = new TaskMapperImpl;
-        let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
+        // let taskMapper: TaskMapper = new TaskMapperImpl;
+        // let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
 
 
         for (let index = 0; index < t.length; index++) {
             
             // find metrics to be later put into buckets
             DueDate = this.date_diff_indays(new Date(),t[index].due_date); 
-            let evaluation: Evaluation  = evalMapper.find(t[index].evaluation_id); 
+            // let evaluation: Evaluation  = evalMapper.find(t[index].evaluation_id); 
 
             // calculate priority
             priorityCounter += this.due_date_levels(DueDate)
             priorityCounter += this.duration_levels(t[index].est_duration)
-            priorityCounter += this.weighting_levels(evaluation.weight);
+            // priorityCounter += this.weighting_levels(evaluation.weight);
 
             // find average and redefine the priority as that number
             priorityCounter/=3;
@@ -99,6 +99,7 @@ export default class TaskPrioritizer{
         else return 1
     }
     
+    /*
     weighting_levels = value =>{
         if(value<=5)return 1
         else if (value<=10)return 2
@@ -106,6 +107,7 @@ export default class TaskPrioritizer{
         else if (value<=40)return 4
         else return 5
     }
+    */
 
     duration_levels = value => {
         if(value<=30)return 1
