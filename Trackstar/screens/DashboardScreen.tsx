@@ -12,6 +12,8 @@ import TaskMapper from '../data_mappers/TaskMapper';
 import TaskMapperImpl from '../data_mappers/TaskMapperImpl';
 import EvaluationMapper from '../data_mappers/EvaluationMapper';
 import EvaluationMapperImpl from '../data_mappers/EvaluationMapperImpl';
+import CourseMapper from '../data_mappers/CourseMapper';
+import CourseMapperImpl from '../data_mappers/CourseMapperImpl';
 
 const HomeScreen = (props) => {
   const [formattedTaskData, setFormattedTaskData] = useState([]);
@@ -85,6 +87,7 @@ console.log("CALLING DATABASE INITT --------------------------------------------
 
   let taskMapper: TaskMapper = new TaskMapperImpl;
   let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
+  let courseMapper: CourseMapper = new CourseMapperImpl;
 
   // let rawData: Task[] = await Task.all();
   let rawData: Task[] = await taskMapper.all();
