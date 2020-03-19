@@ -9,8 +9,16 @@ import {
   Button
 } from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
+
 import Evaluation from "../../models/Evaluation";
 import Task from "../../models/Task";
+
+import {
+  EvaluationMapper,
+  EvaluationMapperImpl,
+  TaskMapper,
+  TaskMapperImpl
+} from "../../data_mappers";
 
 export default function CourseView(props) {
   const { code, name, term, minGrade } = props.route.params;
@@ -19,6 +27,7 @@ export default function CourseView(props) {
 
   useEffect(() => {
     const evalData = retrieveEvalData(code).then((data: Evaluation[]) => {
+      console.log(data);
       setCourseEvals(data);
     });
 
@@ -186,13 +195,17 @@ function determineCompletedEvalWeight(evals: Evaluation[]) {
 }
 
 async function retrieveEvalData(code: string) {
-  const evals = await Evaluation.findByCourseCode(code);
+  const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
+  let evals: Evaluation[] = await evalMapper.findByCourse(code);
 
+  console.log('in here');
+  console.log(evals);
   return evals;
 }
 
 async function retrieveTaskData() {
-  const tasks = await Task.all();
+  const taskMapper: TaskMapper = new TaskMapperImpl();
+  let tasks: Task[] = await taskMapper.all();
 
   return tasks;
 }

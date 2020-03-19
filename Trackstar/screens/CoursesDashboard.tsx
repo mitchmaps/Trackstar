@@ -25,6 +25,7 @@ import Styles from "../Styles/CoursesDashboardStyles";
 import { iOSUIKit } from "react-native-typography";
 
 import Course from "../models/Course";
+import { CourseMapper, CourseMapperImpl } from "../data_mappers";
 
 const CoursesDashboard = props => {
   const [oldCourses, setOldCourses] = useState(true); // hook state for toggle
@@ -44,9 +45,9 @@ const CoursesDashboard = props => {
       return null;
     } else {
       return (
-        <View style={{marginBottom:10 }}>
+        <View style={{ marginBottom: 10 }}>
           <Card
-            style={{paddingVertical: 10}}
+            style={{ paddingVertical: 10 }}
             onPress={() => {
               navigation.navigate("Course", {
                 code: item.code,
@@ -104,9 +105,8 @@ const CoursesDashboard = props => {
 async function formatData() {
   const formattedData = [];
 
-  let rawData: Course[] = await Course.all();
-  console.log("raw");
-  console.log(rawData);
+  const courseMapper: CourseMapper = new CourseMapperImpl();
+  let rawData: Course[] = await courseMapper.all();
 
   rawData.forEach(course => {
     const courseInfo = {
