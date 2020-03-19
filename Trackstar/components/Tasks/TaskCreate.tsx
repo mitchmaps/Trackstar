@@ -67,7 +67,7 @@ export default class TaskCreate extends React.Component {
             display="default"
           />
           <TextInput
-            label="Estimated time needed in hours"
+            label="Estimated time needed in minutes"
             keyboardType="numeric"
             onChangeText={(text) => {this.setState({duration: text})}}
             value={duration}
