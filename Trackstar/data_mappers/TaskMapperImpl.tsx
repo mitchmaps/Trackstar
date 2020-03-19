@@ -75,7 +75,7 @@ export default class TaskMapperImpl implements TaskMapper {
   })
   }
 
-  createTable(): void {
+  private createTable(): void {
     this.db.transaction(tx => {
       tx.executeSql("create table if not exists Task (id integer primary key, title text not null, due_date text not null, est_duration number not null, priority number, complete boolean default 0, eval_id integer not null, foreign key(eval_id) references Evaluation(id))")
     })

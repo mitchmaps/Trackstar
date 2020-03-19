@@ -80,7 +80,7 @@ export default class EvaluationMapperImpl implements EvaluationMapper {
     })
   }
 
-  createTable(): void {
+  private createTable(): void {
     this.db.transaction(tx => {
       tx.executeSql("create table if not exists Evaluation (id integer primary key, title text not null, due_date text not null, weight number not null, grade float default 0, complete boolean default 0, course_code text not null, foreign key(course_code) references Course(code), check (weight >= 0 & weight <= 100), check (grade >= 0))")
     })

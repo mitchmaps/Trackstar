@@ -1,8 +1,3 @@
-import Constants from 'expo-constants';
-import * as SQLite from 'expo-sqlite';
-import Evaluation from './Evaluation'
-import Database from '../Database';
-
 export default class Course {
     code:string;
     title:string;

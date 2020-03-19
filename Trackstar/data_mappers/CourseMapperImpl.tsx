@@ -62,7 +62,7 @@ export default class CourseMapperImpl implements CourseMapper {
     })
   };
 
-  createTable(): void {
+  private createTable(): void {
     this.db.transaction(tx => {
       tx.executeSql("create table if not exists Course (code text primary key not null, title text not null, min_grade float check (min_grade >= 0) check (min_grade <= 100) not null, grade float default 0 check (grade >= 0), complete boolean default 0)")
     })
