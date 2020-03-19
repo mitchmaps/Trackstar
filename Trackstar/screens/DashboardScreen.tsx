@@ -68,48 +68,37 @@ const HomeScreen = (props) => {
 };
 
 async function formatData() {
-  const formattedData = [];
-
+  
 
   let db = new DataBase();
   DataBase.init();
   DataBase.populateTaskTable();
-
-  let rawData: Task[] = await Task.all();
   let taskMapper: TaskMapper = new TaskMapperImpl;
 
+  let rawData: Task[] = await taskMapper.all();
+  const formattedData = [];
 
-  taskMapper.all().then(async (data) => {
-    for (let i = 0; i < rawData.length; i++) {
-      let task = rawData[i];
-      let evaluation: Evaluation = await Evaluation.find(task.evaluation_id);
-      let course: Course = await Course.find(evaluation.course_code);
+  //console.log("raw");
+  //console.log(rawData);
   
-      const taskInfo = {
-        title: task.title,
-        data: [
-          {
-            title: task.title,
-            priority: task.priority,
-            evaluation: evaluation.title,
-            course: course.code
-          }
-        ]
-      };
-      formattedData.push(taskInfo);
+  for (let i = 0; i < rawData.length; i++) {
+    let task = rawData[i];
+    let evaluation: Evaluation = await Evaluation.find(task.evaluation_id);
+    let course: Course = await Course.find(evaluation.course_code);
+
+    const taskInfo = {
+      title: task.title,
+      data: [
+        {
+          title: task.title,
+          priority: task.priority,
+          evaluation: evaluation.title,
+          course: course.code
+        }
+      ]
     };
-  })
-
-  console.log("raw");
-formattedData.forEach(element=>{
-  console.log(element.priority)
-})
-formattedData = Task.prioritizer.prioritize();
-formattedData.forEach(element=>{
-  console.log(element.priority)
-})
-
-
+    formattedData.push(taskInfo);
+  };
 
   return formattedData;
 }
