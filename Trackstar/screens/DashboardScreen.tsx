@@ -7,6 +7,9 @@ import CircleCheckBox, {LABEL_POSITION} from 'react-native-circle-checkbox';
 import Task from "../models/Task";
 import Evaluation from "../models/Evaluation";
 import Course from '../models/Course';
+import DataBase from '../Database'
+import TaskMapper from '../data_mappers/TaskMapper';
+import TaskMapperImpl from '../data_mappers/TaskMapperImpl';
 
 const HomeScreen = (props) => {
   const [formattedTaskData, setFormattedTaskData] = useState([]);
@@ -67,28 +70,46 @@ const HomeScreen = (props) => {
 async function formatData() {
   const formattedData = [];
 
+
+  let db = new DataBase();
+  DataBase.init();
+  DataBase.populateTaskTable();
+
   let rawData: Task[] = await Task.all();
-  console.log("raw");
-  console.log(rawData);
+  let taskMapper: TaskMapper = new TaskMapperImpl;
 
-  for (let i = 0; i < rawData.length; i++) {
-    let task = rawData[i];
-    let evaluation: Evaluation = await Evaluation.find(task.evaluation_id);
-    let course: Course = await Course.find(evaluation.course_code);
 
-    const taskInfo = {
-      title: task.title,
-      data: [
-        {
-          title: task.title,
-          priority: task.priority,
-          evaluation: evaluation.title,
-          course: course.code
-        }
-      ]
+  taskMapper.all().then(async (data) => {
+    for (let i = 0; i < rawData.length; i++) {
+      let task = rawData[i];
+      let evaluation: Evaluation = await Evaluation.find(task.evaluation_id);
+      let course: Course = await Course.find(evaluation.course_code);
+  
+      const taskInfo = {
+        title: task.title,
+        data: [
+          {
+            title: task.title,
+            priority: task.priority,
+            evaluation: evaluation.title,
+            course: course.code
+          }
+        ]
+      };
+      formattedData.push(taskInfo);
     };
-    formattedData.push(taskInfo);
-  };
+  })
+
+  console.log("raw");
+formattedData.forEach(element=>{
+  console.log(element.priority)
+})
+formattedData = Task.prioritizer.prioritize();
+formattedData.forEach(element=>{
+  console.log(element.priority)
+})
+
+
 
   return formattedData;
 }
