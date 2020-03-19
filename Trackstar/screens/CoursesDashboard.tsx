@@ -106,7 +106,7 @@ async function formatData() {
   const formattedData = [];
 
   const courseMapper: CourseMapper = new CourseMapperImpl();
-  let rawData: Course[] = await courseMapper.all();
+  const rawData: Course[] = await courseMapper.all();
 
   rawData.forEach(course => {
     const courseInfo = {
