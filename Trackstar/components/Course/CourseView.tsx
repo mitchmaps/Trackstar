@@ -27,7 +27,6 @@ export default function CourseView(props) {
 
   useEffect(() => {
     const evalData = retrieveEvalData(code).then((data: Evaluation[]) => {
-      console.log(data);
       setCourseEvals(data);
     });
 
@@ -68,7 +67,11 @@ export default function CourseView(props) {
         mode="contained"
         onPress={() => {
           props.navigation.navigate("Create task", {
-            evals: courseEvals
+            evals: courseEvals,
+            courseCode: code,
+            courseName: name,
+            courseTerm: term,
+            courseMinGrade: minGrade,
           });
         }}
       >
@@ -198,8 +201,6 @@ async function retrieveEvalData(code: string) {
   const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
   let evals: Evaluation[] = await evalMapper.findByCourse(code);
 
-  console.log('in here');
-  console.log(evals);
   return evals;
 }
 
