@@ -10,6 +10,8 @@ import Course from '../models/Course';
 import DataBase from '../Database'
 import TaskMapper from '../data_mappers/TaskMapper';
 import TaskMapperImpl from '../data_mappers/TaskMapperImpl';
+import EvaluationMapper from '../data_mappers/EvaluationMapper';
+import EvaluationMapperImpl from '../data_mappers/EvaluationMapperImpl';
 
 const HomeScreen = (props) => {
   const [formattedTaskData, setFormattedTaskData] = useState([]);
@@ -68,22 +70,33 @@ const HomeScreen = (props) => {
 };
 
 async function formatData() {
-  
 
-  let db = new DataBase();
+  DataBase.deleteTaskTable()
+  DataBase.deleteEvalTable()
+  // DataBase.deleteCourseTable()
+
+console.log("CALLING DATABASE INITT ----------------------------------------------------\n\n\n\n\n\n\n");
+
   DataBase.init();
-  DataBase.populateTaskTable();
-  let taskMapper: TaskMapper = new TaskMapperImpl;
 
+  DataBase.populateTaskTable();
+  DataBase.populateEvalTable();
+  DataBase.populateCourseTable();
+
+  let taskMapper: TaskMapper = new TaskMapperImpl;
+  let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
+
+  // let rawData: Task[] = await Task.all();
   let rawData: Task[] = await taskMapper.all();
+  
   const formattedData = [];
 
-  //console.log("raw");
-  //console.log(rawData);
+  console.log("raw");
+  console.log(rawData);
   
   for (let i = 0; i < rawData.length; i++) {
     let task = rawData[i];
-    let evaluation: Evaluation = await Evaluation.find(task.evaluation_id);
+    let evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
     let course: Course = await Course.find(evaluation.course_code);
 
     const taskInfo = {

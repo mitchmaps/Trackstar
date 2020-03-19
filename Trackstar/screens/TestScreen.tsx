@@ -27,6 +27,26 @@ const TestScreen = (props) => {
           <Text>Init DB</Text>
         </TouchableOpacity>
 
+                <TouchableOpacity style={styles.wipe} onPress={() => {
+          Database.deleteTaskData()
+          Database.deleteEvalData()
+          Database.deleteCourseData()
+        }}>
+          <Text>Delete Data</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.wipe} onPress={() => {
+          Database.deleteTaskTable()
+          Database.deleteEvalTable()
+          Database.deleteCourseTable()
+        }}>
+          <Text>Drop Tables</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {Database.populateTaskTable()}}>
+          <Text>Load Tasks</Text>
+        </TouchableOpacity>
+
         <Text>Course</Text>
 
         <TouchableOpacity style={styles.button} onPress={() => {Database.populateCourseTable()}}>
@@ -145,9 +165,7 @@ const TestScreen = (props) => {
 
         <Text>Task</Text>
 
-        <TouchableOpacity style={styles.button} onPress={() => {Database.populateTaskTable()}}>
-          <Text>Load Tasks</Text>
-        </TouchableOpacity>
+
 
         <TouchableOpacity style={styles.button} onPress={() => {
           taskMapper.all().then((data) => {
@@ -201,21 +219,7 @@ const TestScreen = (props) => {
           <Text>Update Task 1</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.wipe} onPress={() => {
-          Database.deleteTaskData()
-          Database.deleteEvalData()
-          Database.deleteCourseData()
-        }}>
-          <Text>Delete Data</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity style={styles.wipe} onPress={() => {
-          Database.deleteTaskTable()
-          Database.deleteEvalTable()
-          Database.deleteCourseTable()
-        }}>
-          <Text>Drop Tables</Text>
-        </TouchableOpacity>
       </View>
     );
 };
