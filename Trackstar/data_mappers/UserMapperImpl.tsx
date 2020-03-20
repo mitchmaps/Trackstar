@@ -25,7 +25,9 @@ export default class UserMapperImpl implements UserMapper {
     return new Promise((resolve) => {
       this.db.transaction(tx => {
         tx.executeSql("select * from User", [], (_, { rows: { _array } }) => {
-          resolve(_array[0])
+          let user: User = User.getInstance();
+          user.estimationAccuracy = _array[0].est_accuracy;
+          resolve(user);
         })
       })
     })
