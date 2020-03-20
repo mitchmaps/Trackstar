@@ -1,15 +1,15 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import Course from '../models/Course';
-import Evaluation from '../models/Evaluation';
-import Task from '../models/Task';
+import {Course, Evaluation, Task} from '../models';
 import Database from '../Database';
-import CourseMapperImpl from '../data_mappers/CourseMapperImpl';
-import CourseMapper from '../data_mappers/CourseMapper';
-import EvaluationMapper from '../data_mappers/EvaluationMapper';
-import TaskMapper from '../data_mappers/TaskMapper';
-import TaskMapperImpl from '../data_mappers/TaskMapperImpl';
-import EvaluationMapperImpl from '../data_mappers/EvaluationMapperImpl';
+import {
+  CourseMapper,
+  CourseMapperImpl,
+  EvaluationMapper,
+  EvaluationMapperImpl,
+  TaskMapper,
+  TaskMapperImpl
+} from "../data_mappers";
 
 const TestScreen = (props) => {
   const navigation = props.navigation;
@@ -21,11 +21,8 @@ const TestScreen = (props) => {
       <View style={{marginTop: 100}}>
         <TouchableOpacity style={styles.button} onPress={() => {
           let cmapper = new CourseMapperImpl
-          cmapper.createTable()
           let emapper = new EvaluationMapperImpl
-          emapper.createTable()
           let tmapper = new TaskMapperImpl
-          tmapper.createTable()
         }}>
           <Text>Init DB</Text>
         </TouchableOpacity>
@@ -65,7 +62,12 @@ const TestScreen = (props) => {
 
         <TouchableOpacity style={styles.button} onPress={() => {
           courseMapper.find("COMP3004").then ((course) => {
-            console.log(`found: ${course.code}`)
+            if (course == null) {
+              console.log("Course not found")
+            }
+            else {
+              console.log(`found: ${course.code}`)
+            }
           })
         }}>
           <Text>Find Course 3004</Text>
@@ -117,7 +119,12 @@ const TestScreen = (props) => {
 
         <TouchableOpacity style={styles.button} onPress={() => {
           evalMapper.find(1).then ((evaltn) => {
-            console.log(`found: ${evaltn.title}`)
+            if (evaltn == null) {
+              console.log("Eval not found")
+            }
+            else {
+              console.log(`found: ${evaltn.title}`)
+            }
           })
         }}>
           <Text>Find Evaluation 1</Text>
@@ -170,7 +177,12 @@ const TestScreen = (props) => {
 
         <TouchableOpacity style={styles.button} onPress={() => {
           taskMapper.find(1).then ((task) => {
-            console.log(`found: ${task.title}`)
+            if (task == null) {
+              console.log("task not found")
+            }
+            else {
+              console.log(`found: ${task.title}`)
+            }
           })
         }}>
           <Text>Find Task 1</Text>

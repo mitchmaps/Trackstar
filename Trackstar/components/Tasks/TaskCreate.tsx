@@ -1,6 +1,6 @@
 import React from "react";
-import Evaluation from "../../models/Evaluation";
-import Task from "../../models/Task";
+import {Evaluation, Task} from '../../models';
+import {TaskMapper, TaskMapperImpl} from '../../data_mappers';
 
 import { View, Text, ScrollView, Picker } from "react-native";
 import { Divider, Card, TextInput, Button, List } from "react-native-paper";
@@ -12,7 +12,7 @@ import UserMapperImpl from "../../data_mappers/UserMapperImpl";
 export default class TaskCreate extends React.Component {
   state: {
     title: string;
-    selectedEval: Evaluation;
+    selectedEval: number;
     dueDate: Date;
     duration: string;
   };
@@ -28,7 +28,7 @@ export default class TaskCreate extends React.Component {
 
     this.state = {
       title: "",
-      selectedEval: null as Evaluation,
+      selectedEval: this.props.route.params.evals[0].id,
       dueDate: new Date(),
       duration: "",
     };
@@ -36,10 +36,7 @@ export default class TaskCreate extends React.Component {
 
   render() {
     const { title, selectedEval, dueDate, duration } = this.state;
-    const { evals } = this.props.route.params.evals;
-
-    console.log('in here');
-    console.log(this.props.route.params.evals);
+    const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params;
 
     const evalSelectionMarkup = this.generateEvalSelectionMarkup(this.props.route.params.evals);
 
@@ -48,7 +45,7 @@ export default class TaskCreate extends React.Component {
       <Card>
         <Card.Content>
           <Text>Select the evaluation this task is for:</Text>
-          <Picker selectedValue={selectedEval} onValueChange={(value) => {this.setState({selectedEval: value})}}>
+          <Picker selectedValue={this.state.selectedEval} onValueChange={(itemValue, itemIndex) => {this.setState({selectedEval: itemValue})}}>
             {evalSelectionMarkup}
           </Picker>
           <TextInput
@@ -99,21 +96,29 @@ export default class TaskCreate extends React.Component {
 
   handleSubmit() {
     const { title, selectedEval, dueDate, duration } = this.state;
-    // replace fake eval id with real one once that's changed
-    const newTask = new Task(title, dueDate.toString(), +duration, 10);
-    console.log(newTask);
-    newTask.save();
+    const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params.evals;
+
+    const taskMapper: TaskMapper = new TaskMapperImpl();
+    const newTask = new Task(title, dueDate, +duration, selectedEval);
+    taskMapper.insert(newTask);
+
+    this.props.navigation.navigate("Course view", {
+      code: courseCode,
+      name: courseName,
+      term: courseTerm,
+      minGrade: courseMinGrade,
+    });
   }
 
   generateEvalSelectionMarkup(evals: Evaluation[]) {
     const evalSelectionMarkup = [];
-    evals.reduce((currEval: Evaluation, allEvals) => {
-      const {course_code, due_date, title, weight} = currEval;
+    evals.forEach((currEval) => {
+      const {id, course_code, due_date, title, weight} = currEval;
       const evalMarkup = (
-        <Picker.Item label={title} value={title} />
+        <Picker.Item label={title} value={id} />
       );
+
       evalSelectionMarkup.push(evalMarkup);
-      return allEvals;
     });
 
     return evalSelectionMarkup;
