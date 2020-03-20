@@ -6,6 +6,8 @@ import { View, Text, ScrollView, Picker } from "react-native";
 import { Divider, Card, TextInput, Button, List } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { iOSUIKit } from "react-native-typography";
+import UserMapper from "../../data_mappers/UserMapper";
+import UserMapperImpl from "../../data_mappers/UserMapperImpl";
 
 export default class TaskCreate extends React.Component {
   state: {
@@ -14,6 +16,8 @@ export default class TaskCreate extends React.Component {
     dueDate: Date;
     duration: string;
   };
+
+  userMapper: UserMapper = new UserMapperImpl;
 
   constructor(props) {
     super(props);
