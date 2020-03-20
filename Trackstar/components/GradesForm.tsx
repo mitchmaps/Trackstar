@@ -1,15 +1,16 @@
 import React from 'react';
 import { Text, View,TouchableOpacity, ImageEditor, Alert } from 'react-native';
 import { TextInput } from 'react-native';
+import GradeInfo from './GradeInfo';
+import GradesCalculator from './GradesCalculator';
+
 
 export default class GradesForm extends React.Component {
+
   state: {
     grades_and_weights: number[][],
     desired_grade: number,
-    avg_grade: number,
-    combined_weight: number,
-    needed_grade: number,
-    remaining_weight: number
+    grade_info: GradeInfo
   }
 
   constructor(props) {
@@ -17,16 +18,12 @@ export default class GradesForm extends React.Component {
     // this.update = this.update.bind(this);
     this.field = this.field.bind(this);
     this.handle_submit = this.handle_submit.bind(this)
-    this.calculate = this.calculate.bind(this)
-    // this.clear_fields = this.clear_fields.bind(this)
+    //this.calculate = this.calculate.bind(this)
 
     this.state = {
       grades_and_weights: [], // looks like [ [grade1, weight1], [grade2, weight2], [grade3, weight3], ...]
       desired_grade: 0,
-      avg_grade: 0,
-      combined_weight: 0,
-      needed_grade: 0,
-      remaining_weight: 0
+      grade_info: null
     }
   }
 
@@ -60,8 +57,8 @@ export default class GradesForm extends React.Component {
   }
 
   handle_submit() {
-    this.calculate()
-    if (this.state.combined_weight > 100) {
+    this.state.grade_info = GradesCalculator.calculate(this.state.grades_and_weights, this.state.desired_grade)
+    if (this.state.grade_info.curr_weight > 100) {
       Alert.alert(
         "The combined weights of these evaluations surpasses 100%.",
         "Please adjust the weights and try again.",
@@ -72,10 +69,11 @@ export default class GradesForm extends React.Component {
         ]
       )
     }
+
     else {
       Alert.alert(
-      `Current average grade: ${this.state.avg_grade}%\nCombined weight: ${this.state.combined_weight}%`,
-      `In order to finish with a ${this.state.desired_grade}%, you need an average of ${this.state.needed_grade.toFixed(2)}% on the remaining ${this.state.remaining_weight}%`,
+      `Current average grade: ${this.state.grade_info.curr_grade}%\nCombined weight: ${this.state.grade_info.curr_weight}%`,
+      `In order to finish with a ${this.state.desired_grade}%, you need an average of ${this.state.grade_info.needed_grade.toFixed(2)}% on the remaining ${this.state.grade_info.remaining_weight}%`,
       [
         {
           text: 'Back'
@@ -85,37 +83,7 @@ export default class GradesForm extends React.Component {
     }
   }
 
-  // will be moved out to another file
-  calculate() {
-    let avg_grade = 0;
-    let combined_grade = 0;
-    let combined_weight = 0;
-    let needed_grade = 0;
-    let remaining_weight = 0;
-
-    for (let i = 0; i < this.state.grades_and_weights.length; i++) {
-      let curEval = this.state.grades_and_weights[i];
-      if (curEval == undefined || Number.isNaN(curEval[0]) || Number.isNaN(curEval[1]) || curEval[0] == undefined || curEval[1] == undefined) {
-        continue;
-      }
-
-      combined_grade += curEval[0]*(curEval[1]/100);
-      combined_weight += curEval[1];
-    }
-
-    avg_grade = combined_grade/(combined_weight/100);
-    remaining_weight = 100 - combined_weight;
-    needed_grade = (this.state.desired_grade - combined_grade)/(remaining_weight/100);
-
-    this.state.avg_grade = parseFloat(avg_grade.toFixed(2));
-    this.state.combined_weight = parseFloat(combined_weight.toFixed(2));
-    this.state.needed_grade = parseFloat(needed_grade.toFixed(2));
-    this.state.remaining_weight = parseFloat(remaining_weight.toFixed(2));
-  }
-
-  // clear_fields() {
-  //   // not sure how to do this yet
-  // }
+  /* The calculations are done in GradesCalculator.tsx now*/
 
   render() {
     return (
@@ -135,8 +103,6 @@ export default class GradesForm extends React.Component {
         {this.field(5)}
         {this.field(6)}
         {this.field(7)}
-
-        {/*ADD + BUTTON TO ADD MORE FIELDS */}
 
         <View style={{alignItems: 'center'}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}>
@@ -161,7 +127,3 @@ export default class GradesForm extends React.Component {
     )
   }
 }
-
-
-
-
