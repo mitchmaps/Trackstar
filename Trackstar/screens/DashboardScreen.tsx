@@ -2,13 +2,16 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   Text,
   View,
+  Button,
   TouchableOpacity,
   SectionList,
   StyleSheet
 } from "react-native";
-import { Card } from "react-native-paper";
+import { Card, TextInput } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import CircleCheckBox, { LABEL_POSITION } from "react-native-circle-checkbox";
+import Modal from 'react-native-modal';
+import { iOSUIKit } from "react-native-typography";
 
 import { Task, Evaluation, Course } from "../models";
 import {
@@ -30,6 +33,7 @@ const HomeScreen = props => {
   const [formattedTaskData, setFormattedTaskData] = useState<TaskDescriptor[]>(
     []
   );
+  const [modalActive, setModalActive] = useState(false);
   const [fakeState, setFakeState] = useState(new Date());
 
   const taskDataRef = useRef(formattedTaskData);
@@ -67,12 +71,31 @@ const HomeScreen = props => {
 
   const tasksMarkup = generateTasksMarkup(formattedTaskData, handleTaskCompletion);
 
+  const modalMarkup = (
+    <Modal isVisible={modalActive} hasBackdrop={true}>
+      <View style={{flex: 1, marginTop: 40, marginBottom: 40, backgroundColor: "white", justifyContent: "center", alignItems: "center"}}>
+        <Card.Content>
+          <Text style={iOSUIKit.largeTitleEmphasized}>Complete task</Text>
+          <Text>How long did you spend on that task?</Text>
+          <View style={{flex: 1}}>
+            <TextInput
+              label="Time (in minutes)"
+              keyboardType="numeric"
+              onChangeText={() => {}}
+            />
+          </View>
+        </Card.Content>
+      </View>
+    </Modal>
+  );
+
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
       style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
     >
       <View style={{ flexDirection: "column", marginTop: 100 }}>
+        <Button title="modal time" onPress={() => {setModalActive(true)}} />
         <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
           Welcome Back!
         </Text>
@@ -85,6 +108,7 @@ const HomeScreen = props => {
       </View>
       <View style={{marginTop: 50}}>
         {tasksMarkup}
+        {modalMarkup}
       </View>
     </LinearGradient>
   );
