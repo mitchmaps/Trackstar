@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   Text,
   View,
+  ScrollView,
   TouchableOpacity,
   SectionList,
   StyleSheet
@@ -83,9 +84,9 @@ const HomeScreen = props => {
           Due March 10th
         </Text>
       </View>
-      <View style={{marginTop: 50}}>
+      <ScrollView style={{marginTop: 50}}>
         {tasksMarkup}
-      </View>
+      </ScrollView>
     </LinearGradient>
   );
 };
@@ -99,25 +100,31 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleChange) {
     const formatted_title = `${priority}. ${title}`;
     const formatted_subtitle = `${courseCode} - ${evalName}`;
 
+    const completeText = complete ? <Text>Complete</Text> : null;
+    const opacity = complete ? 0.5 : 1;
+
     const taskMarkup = (
-      <Card style={{ width: 350, marginBottom: 10 }}>
-        <Card.Title title={formatted_title} subtitle={formatted_subtitle} />
-        <Card.Content style={{ flex: 1, flexDirection: "row" }}>
-          <Text style={{ flex: 8 }}>
-            {courseCode} - {evalName}
-          </Text>
-          <CircleCheckBox
-            style={{ flex: 2 }}
-            // checked={item.title == "1. Read Chapter 3" ? true : false}
-            checked={complete ? true : false}
-            outerColor={"#5273eb"}
-            innerColor={"#5273eb"}
-            onToggle={() => {
-              handleChange(id);
-            }}
-          />
-        </Card.Content>
-      </Card>
+      <View opacity={opacity}>
+        <Card style={{ width: 350, marginBottom: 10 }}>
+          <Card.Title title={formatted_title} subtitle={formatted_subtitle} />
+          <Card.Content style={{ flex: 1, flexDirection: "row" }}>
+            <Text style={{ flex: 8 }}>
+              {courseCode} - {evalName}
+            </Text>
+            {completeText}
+            <CircleCheckBox
+              style={{ flex: 2 }}
+              // checked={item.title == "1. Read Chapter 3" ? true : false}
+              checked={complete ? true : false}
+              outerColor={"#5273eb"}
+              innerColor={"#5273eb"}
+              onToggle={() => {
+                handleChange(id);
+              }}
+            />
+          </Card.Content>
+        </Card>
+      </View>
     );
 
     allTasks.push(<View key={id}>{taskMarkup}</View>);
