@@ -20,15 +20,12 @@ import {
   TaskMapper,
   TaskMapperImpl,
 } from "../data_mappers";
-<<<<<<< HEAD
 import Database from "../Database";
-=======
->>>>>>> 59a517b149612b56afb68e4b0d6666f600586af8
 
 const HomeScreen = props => {
   const [formattedTaskData, setFormattedTaskData] = useState([]);
-  const [nextTask, setNextTask] = useState(new Task ("Study unit 1", new Date("2020-04-11"), 120, 10, false, 1))
-  const [nextEval, setNextEval] = useState(new Evaluation ("Deliverable 5", new Date(), 50, "COMP3004"))
+  // const [nextTask, setNextTask] = useState(new Task ("Study unit 1", new Date("2020-04-11"), 120, 10, false, 1))
+  // const [nextEval, setNextEval] = useState(new Evaluation ("Deliverable 5", new Date(), 50, "COMP3004"))
   const navigation = props.navigation;
 
 
@@ -42,7 +39,6 @@ const HomeScreen = props => {
     });
   }, []);
 
-<<<<<<< HEAD
   const singleItem = (data) => {
     const item = data.item
     const formatted_title = `${item.priority}. ${item.title}`
@@ -71,51 +67,28 @@ const HomeScreen = props => {
       );
   };
 
-  // let taskMapper: TaskMapper = new TaskMapperImpl();
-  // let evalMapper: EvaluationMapper = new EvaluationMapperImpl();
+  let taskMapper: TaskMapper = new TaskMapperImpl();
+  let evalMapper: EvaluationMapper = new EvaluationMapperImpl();
 
+  taskMapper.all().then((tasks) => {
+    Task.prioritizer.prioritize(tasks)
+  })
 
   //   // let nextTask = Task.prioritizer.prioritize(taskMapper.all())
 
-  //   // get the task with the highest priority
-  //   taskMapper.all().then((tasks) => {
-  //     let sortedTasks: Task[] = Task.prioritizer.prioritize(tasks)
-  //       setNextTask(sortedTasks[0]);
-  //   });
+    // get the task with the highest priority
+    // taskMapper.all().then((tasks) => {
+    //   let sortedTasks: Task[] = Task.prioritizer.prioritize(tasks)
+    //     setNextTask(sortedTasks[0]);
+    // });
   
-  //   // get associated evalulation
-  //   evalMapper.all().then((evals) => {
-  //     evals.forEach( evalElement => {
-  //       if(evalElement.id = nextTask.evaluation_id)setNextEval(evalElement);
-  //     })
-  //   })
+    // // get associated evalulation
+    // evalMapper.all().then((evals) => {
+    //   evals.forEach( evalElement => {
+    //     if(evalElement.id = nextTask.evaluation_id)setNextEval(evalElement);
+    //   })
+    // })
 
-=======
-  const singleItem = data => {
-    const item = data.item;
-    const formatted_title = `${item.priority}. ${item.title}`;
-    return (
-      // TO DO: figure out if we wanna keep the alerts Haohao set up. I like it as opposed to going to a new screen
-      // TO DO: align checkbox properly
-      <Card style={{ width: 350, marginBottom: 10 }}>
-        <Card.Title title={formatted_title} />
-        <Card.Content style={{ flex: 1, flexDirection: "row" }}>
-          <Text style={{ flex: 8 }}>
-            {item.course} - {item.evaluation}
-          </Text>
-          <CircleCheckBox
-            style={{ flex: 2 }}
-            // checked={item.title == "1. Read Chapter 3" ? true : false}
-            outerColor={"#5273eb"}
-            innerColor={"#5273eb"}
-            onToggle={checked => console.log("My state is: ", checked)}
-          />
-        </Card.Content>
-      </Card>
-    );
-  };
-
->>>>>>> 59a517b149612b56afb68e4b0d6666f600586af8
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
@@ -143,9 +116,9 @@ const HomeScreen = props => {
 };
 
 async function formatData() {
-<<<<<<< HEAD
 
 console.log("CALLING DATABASE INITT ----------------------------------------------------\n\n\n\n\n\n\n");
+
 
   Database.init();
 
@@ -162,19 +135,10 @@ console.log("CALLING DATABASE INITT --------------------------------------------
   
   const formattedData = [];
 
-=======
-  const taskMapper: TaskMapper = new TaskMapperImpl();
-  const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
-  const courseMapper: CourseMapper = new CourseMapperImpl();
-
-  const formattedData = [];
-  const rawData: Task[] = await taskMapper.all();
->>>>>>> 59a517b149612b56afb68e4b0d6666f600586af8
   console.log("raw");
   console.log(rawData);
   
   for (let i = 0; i < rawData.length; i++) {
-<<<<<<< HEAD
     let task = rawData[i];
     
     let evaluation: Evaluation = evalMapper.all().then((data) => {
@@ -194,11 +158,6 @@ console.log("CALLING DATABASE INITT --------------------------------------------
       })
       return courses;
     })
-=======
-    const task = rawData[i];
-    const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
-    const course: Course = await courseMapper.find(evaluation.course_code);
->>>>>>> 59a517b149612b56afb68e4b0d6666f600586af8
 
     const taskInfo = {
       title: task.title,
