@@ -30,6 +30,17 @@ export default class GradesForm extends React.Component {
       remaining_weight: 0
     }
   }
+  
+  //typecast for data mappers
+  let courseMapper: CourseMapper = new CourseMapperImpl
+  //TO DO: get the grades and weights from a course and plug them into the text fields 
+  /*
+  courseMapper.all().then((data) => {
+            let courses: Course[] = data;
+            // do stuff with courses
+			
+          })
+  */
 
   update_array(index1, index2, value) {
     const grades_and_weights = this.state.grades_and_weights
