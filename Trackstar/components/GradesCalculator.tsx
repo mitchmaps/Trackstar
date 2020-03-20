@@ -26,3 +26,4 @@ export default class GradseCalculator extends React.Component {
     needed_grade = (desired_grade - combined_grade)/(remaining_weight/100);
     return new GradeInfo(parseFloat(avg_grade.toFixed(2)), parseFloat(needed_grade.toFixed(2)), parseFloat(combined_weight.toFixed(2)), parseFloat(remaining_weight.toFixed(2)))
   }
+}
