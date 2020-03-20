@@ -2,12 +2,11 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   Text,
   View,
-  Button,
   TouchableOpacity,
   SectionList,
   StyleSheet
 } from "react-native";
-import { Card, TextInput } from "react-native-paper";
+import { Card, TextInput, Button } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import CircleCheckBox, { LABEL_POSITION } from "react-native-circle-checkbox";
 import Modal from 'react-native-modal';
@@ -65,6 +64,8 @@ const HomeScreen = props => {
     taskToUpdate.complete = !taskToUpdate.complete;
     updateTask(taskToUpdate);
 
+    setModalActive(true);
+
     // trigger re render
     setFakeState(new Date());
   }, []);
@@ -73,7 +74,7 @@ const HomeScreen = props => {
 
   const modalMarkup = (
     <Modal isVisible={modalActive} hasBackdrop={true}>
-      <View style={{flex: 1, marginTop: 40, marginBottom: 40, backgroundColor: "white", justifyContent: "center", alignItems: "center"}}>
+      <View style={{marginTop: 40, marginBottom: 40, backgroundColor: "white", justifyContent: "center", alignItems: "center"}}>
         <Card.Content>
           <Text style={iOSUIKit.largeTitleEmphasized}>Complete task</Text>
           <Text>How long did you spend on that task?</Text>
@@ -84,6 +85,7 @@ const HomeScreen = props => {
               onChangeText={() => {}}
             />
           </View>
+          <Button mode="contained" onPress={() => {setModalActive(false)}}>Submit</Button>
         </Card.Content>
       </View>
     </Modal>
