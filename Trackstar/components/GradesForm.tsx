@@ -57,7 +57,7 @@ let curr_grade = new curr_grade;
   }
 
   handle_submit() {
-    this.gradeCalculator.calculate()
+    this. this.state.gradeInfo = gradeCalculator.calculate()
     if (this.state.combined_weight > 100) {
       Alert.alert(
         "The combined weights of these evaluations surpasses 100%.",
