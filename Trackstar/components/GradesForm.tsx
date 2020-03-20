@@ -17,9 +17,9 @@ export default class GradesForm extends React.Component {
     // this.update = this.update.bind(this);
     this.field = this.field.bind(this);
     this.handle_submit = this.handle_submit.bind(this)
-    this.calculate = this.calculate.bind(this)
-    this.clear_fields = this.clear_fields.bind(this)
-    // this.auto_fields = this.auto_fields.bind(this)
+	  //TO DO: Calculate was moved out of here and into GradeCalulate.tsx 
+	  //so you need to do this line in there too or update it from there
+    //this.calculate = this.calculate.bind(this)
 
     this.state = {
       grades_and_weights: [], // looks like [ [grade1, weight1], [grade2, weight2], [grade3, weight3], ...]
@@ -73,7 +73,6 @@ export default class GradesForm extends React.Component {
         ]
       )
     }
-    //adding more error cases in an elseif here
     
     else {
       Alert.alert(
@@ -88,6 +87,7 @@ export default class GradesForm extends React.Component {
     }
   }
 
+  /* The calculations are done in GradesCalculator.tsx now
   calculate() {
     let avg_grade = 0;
     let combined_grade = 0;
@@ -114,17 +114,8 @@ export default class GradesForm extends React.Component {
     this.state.needed_grade = parseFloat(needed_grade.toFixed(2));
     this.state.remaining_weight = parseFloat(remaining_weight.toFixed(2));
   }
+  */
 
-   clear_fields() {
-     // currently implementing, does not work
-	 /*
-        this.state.avg_grade = '';
-        this.state.combined_weight = '';
-        this.state.needed_grade = '';
-        this.state.remaining_weight = '';
-        this.state.desired_grade= '';
-        */
-   }
 
   render() {
     return (
