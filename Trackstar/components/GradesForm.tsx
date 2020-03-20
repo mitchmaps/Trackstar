@@ -30,17 +30,6 @@ export default class GradesForm extends React.Component {
       remaining_weight: 0
     }
   }
-  
-  //typecast for data mappers
-  let courseMapper: CourseMapper = new CourseMapperImpl
-  //TO DO: get the grades and weights from a course and plug them into the text fields 
-  /*
-  courseMapper.all().then((data) => {
-            let courses: Course[] = data;
-            // do stuff with courses
-			
-          })
-  */
 
   update_array(index1, index2, value) {
     const grades_and_weights = this.state.grades_and_weights
@@ -99,7 +88,6 @@ export default class GradesForm extends React.Component {
     }
   }
 
-  // will be moved out to another file
   calculate() {
     let avg_grade = 0;
     let combined_grade = 0;
@@ -130,12 +118,12 @@ export default class GradesForm extends React.Component {
    clear_fields() {
      // currently implementing, does not work
 	 /*
-        this.state.avg_grade = ({ text: ''});
-		this.state.combined_weight = '';
-		this.state.needed_grade = '';
-		this.state.remaining_weight = '';
-        this.state.desired_grade= 0;
-		*/
+        this.state.avg_grade = '';
+        this.state.combined_weight = '';
+        this.state.needed_grade = '';
+        this.state.remaining_weight = '';
+        this.state.desired_grade= '';
+        */
    }
 
   render() {
@@ -156,8 +144,6 @@ export default class GradesForm extends React.Component {
         {this.field(5)}
         {this.field(6)}
         {this.field(7)}
-
-        {/*ADD + BUTTON TO ADD MORE FIELDS IF TIME ALLOWS*/}
 
         <View style={{alignItems: 'center'}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}>
