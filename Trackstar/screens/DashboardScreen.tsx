@@ -32,23 +32,29 @@ const HomeScreen = (props) => {
   const singleItem = (data) => {
     const item = data.item
     const formatted_title = `${item.priority}. ${item.title}`
-    return (
-      // TO DO: figure out if we wanna keep the alerts Haohao set up. I like it as opposed to going to a new screen
-      // TO DO: align checkbox properly
-      <Card style={{width: 350, marginBottom: 10}}>
-          <Card.Title title={formatted_title}/>
-          <Card.Content style={{flex: 1, flexDirection: 'row'}}>
-            <Text style={{flex: 8}}>{item.course} - {item.evaluation}</Text>
-            <CircleCheckBox
-              style={{flex: 2}}
-              // checked={item.title == "1. Read Chapter 3" ? true : false}
-              outerColor = {'#5273eb'}
-              innerColor = {'#5273eb'}
-              onToggle={(checked) => console.log('My state is: ', checked)}
-            />
-          </Card.Content>
-      </Card>
-    );
+    if(item.complete == true)console.log("item is checked off");
+    else console.log("item is not checked off");
+      return (
+        // TO DO: figure out if we wanna keep the alerts Haohao set up. I like it as opposed to going to a new screen
+        // TO DO: align checkbox properly
+        <Card style={{width: 350, marginBottom: 10}}>
+            <Card.Title title={formatted_title}/>
+            <Card.Content style={{flex: 1, flexDirection: 'row'}}>
+              <Text style={{flex: 8}}>{item.course} - {item.evaluation}</Text>
+              <Text style={{flex: 80}}>{(item.due_date).toDateString()}</Text>
+              <CircleCheckBox
+                style={{flex: 2}}
+                // checked={item.title == "1. Read Chapter 3" ? true : false}
+                outerColor = {'#5273eb'}
+                innerColor = {'#5273eb'}
+                onToggle={(checked) =>{
+                  console.log('My state is: ', checked);
+                  item.complete = true;
+                }}
+              />
+            </Card.Content>
+        </Card>
+      );
   };
 
   return(
@@ -72,10 +78,6 @@ const HomeScreen = (props) => {
 };
 
 async function formatData() {
-
-  DataBase.deleteTaskTable()
-  DataBase.deleteEvalTable()
-  // DataBase.deleteCourseTable()
 
 console.log("CALLING DATABASE INITT ----------------------------------------------------\n\n\n\n\n\n\n");
 
@@ -118,14 +120,15 @@ console.log("CALLING DATABASE INITT --------------------------------------------
       return courses;
     })
 
-
-
     const taskInfo = {
       title: task.title,
       data: [
         {
           title: task.title,
           priority: task.priority,
+          due_date: task.due_date,
+          est_duration: task.est_duration,
+          complete: task.complete,
           evaluation: evaluation.title,
           course: course.code
         }

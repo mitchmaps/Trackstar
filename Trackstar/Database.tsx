@@ -86,12 +86,12 @@ export default class Database {
   static populateTaskTable = () => {
     let taskMapper: TaskMapper = new TaskMapperImpl
 
-    let task1  = new Task ("Study unit 1", new Date(), 120, 10, false, 1);
-    let task2  = new Task ("Study unit 2", new Date(), 120, 10, false, 2);
-    let task3  = new Task ("Brainstorm project ideas", new Date(), 30, 2, false, 3);
-    let task4  = new Task ("Make class diagram", new Date(), 30, 7, false, 4);
-    let task5  = new Task ("Make sequence diagram", new Date(), 30, 7, false, 5);
-    let task6  = new Task ("Write pseudocode", new Date(), 30, 2, false, 6);
+    let task1  = new Task ("Study unit 1", new Date("2020-04-11"), 120, 10, false, 1);
+    let task2  = new Task ("Study unit 2", new Date("2020-04-05"), 120, 10, false, 2);
+    let task3  = new Task ("Brainstorm project ideas", new Date("2020-03-25"), 30, 2, false, 3);
+    let task4  = new Task ("Make class diagram", new Date("2020-03-29"), 30, 7, false, 4);
+    let task5  = new Task ("Make sequence diagram", new Date("2020-04-01"), 30, 7, false, 5);
+    let task6  = new Task ("Write pseudocode", new Date("2020-04-17"), 30, 2, false, 6);
 
     taskMapper.insert(task1)
     taskMapper.insert(task2)
