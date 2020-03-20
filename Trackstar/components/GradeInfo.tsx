@@ -10,4 +10,3 @@ import GradeCalculator from '../components/GradeCalculator';
     curr_weight: number
     remaining_weight: number
   }
-
