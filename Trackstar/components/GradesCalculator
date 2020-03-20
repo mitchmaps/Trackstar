@@ -3,15 +3,7 @@ import { Text, View,TouchableOpacity, ImageEditor, Alert } from 'react-native';
 import { TextInput } from 'react-native';
 import GradesForm from '../components/GradesForm';
 
-export default class GradeCalculator extends React.Component {
-  state: {
-    grades_and_weights: number[][],
-    desired_grade: number,
-    avg_grade: number,
-    combined_weight: number,
-    needed_grade: number,
-    remaining_weight: number
-  }
+import { avg_grade, combined_weight, needed_grade, remaining_weight} from "../GradesForm";
   
   calculate() {
     let avg_grade = 0;
