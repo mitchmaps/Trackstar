@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View,TouchableOpacity, ImageEditor, Alert } from 'react-native';
 import { TextInput } from 'react-native';
 import GradesForm from '../components/GradesForm';
+import GradeCalculator from '../components/GradeCalculator';
 
 export default class GradeInfo extends React.Component {
   state: {
