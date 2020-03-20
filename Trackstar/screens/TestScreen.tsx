@@ -1,15 +1,15 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import Course from '../models/Course';
-import Evaluation from '../models/Evaluation';
-import Task from '../models/Task';
+import {Course, Evaluation, Task} from '../models';
 import Database from '../Database';
-import CourseMapperImpl from '../data_mappers/CourseMapperImpl';
-import CourseMapper from '../data_mappers/CourseMapper';
-import EvaluationMapper from '../data_mappers/EvaluationMapper';
-import TaskMapper from '../data_mappers/TaskMapper';
-import TaskMapperImpl from '../data_mappers/TaskMapperImpl';
-import EvaluationMapperImpl from '../data_mappers/EvaluationMapperImpl';
+import {
+  CourseMapper,
+  CourseMapperImpl,
+  EvaluationMapper,
+  EvaluationMapperImpl,
+  TaskMapper,
+  TaskMapperImpl
+} from "../data_mappers";
 
 const TestScreen = (props) => {
   const navigation = props.navigation;
@@ -218,8 +218,11 @@ const TestScreen = (props) => {
         }}>
           <Text>Update Task 1</Text>
         </TouchableOpacity>
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 9ffce74dfed3c50a518e05dc0fbb3c03aabdc26b
       </View>
     );
 };

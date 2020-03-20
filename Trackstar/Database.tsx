@@ -1,14 +1,14 @@
 import Constants from 'expo-constants';
 import * as SQLite from 'expo-sqlite';
-import Course from './models/Course';
-import Evaluation from './models/Evaluation';
-import Task from './models/Task';
-import CourseMapper from './data_mappers/CourseMapper';
-import CourseMapperImpl from './data_mappers/CourseMapperImpl';
-import EvaluationMapper from './data_mappers/EvaluationMapper';
-import EvaluationMapperImpl from './data_mappers/EvaluationMapperImpl';
-import TaskMapperImpl from './data_mappers/TaskMapperImpl';
-import TaskMapper from './data_mappers/TaskMapper';
+import {Course, Evaluation, Task} from './models';
+import {
+  CourseMapper,
+  CourseMapperImpl,
+  EvaluationMapper,
+  EvaluationMapperImpl,
+  TaskMapper,
+  TaskMapperImpl,
+} from "./data_mappers";
 
 export default class Database {
   // TODO:

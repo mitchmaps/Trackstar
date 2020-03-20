@@ -43,13 +43,14 @@ export default class TaskPrioritizer{
 
         // sort the priority values list
         sortList.sort(function(a,b){return b-a});
-        // console.log(mappingList)
 
-        // populate a new sorted list of the objects based off of priority
+        // populate a new sorted list of tasks based off of priority
         let returnValue = [];
         sortList.forEach(element => {
             returnValue.push(mappingList.get(element))
         });
+        
+        // return the sorted tasks list as well
         return returnValue;
         // console.log(returnValue)
     }

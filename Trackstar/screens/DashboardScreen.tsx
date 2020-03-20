@@ -1,32 +1,38 @@
-import React from 'react';
+import React from "react";
 import { useEffect, useState, useCallback } from "react";
-import { Text, View, TouchableOpacity, SectionList, StyleSheet } from "react-native";
-import { Card } from 'react-native-paper';
-import { LinearGradient } from 'expo-linear-gradient';
-import CircleCheckBox, {LABEL_POSITION} from 'react-native-circle-checkbox';
-import Task from "../models/Task";
-import Evaluation from "../models/Evaluation";
-import Course from '../models/Course';
-import DataBase from '../Database'
-import TaskMapper from '../data_mappers/TaskMapper';
-import TaskMapperImpl from '../data_mappers/TaskMapperImpl';
-import EvaluationMapper from '../data_mappers/EvaluationMapper';
-import EvaluationMapperImpl from '../data_mappers/EvaluationMapperImpl';
-import CourseMapper from '../data_mappers/CourseMapper';
-import CourseMapperImpl from '../data_mappers/CourseMapperImpl';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  SectionList,
+  StyleSheet
+} from "react-native";
+import { Card } from "react-native-paper";
+import { LinearGradient } from "expo-linear-gradient";
+import CircleCheckBox, { LABEL_POSITION } from "react-native-circle-checkbox";
 
-const HomeScreen = (props) => {
+import {Task, Evaluation, Course} from '../models';
+import {
+  CourseMapper,
+  CourseMapperImpl,
+  EvaluationMapper,
+  EvaluationMapperImpl,
+  TaskMapper,
+  TaskMapperImpl,
+} from "../data_mappers";
+
+const HomeScreen = props => {
   const [formattedTaskData, setFormattedTaskData] = useState([]);
   const navigation = props.navigation;
 
   useEffect(() => {
-    const formattedTasks = formatData().then((data) => {
+    const formattedTasks = formatData().then(data => {
       console.log("formatted");
       console.log(data);
       setFormattedTaskData(data);
-      console.log('state');
+      console.log("state");
       console.log(formattedTaskData);
-    })
+    });
   }, []);
 
   const singleItem = (data) => {
@@ -57,19 +63,25 @@ const HomeScreen = (props) => {
       );
   };
 
-  return(
+  return (
     <LinearGradient
-      colors={['#bcf7ed', '#5273eb']}
-      style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}
+      colors={["#bcf7ed", "#5273eb"]}
+      style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
     >
-      <View style={{flexDirection: 'column', marginTop: 100}}>
-        <Text style={{fontSize: 45, color: "white", textAlign: "center"}}>Welcome Back!</Text>
-        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Next Evaluation: PHIL 1200 - Test 1</Text>
-        <Text style={{fontSize: 15, color: "white", textAlign: "center"}}>Due March 10th</Text>
+      <View style={{ flexDirection: "column", marginTop: 100 }}>
+        <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
+          Welcome Back!
+        </Text>
+        <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
+          Next Evaluation: PHIL 1200 - Test 1
+        </Text>
+        <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
+          Due March 10th
+        </Text>
       </View>
       {/* TO DO: figure out how to raise this section */}
       <SectionList
-        style={{marginTop: 50}}
+        style={{ marginTop: 50 }}
         sections={formattedTaskData}
         renderItem={singleItem}
       />
@@ -135,7 +147,7 @@ console.log("CALLING DATABASE INITT --------------------------------------------
       ]
     };
     formattedData.push(taskInfo);
-  };
+  }
 
   return formattedData;
 }

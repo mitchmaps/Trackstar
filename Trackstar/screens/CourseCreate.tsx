@@ -4,8 +4,8 @@ import { Divider, Card, TextInput, Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { iOSUIKit } from 'react-native-typography';
 
-import Course from '../models/Course';
-import Evaluation from '../models/Evaluation';
+import {Course, Evaluation} from '../models';
+import {CourseMapper, CourseMapperImpl, EvaluationMapper, EvaluationMapperImpl} from '../data_mappers';
 
 import styles from '../Styles/CourseCreateStyles';
 
@@ -168,15 +168,15 @@ export default class CourseCreate extends React.Component {
           <View style={styles.buttonMargin}>
             <Button mode="contained" onPress={this.handleSubmit} disabled={this.state.currTotalGradeWeight > 100 || this.state.currTotalGradeWeight < 100}>Submit</Button>
           </View>
-          <Button onPress={() => {Course.all()}}>Test</Button>
         </ScrollView>
       </View>
     );
   }
 
   handleSubmit() {
+    const courseMapper: CourseMapper = new CourseMapperImpl();
     const newCourse = new Course(this.state.title, this.state.code, +this.state.minGrade);
-    newCourse.save();
+    courseMapper.insert(newCourse);
 
     this.props.navigation.navigate("Dashboard", {
       code: newCourse.code,
@@ -244,10 +244,10 @@ export default class CourseCreate extends React.Component {
   }
 
   saveEvaluations(courseEvals: EvaluationDescriptor[], courseCode: string) {
+    const evaluationMapper: EvaluationMapper = new EvaluationMapperImpl();
     courseEvals.forEach((currEval) => {
-      console.log(currEval.title, currEval.date.toString(), false, currEval.weight, 0, courseCode);
-      const newEval = new Evaluation(currEval.title, currEval.date.toString(), currEval.weight, courseCode, false, 0);
-      newEval.save();
+      const newEval = new Evaluation(currEval.title, currEval.date, currEval.weight, courseCode, false, 0);
+      evaluationMapper.insert(newEval);
     });
   }
 }
