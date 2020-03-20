@@ -6,9 +6,6 @@ export default class GradesForm extends React.Component {
 
 //GradeInfo instance 
 //GradeInfo instance 
-console.log(new  curr_grade instance of GradeInfo. curr_grade)
-let curr_grade = new curr_grade;
-
 
   constructor(props) {
     super(props);
