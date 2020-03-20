@@ -5,7 +5,7 @@ import GradesForm from '../components/GradesForm';
 
 import { avg_grade, combined_weight, needed_grade, remaining_weight} from "../GradesForm";
   
-  calculate() {
+  calculate(grades_and_weights, desired_grade) {
     let avg_grade = 0;
     let combined_grade = 0;
     let combined_weight = 0;
