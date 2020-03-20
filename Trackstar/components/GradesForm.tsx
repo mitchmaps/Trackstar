@@ -1,11 +1,17 @@
 import React from 'react';
 import { Text, View,TouchableOpacity, ImageEditor, Alert } from 'react-native';
 import { TextInput } from 'react-native';
+import GradeInfo from './GradeInfo';
+import GradesCalculator from './GradesCalculator';
+
 
 export default class GradesForm extends React.Component {
 
-//GradeInfo instance 
-//GradeInfo instance 
+  state: {
+    grades_and_weights: number[][],
+    desired_grade: number,
+    grade_info: GradeInfo
+  }
 
   constructor(props) {
     super(props);
@@ -17,10 +23,7 @@ export default class GradesForm extends React.Component {
     this.state = {
       grades_and_weights: [], // looks like [ [grade1, weight1], [grade2, weight2], [grade3, weight3], ...]
       desired_grade: 0,
-      avg_grade: 0,
-      combined_weight: 0,
-      needed_grade: 0,
-      remaining_weight: 0
+      grade_info: null
     }
   }
 
@@ -54,8 +57,8 @@ export default class GradesForm extends React.Component {
   }
 
   handle_submit() {
-    this. this.state.gradeInfo = gradeCalculator.calculate()
-    if (this.state.combined_weight > 100) {
+    this.state.grade_info = GradesCalculator.calculate(this.state.grades_and_weights, this.state.desired_grade)
+    if (this.state.grade_info.curr_weight > 100) {
       Alert.alert(
         "The combined weights of these evaluations surpasses 100%.",
         "Please adjust the weights and try again.",
@@ -66,11 +69,11 @@ export default class GradesForm extends React.Component {
         ]
       )
     }
-    
+
     else {
       Alert.alert(
-      `Current average grade: ${this.state.avg_grade}%\nCombined weight: ${this.state.combined_weight}%`,
-      `In order to finish with a ${this.state.desired_grade}%, you need an average of ${this.state.needed_grade.toFixed(2)}% on the remaining ${this.state.remaining_weight}%`,
+      `Current average grade: ${this.state.grade_info.curr_grade}%\nCombined weight: ${this.state.grade_info.curr_weight}%`,
+      `In order to finish with a ${this.state.desired_grade}%, you need an average of ${this.state.grade_info.needed_grade.toFixed(2)}% on the remaining ${this.state.grade_info.remaining_weight}%`,
       [
         {
           text: 'Back'
