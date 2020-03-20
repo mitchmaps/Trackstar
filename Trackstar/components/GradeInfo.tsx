@@ -4,10 +4,10 @@ import { TextInput } from 'react-native';
 import GradesForm from '../components/GradesForm';
 import GradeCalculator from '../components/GradeCalculator';
 
-export default class GradeInfo extends React.Component {
-  state: {
+  constructor(props) {
     curr_grade: number,
     needed_grade: number,
     curr_weight: number
     remaining_weight: number
   }
+
