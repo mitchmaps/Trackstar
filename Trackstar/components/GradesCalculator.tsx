@@ -30,4 +30,6 @@ import { avg_grade, combined_weight, needed_grade, remaining_weight} from "../Gr
     this.state.combined_weight = parseFloat(combined_weight.toFixed(2));
     this.state.needed_grade = parseFloat(needed_grade.toFixed(2));
     this.state.remaining_weight = parseFloat(remaining_weight.toFixed(2));
+    
+    return new GradeInfo(avg_grade,needed_grade,combined_grade,combined_weight,remaining_weight)
   }
