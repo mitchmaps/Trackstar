@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import { Text, View,TouchableOpacity, ImageEditor, Alert } from 'react-native';
 import { TextInput } from 'react-native';
@@ -39,3 +40,4 @@ export default class GradeCalculator extends React.Component {
     this.state.needed_grade = parseFloat(needed_grade.toFixed(2));
     this.state.remaining_weight = parseFloat(remaining_weight.toFixed(2));
   }
+  */
