@@ -218,11 +218,6 @@ const TestScreen = (props) => {
         }}>
           <Text>Update Task 1</Text>
         </TouchableOpacity>
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 9ffce74dfed3c50a518e05dc0fbb3c03aabdc26b
       </View>
     );
 };

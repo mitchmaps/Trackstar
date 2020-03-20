@@ -20,10 +20,14 @@ import {
   TaskMapper,
   TaskMapperImpl,
 } from "../data_mappers";
+import Database from "../Database";
 
 const HomeScreen = props => {
   const [formattedTaskData, setFormattedTaskData] = useState([]);
+  const [nextTask, setNextTask] = useState(new Task ("Study unit 1", new Date("2020-04-11"), 120, 10, false, 1))
+  const [nextEval, setNextEval] = useState(new Evaluation ("Deliverable 5", new Date(), 50, "COMP3004"))
   const navigation = props.navigation;
+
 
   useEffect(() => {
     const formattedTasks = formatData().then(data => {
@@ -63,6 +67,25 @@ const HomeScreen = props => {
       );
   };
 
+  // let taskMapper: TaskMapper = new TaskMapperImpl();
+  // let evalMapper: EvaluationMapper = new EvaluationMapperImpl();
+
+
+  //   // let nextTask = Task.prioritizer.prioritize(taskMapper.all())
+
+  //   // get the task with the highest priority
+  //   taskMapper.all().then((tasks) => {
+  //     let sortedTasks: Task[] = Task.prioritizer.prioritize(tasks)
+  //       setNextTask(sortedTasks[0]);
+  //   });
+  
+  //   // get associated evalulation
+  //   evalMapper.all().then((evals) => {
+  //     evals.forEach( evalElement => {
+  //       if(evalElement.id = nextTask.evaluation_id)setNextEval(evalElement);
+  //     })
+  //   })
+
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
@@ -93,11 +116,11 @@ async function formatData() {
 
 console.log("CALLING DATABASE INITT ----------------------------------------------------\n\n\n\n\n\n\n");
 
-  DataBase.init();
+  Database.init();
 
-  DataBase.populateTaskTable();
-  DataBase.populateEvalTable();
-  DataBase.populateCourseTable();
+  Database.populateTaskTable();
+  Database.populateEvalTable();
+  Database.populateCourseTable();
 
   let taskMapper: TaskMapper = new TaskMapperImpl;
   let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
