@@ -24,8 +24,8 @@ import Database from "../Database";
 
 const HomeScreen = props => {
   const [formattedTaskData, setFormattedTaskData] = useState([]);
-  // const [nextTask, setNextTask] = useState(new Task ("Study unit 1", new Date("2020-04-11"), 120, 10, false, 1))
-  // const [nextEval, setNextEval] = useState(new Evaluation ("Deliverable 5", new Date(), 50, "COMP3004"))
+  const [nextTask, setNextTask] = useState(new Task ("Study unit 1", new Date("2020-04-11"), 120, 10, false, 1))
+  const [nextEval, setNextEval] = useState(new Evaluation ("Project 1", new Date(), 20, "COMP3008"))
   const navigation = props.navigation;
 
 
@@ -113,7 +113,7 @@ const HomeScreen = props => {
       />
     </LinearGradient>
   );
-};
+
 
 async function formatData() {
 
@@ -142,12 +142,13 @@ console.log("CALLING DATABASE INITT --------------------------------------------
     let task = rawData[i];
     
     let evaluation: Evaluation = evalMapper.all().then((data) => {
-      let evals: Evaluation[];
       data.forEach(element => {
         if(element.id == task.evaluation_id)
-          evals.push(element);
-      })
-      return evals;
+          {
+            setNextEval(element);
+            console.log(element);
+          }
+      });
     })
 
     let course: Course = courseMapper.all().then((data) => {
@@ -169,7 +170,7 @@ console.log("CALLING DATABASE INITT --------------------------------------------
           est_duration: task.est_duration,
           complete: task.complete,
           evaluation: evaluation.title,
-          course: course.code
+          course: evaluation.course_code
         }
       ]
     };
@@ -178,5 +179,6 @@ console.log("CALLING DATABASE INITT --------------------------------------------
 
   return formattedData;
 }
+};
 
 export default HomeScreen;
