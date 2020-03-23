@@ -1,0 +1,10 @@
+Gabrielle Pancu
+ID: 101104085
+
+Week 9: March 10 - March 17
+- write back-end design section of D3
+- contribute to Layered architecture section of D3
+- revise/edit all other sections of D3
+- start code for course data mapper (insert() and delete()) and edit business object code
+- create DBCOnnection class
+- a lot of research on how to return objects from async functions

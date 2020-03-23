@@ -1,0 +1,14 @@
+Gabrielle Pancu
+ID: 101104085
+
+Week 10: March 17 - March 24
+- implement find() and all() for course data mapper (after realizing returning objects won't be possible and sticking to promises)
+- implement insert() delete() all() find() find_by() for task and evaluation data mappers
+- implement update() methods for all data mappers
+- change due_date to have type Date in Task and Evaluation & edit mock data accordingly
+- implement user class and data mapper
+- add error handler for sql calls
+- help with implementation of TaskPrioritizer
+- add code in task mapper for calling prioritize()
+- create gradeInfo class and implement the design layed out for grade calculation in D3
+- create oral exam presentation slides
