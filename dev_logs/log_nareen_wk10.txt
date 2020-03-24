@@ -1,0 +1,12 @@
+Nareen Khurshid
+101029589
+
+After the online oral exam 
+----------------------------------------------
+March 23rd and 24th
+-Something we wanted to add was autofill for the calculator
+-done using mapping
+-grade-mappers classes being created and defined
+To do:
+-still need to implement functionality
+-try to add more error handling overall and update logs
