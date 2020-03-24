@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, Platform } from 'react-native';
 import {Course, Evaluation, Task} from '../models';
 import Database from '../Database';
 import * as Calendar from 'expo-calendar';
@@ -20,7 +20,7 @@ const TestScreen = (props) => {
   let taskMapper: TaskMapper = new TaskMapperImpl
 
     return (
-      <View style={{marginTop: 100}}>
+      <ScrollView style={{marginTop: 100}}>
         <TouchableOpacity style={styles.button} onPress={() =>
           {
             (async () => {
@@ -33,25 +33,15 @@ const TestScreen = (props) => {
             })();
           }
         }>
-          <Text>Sign in</Text>
+          <Text>Request Calendar Permission</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={createCalendar}>
-          <Text>Create Event</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.wipe} onPress={() => {
-          Database.deleteUserData()
-        }}>
-          <Text>Delete Data</Text>
-        </TouchableOpacity>
-
-        {/* <TouchableOpacity style={styles.button} onPress={() => {
+        <TouchableOpacity style={styles.button} onPress={() => {
           let cmapper = new CourseMapperImpl
           let emapper = new EvaluationMapperImpl
           let tmapper = new TaskMapperImpl
         }}>
-          <Text>Init DB</Text>
+          <Text>Create tables</Text>
         </TouchableOpacity>
 
         <Text>Course</Text>
@@ -228,12 +218,22 @@ const TestScreen = (props) => {
           <Text>Update Task 1</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.wipe} onPress={() => {Database.deleteTaskData()}}>
+          <Text>Delete task data</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.wipe} onPress={() => {Database.deleteEvalData()}}>
+          <Text>Delete eval data</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.wipe} onPress={() => {Database.deleteCourseData()}}>
+          <Text>Delete course data</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.wipe} onPress={() => {
-          Database.deleteTaskData()
-          Database.deleteEvalData()
-          Database.deleteCourseData()
+          Database.deleteUserData()
         }}>
-          <Text>Delete Data</Text>
+          <Text>Delete user data</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.wipe} onPress={() => {
@@ -242,8 +242,8 @@ const TestScreen = (props) => {
           Database.deleteCourseTable()
         }}>
           <Text>Drop Tables</Text>
-        </TouchableOpacity> */}
-      </View>
+        </TouchableOpacity>
+      </ScrollView>
     );
 };
 
@@ -266,39 +266,6 @@ const styles = StyleSheet.create({
   }
 })
 
-async function getDefaultCalendarSource() {
-  const calendars = await Calendar.getCalendarsAsync();
-  const defaultCalendars = calendars.filter(each => each.source.name === 'iCloud');
-  return defaultCalendars[0].source;
-}
-
-async function createCalendar() {
-  const defaultCalendarSource =
-    Platform.OS === 'ios'
-      ? await getDefaultCalendarSource()
-      : { isLocalAccount: true, name: 'Trackstar' };
-  const newCalendarID = await Calendar.createCalendarAsync({
-    title: 'Trackstar',
-    color: 'blue',
-    entityType: Calendar.EntityTypes.EVENT,
-    sourceId: defaultCalendarSource.id,
-    source: defaultCalendarSource,
-    name: 'internalCalendarName',
-    ownerAccount: 'personal',
-    accessLevel: Calendar.CalendarAccessLevel.OWNER,
-  });
-  console.log(`Your new calendar ID is: ${newCalendarID}`);
-  // const details = {
-  //   title: "Study Unit 1",
-  //   startDate: new Date(),
-  //   endDate: new Date()
-  // }
-  Calendar.createEventAsync(newCalendarID, {
-    title: "Study Unit 1",
-    startDate: new Date(),
-    endDate: new Date()
-  });
-}
 export default TestScreen;
 
 /* notes:
