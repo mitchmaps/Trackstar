@@ -150,7 +150,7 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
-          taskMapper.all().then((data) => {
+          taskMapper.all(true).then((data) => {
             let tasks: Task[] = data;
             console.log("All tasks:")
             console.log(tasks.length)

@@ -92,7 +92,7 @@ export default class Database {
     let task3  = new Task ("Brainstorm project ideas", new Date(), 30, 2, false, 3);
     let task4  = new Task ("Make class diagram", new Date(), 30, 7, false, 4);
     let task5  = new Task ("Make sequence diagram", new Date(), 30, 7, false, 5);
-    let task6  = new Task ("Write pseudocode", new Date(), 30, 2, false, 6);
+    let task6  = new Task ("Write pseudocode", new Date(), 30, 2, true, 6);
 
     taskMapper.insert(task1)
     taskMapper.insert(task2)
