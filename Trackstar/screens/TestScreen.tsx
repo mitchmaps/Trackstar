@@ -2,6 +2,8 @@ import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import {Course, Evaluation, Task} from '../models';
 import Database from '../Database';
+import * as Calendar from 'expo-calendar';
+
 import {
   CourseMapper,
   CourseMapperImpl,
@@ -19,7 +21,21 @@ const TestScreen = (props) => {
 
     return (
       <View style={{marginTop: 100}}>
-        <TouchableOpacity style={styles.button} onPress={() => {
+        <TouchableOpacity style={styles.button} onPress={() =>
+          {
+            (async () => {
+              const { status } = await Calendar.requestCalendarPermissionsAsync();
+              if (status === 'granted') {
+                const calendars = await Calendar.getCalendarsAsync();
+                console.log('Here are all your calendars:');
+                console.log({ calendars });
+              }
+            })();
+          }
+        }>
+          <Text>Sign in</Text>
+        </TouchableOpacity>
+        {/* <TouchableOpacity style={styles.button} onPress={() => {
           let cmapper = new CourseMapperImpl
           let emapper = new EvaluationMapperImpl
           let tmapper = new TaskMapperImpl
@@ -215,7 +231,7 @@ const TestScreen = (props) => {
           Database.deleteCourseTable()
         }}>
           <Text>Drop Tables</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
 };
