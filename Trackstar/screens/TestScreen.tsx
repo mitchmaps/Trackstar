@@ -40,6 +40,12 @@ const TestScreen = (props) => {
           <Text>Create Event</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.wipe} onPress={() => {
+          Database.deleteUserData()
+        }}>
+          <Text>Delete Data</Text>
+        </TouchableOpacity>
+
         {/* <TouchableOpacity style={styles.button} onPress={() => {
           let cmapper = new CourseMapperImpl
           let emapper = new EvaluationMapperImpl

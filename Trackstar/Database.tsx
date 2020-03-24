@@ -123,6 +123,13 @@ export default class Database {
     })
   }
 
+  static deleteUserData = () => {
+    const db = SQLite.openDatabase("db.db");
+    db.transaction(tx => {
+      tx.executeSql("delete from User")
+    })
+  }
+
   static deleteCourseTable = () => {
     const db = SQLite.openDatabase("db.db");
     db.transaction(tx => {
