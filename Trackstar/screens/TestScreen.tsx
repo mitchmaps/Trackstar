@@ -37,8 +37,9 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={createCalendar}>
-          <Text>Create Calendar</Text>
+          <Text>Create Event</Text>
         </TouchableOpacity>
+
         {/* <TouchableOpacity style={styles.button} onPress={() => {
           let cmapper = new CourseMapperImpl
           let emapper = new EvaluationMapperImpl
@@ -281,5 +282,19 @@ async function createCalendar() {
     accessLevel: Calendar.CalendarAccessLevel.OWNER,
   });
   console.log(`Your new calendar ID is: ${newCalendarID}`);
+  // const details = {
+  //   title: "Study Unit 1",
+  //   startDate: new Date(),
+  //   endDate: new Date()
+  // }
+  Calendar.createEventAsync(newCalendarID, {
+    title: "Study Unit 1",
+    startDate: new Date(),
+    endDate: new Date()
+  });
 }
 export default TestScreen;
+
+/* notes:
+save calendar id in user table?
+*/
