@@ -70,7 +70,7 @@ export default class GradesForm extends React.Component {
       )
     }
     
-    else if (this.state.grade_info.needed_grade > 100) {
+    else if (this.state.grade_info.needed_grade > 100) { 
       Alert.alert(
         "The required percentage surpass 100%.",
         "The desired grade is not possible (without bonus)",
