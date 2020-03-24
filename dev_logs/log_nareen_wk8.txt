@@ -1,7 +1,7 @@
 Nareen Khurshid
 101029589
 
-Before,during, and after the online oral exam
+Before the online oral exam
 ----------------------------------------------
 
 -Tried to implement clear fields feature
