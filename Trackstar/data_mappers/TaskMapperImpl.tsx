@@ -1,6 +1,9 @@
 import TaskMapper from "./TaskMapper";
 import Task from "../models/Task";
 import DBConnection from "../DBConnection";
+import User from "../models/User";
+import UserMapper from "./UserMapper";
+import UserMapperImpl from "./UserMapperImpl";
 
 
 export default class TaskMapperImpl implements TaskMapper {
@@ -19,10 +22,16 @@ export default class TaskMapperImpl implements TaskMapper {
     );
   };
 
-  update(t: Task): void {
+  update(t: Task, complete: boolean = false): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("update Task set title=?, due_date=?, est_duration=?, priority=?, complete=? where id=?", [t.title, JSON.stringify(t.due_date), t.est_duration, t.priority, t.complete, t.id], () => this.updatePriorities(), this.errorHandler);
+        tx.executeSql("update Task set title=?, due_date=?, est_duration=?, priority=?, complete=? where id=?", [t.title, JSON.stringify(t.due_date), t.est_duration, t.priority, t.complete, t.id],
+          () => {
+            this.updatePriorities();
+            if (complete)
+              this.updateEstAccuracy();
+          },
+          this.errorHandler);
       },
       null
     );
@@ -125,5 +134,13 @@ export default class TaskMapperImpl implements TaskMapper {
         this.updatePriority(sortedTasks[i]);
       }
     })
+  }
+
+  private updateEstAccuracy(): void {
+    let userMapper: UserMapper = new UserMapperImpl;
+    userMapper.getUser() // updates the singleton
+    let user = User.getInstance() // get the singleton
+    user.estimationAccuracy -= 1; // TODO: add actual math here
+    userMapper.update(user);
   }
 }
