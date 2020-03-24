@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import {Course, Evaluation, Task} from '../models';
 import Database from '../Database';
 import * as Calendar from 'expo-calendar';
@@ -34,6 +34,10 @@ const TestScreen = (props) => {
           }
         }>
           <Text>Sign in</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={createCalendar}>
+          <Text>Create Calendar</Text>
         </TouchableOpacity>
         {/* <TouchableOpacity style={styles.button} onPress={() => {
           let cmapper = new CourseMapperImpl
@@ -255,4 +259,27 @@ const styles = StyleSheet.create({
   }
 })
 
+async function getDefaultCalendarSource() {
+  const calendars = await Calendar.getCalendarsAsync();
+  const defaultCalendars = calendars.filter(each => each.source.name === 'iCloud');
+  return defaultCalendars[0].source;
+}
+
+async function createCalendar() {
+  const defaultCalendarSource =
+    Platform.OS === 'ios'
+      ? await getDefaultCalendarSource()
+      : { isLocalAccount: true, name: 'Trackstar' };
+  const newCalendarID = await Calendar.createCalendarAsync({
+    title: 'Trackstar',
+    color: 'blue',
+    entityType: Calendar.EntityTypes.EVENT,
+    sourceId: defaultCalendarSource.id,
+    source: defaultCalendarSource,
+    name: 'internalCalendarName',
+    ownerAccount: 'personal',
+    accessLevel: Calendar.CalendarAccessLevel.OWNER,
+  });
+  console.log(`Your new calendar ID is: ${newCalendarID}`);
+}
 export default TestScreen;
