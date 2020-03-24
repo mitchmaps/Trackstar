@@ -1,0 +1,23 @@
+Nareen Khurshid
+101029589
+
+Before,during, and after the online oral exam
+----------------------------------------------
+
+-Tried to implement clear fields feature
+-problem, specific selected fields would not individually clear
+-formated the code to match the uml and design/architecture we agreed on
+-created/implemented GradeCalculator.tsx
+-created/implemented GradeInfo.tsx
+-created/implemented GradesCalculator.tsx
+-edited GradesForm.tsx
+-pushed changes to master branch
+-Group member reviewd & corrected
+-Did Research on mapping and promises
+
+-Reviewed Gaby's presentation slides
+-Wrote script for architecture for the d3 oral exam (for self)
+-group meeting
+-Practiced and timed presentation with all other members
+-Took notes on members portions of the presentation
+-presentation
