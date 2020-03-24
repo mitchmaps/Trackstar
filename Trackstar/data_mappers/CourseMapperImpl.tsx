@@ -13,7 +13,7 @@ export default class CourseMapperImpl implements CourseMapper {
   insert(c: Course): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into Course (code, title, min_grade) values (?, ?, ?)", [c.code, c.title, c.min_grade], null, this.errorHandler);
+        tx.executeSql("insert into Course (code, title, min_grade, grade, complete) values (?, ?, ?, ?, ?)", [c.code, c.title, c.min_grade, c.grade, c.complete], null, this.errorHandler);
       },
       null
     );
@@ -37,11 +37,17 @@ export default class CourseMapperImpl implements CourseMapper {
     );
   };
 
-  all(): Promise<Course[]> {
+  all(complete: boolean = false): Promise<Course[]> {
+    let sql = "";
+    if (complete)
+      sql = "select * from Course";
+    else
+      sql = "select * from Course where complete = 0";
+
     return new Promise((resolve) => {
       const course_objs = []
       this.db.transaction(tx => {
-        tx.executeSql("select * from Course", [],
+        tx.executeSql(sql, [],
           (_, { rows: { _array } }) => {
             _array.forEach(course => {
               course_objs.push(new Course(course.title, course.code, course.min_grade, course.grade, course.complete))

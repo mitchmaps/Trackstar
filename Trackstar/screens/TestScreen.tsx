@@ -34,7 +34,7 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
-          courseMapper.all().then((data) => {
+          courseMapper.all(true).then((data) => {
             let courses: Course[] = data;
             console.log("All courses:")
             console.log(courses.length)
@@ -46,7 +46,7 @@ const TestScreen = (props) => {
           <Text>All Courses</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => {
+        {/* <TouchableOpacity style={styles.button} onPress={() => {
           let newCourse = new Course("OOP", "COMP3004", 90)
           courseMapper.insert(newCourse)
         }}>
@@ -84,7 +84,7 @@ const TestScreen = (props) => {
           })
         }}>
           <Text>Update 3004</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <Text>Evaluation</Text>
         <TouchableOpacity style={styles.button} onPress={() => {Database.populateEvalTable()}}>

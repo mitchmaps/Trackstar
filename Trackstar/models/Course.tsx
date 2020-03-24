@@ -5,7 +5,7 @@ export default class Course {
     grade:number;
     complete:boolean;
 
-    constructor(t: string, c: string, min_g: number, g: number = 0, cp: boolean = false) {
+    constructor(t: string, c: string, min_g: number, g = 0, cp = false) {
         this.title = t;
         this.code = c;
         this.min_grade = min_g;
