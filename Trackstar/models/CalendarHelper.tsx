@@ -39,7 +39,7 @@ export default class CalendarHelper {
 
     Calendar.createEventAsync(calendarID, {
       title: task.title,
-      startDate: task.due_date,
+      startDate: task.due_date, // maybe change this to be due_date minus est_time
       endDate: task.due_date
     });
   }
