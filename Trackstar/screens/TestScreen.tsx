@@ -34,7 +34,7 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
-          courseMapper.all().then((data) => {
+          courseMapper.all(true).then((data) => {
             let courses: Course[] = data;
             console.log("All courses:")
             console.log(courses.length)
@@ -150,7 +150,7 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
-          taskMapper.all().then((data) => {
+          taskMapper.all(true).then((data) => {
             let tasks: Task[] = data;
             console.log("All tasks:")
             console.log(tasks.length)

@@ -1,6 +1,9 @@
 import TaskMapper from "./TaskMapper";
 import Task from "../models/Task";
 import DBConnection from "../DBConnection";
+import User from "../models/User";
+import UserMapper from "./UserMapper";
+import UserMapperImpl from "./UserMapperImpl";
 
 
 export default class TaskMapperImpl implements TaskMapper {
@@ -19,10 +22,16 @@ export default class TaskMapperImpl implements TaskMapper {
     );
   };
 
-  update(t: Task): void {
+  update(t: Task, complete: boolean = false): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("update Task set title=?, due_date=?, est_duration=?, priority=?, complete=? where id=?", [t.title, JSON.stringify(t.due_date), t.est_duration, t.priority, t.complete, t.id], () => this.updatePriorities(), this.errorHandler);
+        tx.executeSql("update Task set title=?, due_date=?, est_duration=?, priority=?, complete=? where id=?", [t.title, JSON.stringify(t.due_date), t.est_duration, t.priority, t.complete, t.id],
+          () => {
+            this.updatePriorities();
+            if (complete)
+              this.updateEstAccuracy();
+          },
+          this.errorHandler);
       },
       null
     );
@@ -37,11 +46,17 @@ export default class TaskMapperImpl implements TaskMapper {
     );
   };
 
-  all(): Promise<Task[]> {
+  all(complete: boolean = false): Promise<Task[]> {
+    let sql = "";
+    if (complete)
+      sql = "select * from Task order by priority";
+    else
+      sql = "select * from Task where complete = 0 order by priority";
+
     return new Promise((resolve) => {
       const task_objs = []
       this.db.transaction(tx => {
-        tx.executeSql("select * from Task order by priority", [],
+        tx.executeSql(sql, [],
           (_, { rows: { _array } }) => {
             _array.forEach(task => {
               task_objs.push(new Task(task.title, new Date(JSON.parse(task.due_date)), task.est_duration, task.eval_id, task.complete, task.priority, task.id))
@@ -120,4 +135,29 @@ export default class TaskMapperImpl implements TaskMapper {
       }
     })
   }
+
+  private updateEstAccuracy(): void {
+    let userMapper: UserMapper = new UserMapperImpl;
+    userMapper.getUser() // updates the singleton
+    let user = User.getInstance() // get the singleton
+    user.estimationAccuracy -= 1; // TODO: add actual math here, using this.allCompleted()
+    userMapper.update(user);
+  }
+
+  private allCompleted(): Promise<Task[]> {
+    return new Promise((resolve) => {
+      const task_objs = []
+      this.db.transaction(tx => {
+        tx.executeSql("select * from Task where complete = 1", [],
+          (_, { rows: { _array } }) => {
+            _array.forEach(task => {
+              task_objs.push(new Task(task.title, new Date(JSON.parse(task.due_date)), task.est_duration, task.eval_id, task.complete, task.priority, task.id))
+            })
+            resolve(task_objs)
+          },
+          this.errorHandler
+        )
+      })
+    })
+  };
 }

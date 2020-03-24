@@ -44,12 +44,13 @@ export default class Database {
     let course2  = new Course ("Database Management Systems", "COMP3005", 90);
     let course3  = new Course ("Human Computer Interaction", "COMP3008", 80);
     let course4  = new Course ("The Meaning of Life", "PHIL1200", 90);
+    let course5  = new Course ("Complete", "COMP1200", 90, 92, true);
 
     courseMapper.insert(course1)
     courseMapper.insert(course2)
     courseMapper.insert(course3)
     courseMapper.insert(course4)
-
+    courseMapper.insert(course5)
   }
 
   static populateEvalTable = () => {
@@ -91,7 +92,7 @@ export default class Database {
     let task3  = new Task ("Brainstorm project ideas", new Date(), 30, 2, false, 3);
     let task4  = new Task ("Make class diagram", new Date(), 30, 7, false, 4);
     let task5  = new Task ("Make sequence diagram", new Date(), 30, 7, false, 5);
-    let task6  = new Task ("Write pseudocode", new Date(), 30, 2, false, 6);
+    let task6  = new Task ("Write pseudocode", new Date(), 30, 2, true, 6);
 
     taskMapper.insert(task1)
     taskMapper.insert(task2)
