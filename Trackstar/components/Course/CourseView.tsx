@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import {
   Card,
   Divider,
@@ -19,6 +19,7 @@ import {
   TaskMapper,
   TaskMapperImpl
 } from "../../data_mappers";
+import CalendarHelper from "../../models/CalendarHelper";
 
 export default function CourseView(props) {
   const { code, name, term, minGrade } = props.route.params;
@@ -161,6 +162,7 @@ function generateTaskMarkup(tasks: Task[]) {
           <Card.Content>
             <Text>{title}</Text>
             {badgeMarkup}
+            <TouchableOpacity onPress={() => {CalendarHelper.addEvent(currTask)}}><Text>Add to calendar</Text></TouchableOpacity>
           </Card.Content>
         </Card>
       </View>
