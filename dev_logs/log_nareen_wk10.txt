@@ -1,12 +1,16 @@
 Nareen Khurshid
 101029589
 
-After the online oral exam 
+After the online oral exam
 ----------------------------------------------
-March 23rd and 24th
+March 23rd
 -Something we wanted to add was autofill for the calculator
 -done using mapping
 -grade-mappers classes being created and defined
+-In data_mappers the GradeMapper.tsx was created
+-Testing the app in its current state on my phone
+
 To do:
--still need to implement functionality
+-Should add an error case for if the grade can't be acheived
+-still need to implement functionality of grade mapping
 -try to add more error handling overall and update logs
