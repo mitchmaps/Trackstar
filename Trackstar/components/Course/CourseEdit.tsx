@@ -18,6 +18,7 @@ export default class CourseEdit extends React.Component {
     const { code, title, minGrade, evals } = this.props.route.params;
 
     this.generateCurrEvalsMarkup = this.generateCurrEvalsMarkup.bind(this);
+    this.handleEvalDelete = this.handleEvalDelete.bind(this);
     this.state = {
       code: code,
       title: title,
@@ -85,6 +86,22 @@ export default class CourseEdit extends React.Component {
     );
   }
 
+  handleEvalDelete(id: number) {
+    const {evals} = this.state;
+
+    let evalToDelete: Evaluation;
+
+    evals.forEach((evaluation) => {
+      if (evaluation.id === id) {
+        evalToDelete = evaluation;
+        return;
+      }
+    });
+
+    evals.splice(evals.indexOf(evalToDelete), 1);
+    this.setState({evals: evals});
+  }
+
   generateCurrEvalsMarkup() {
     const currEvals: JSX.Element[] = [];
 
@@ -103,7 +120,7 @@ export default class CourseEdit extends React.Component {
             {dueDateMarkup}
             {weightMarkup}
             <View style={{flex: 1, flexDirection: "row", justifyContent: "center"}}>
-              <Button icon="close" onPress={() => {}}>
+              <Button icon="close" onPress={() => {this.handleEvalDelete(id)}}>
                 Remove
               </Button>
               <Button icon="pencil" onPress={() => {}}>
