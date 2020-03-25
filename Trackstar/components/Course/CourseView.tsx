@@ -60,7 +60,12 @@ export default function CourseView(props) {
           <Text style={iOSUIKit.largeTitleEmphasized}>{code}</Text>
           <Button onPress={
             () => {
-              props.navigation.navigate("Course Edit");
+              props.navigation.navigate("Course Edit", {
+                code: code,
+                title: name,
+                minGrade: minGrade,
+                evals: courseEvals,
+              });
             }
           }>Edit</Button>
         </View>
