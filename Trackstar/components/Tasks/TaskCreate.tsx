@@ -57,8 +57,23 @@ export default class TaskCreate extends React.Component {
             }}
           />
           
-          <View>
-          {( () => {
+
+            {showPicker && ( 
+              <DateTimePicker
+                testID="dateTimePicker"
+                timeZoneOffsetInMinutes={0}
+                value={dueDate}
+                onChange={
+                  (event, selectedDate) => {
+                    this.setState({dueDate: selectedDate});
+                    this.setState({showPicker: false})
+                  }
+                }
+                display="default"
+              />)
+          }
+
+          {() => {
             if(Platform.OS === 'ios')
             {
               <DateTimePicker
@@ -74,7 +89,7 @@ export default class TaskCreate extends React.Component {
               />
             }
           else{
-            showPicker && ( 
+            {showPicker && ( 
               <DateTimePicker
                 testID="dateTimePicker"
                 timeZoneOffsetInMinutes={0}
@@ -87,9 +102,11 @@ export default class TaskCreate extends React.Component {
                 }
                 display="default"
               />)
-          }
-        })}
-          </View>
+          }}
+        }}
+
+          
+
           <Text style={{paddingTop: 20, paddingBottom: 20}}>Task due date: {Moment(this.state.dueDate).format('d MMM')}</Text>
           
           <Text>Estimated time(minutes)</Text>
