@@ -1,0 +1,10 @@
+Mitchell Soares
+ID: 101103889
+
+Week 9 log:
+
+- Created new logic for checking off tasks in the home dashboard
+- Helped members of the team with react specific knowledge
+- Refactored some code to take more advantage of react hooks
+- Refactoreed all presentational components that interact w/ the DB to use the new data mapper classes instead of direct manipulation
+- Did D3 interview and it went well!

@@ -1,8 +1,8 @@
-import React from "react";
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   Text,
   View,
+  ScrollView,
   TouchableOpacity,
   SectionList,
   StyleSheet
@@ -11,53 +11,62 @@ import { Card } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import CircleCheckBox, { LABEL_POSITION } from "react-native-circle-checkbox";
 
-import {Task, Evaluation, Course} from '../models';
+import { Task, Evaluation, Course } from "../models";
 import {
   CourseMapper,
   CourseMapperImpl,
   EvaluationMapper,
   EvaluationMapperImpl,
   TaskMapper,
-  TaskMapperImpl,
+  TaskMapperImpl
 } from "../data_mappers";
 
+interface TaskDescriptor {
+  task: Task;
+  evalName: string;
+  courseCode: string;
+}
+
 const HomeScreen = props => {
-  const [formattedTaskData, setFormattedTaskData] = useState([]);
+  const [formattedTaskData, setFormattedTaskData] = useState<TaskDescriptor[]>(
+    []
+  );
+  const [fakeState, setFakeState] = useState(new Date());
+
+  const taskDataRef = useRef(formattedTaskData);
+  const setTaskData = data => {
+    taskDataRef.current = data;
+    setFormattedTaskData(data);
+  }
+
   const navigation = props.navigation;
 
   useEffect(() => {
     const formattedTasks = formatData().then(data => {
-      console.log("formatted");
-      console.log(data);
-      setFormattedTaskData(data);
-      console.log("state");
-      console.log(formattedTaskData);
+      setTaskData(data);
     });
   }, []);
 
-  const singleItem = data => {
-    const item = data.item;
-    const formatted_title = `${item.priority}. ${item.title}`;
-    return (
-      // TO DO: figure out if we wanna keep the alerts Haohao set up. I like it as opposed to going to a new screen
-      // TO DO: align checkbox properly
-      <Card style={{ width: 350, marginBottom: 10 }}>
-        <Card.Title title={formatted_title} />
-        <Card.Content style={{ flex: 1, flexDirection: "row" }}>
-          <Text style={{ flex: 8 }}>
-            {item.course} - {item.evaluation}
-          </Text>
-          <CircleCheckBox
-            style={{ flex: 2 }}
-            // checked={item.title == "1. Read Chapter 3" ? true : false}
-            outerColor={"#5273eb"}
-            innerColor={"#5273eb"}
-            onToggle={checked => console.log("My state is: ", checked)}
-          />
-        </Card.Content>
-      </Card>
-    );
-  };
+  const handleTaskCompletion = useCallback((id) => {
+    console.log(`trying to click id: ${id}`);
+    console.log(taskDataRef.current);
+
+    let taskToUpdate: Task;
+
+    taskDataRef.current.forEach((currTask) => {
+      if (currTask.task.id === id) {
+        taskToUpdate = currTask.task;
+      }
+    });
+
+    taskToUpdate.complete = !taskToUpdate.complete;
+    updateTask(taskToUpdate);
+
+    // trigger re render
+    setFakeState(new Date());
+  }, []);
+
+  const tasksMarkup = generateTasksMarkup(formattedTaskData, handleTaskCompletion);
 
   return (
     <LinearGradient
@@ -75,15 +84,54 @@ const HomeScreen = props => {
           Due March 10th
         </Text>
       </View>
-      {/* TO DO: figure out how to raise this section */}
-      <SectionList
-        style={{ marginTop: 50 }}
-        sections={formattedTaskData}
-        renderItem={singleItem}
-      />
+      <ScrollView style={{marginTop: 50}}>
+        {tasksMarkup}
+      </ScrollView>
     </LinearGradient>
   );
 };
+
+function generateTasksMarkup(tasks: TaskDescriptor[], handleChange) {
+  const allTasks = [];
+
+  tasks.forEach((currTask: TaskDescriptor) => {
+    const {task: {title, complete, priority, id }, evalName, courseCode} = currTask;
+
+    const formatted_title = `${priority}. ${title}`;
+    const formatted_subtitle = `${courseCode} - ${evalName}`;
+
+    const completeText = complete ? <Text>Complete</Text> : null;
+    const opacity = complete ? 0.5 : 1;
+
+    const taskMarkup = (
+      <View opacity={opacity}>
+        <Card style={{ width: 350, marginBottom: 10 }}>
+          <Card.Title title={formatted_title} subtitle={formatted_subtitle} />
+          <Card.Content style={{ flex: 1, flexDirection: "row" }}>
+            <Text style={{ flex: 8 }}>
+              {courseCode} - {evalName}
+            </Text>
+            {completeText}
+            <CircleCheckBox
+              style={{ flex: 2 }}
+              // checked={item.title == "1. Read Chapter 3" ? true : false}
+              checked={complete ? true : false}
+              outerColor={"#5273eb"}
+              innerColor={"#5273eb"}
+              onToggle={() => {
+                handleChange(id);
+              }}
+            />
+          </Card.Content>
+        </Card>
+      </View>
+    );
+
+    allTasks.push(<View key={id}>{taskMarkup}</View>);
+  });
+
+  return allTasks;
+}
 
 async function formatData() {
   const taskMapper: TaskMapper = new TaskMapperImpl();
@@ -100,21 +148,22 @@ async function formatData() {
     const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
     const course: Course = await courseMapper.find(evaluation.course_code);
 
-    const taskInfo = {
-      title: task.title,
-      data: [
-        {
-          title: task.title,
-          priority: task.priority,
-          evaluation: evaluation.title,
-          course: course.code
-        }
-      ]
+    const taskInfo: TaskDescriptor = {
+      task: task,
+      evalName: evaluation.title,
+      courseCode: course.code
     };
+
     formattedData.push(taskInfo);
   }
 
   return formattedData;
+}
+
+async function updateTask(task: Task) {
+  const taskMapper: TaskMapper = new TaskMapperImpl();
+
+  taskMapper.update(task);
 }
 
 export default HomeScreen;
