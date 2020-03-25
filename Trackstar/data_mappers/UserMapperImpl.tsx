@@ -26,8 +26,8 @@ export default class UserMapperImpl implements UserMapper {
         tx.executeSql("select * from User", [], (_, { rows: { _array } }) => {
           const user = User.getInstance();
           if (_array[0]) {
-          user.estimationAccuracy = _array[0].est_accuracy
-          user.calendarId = _array[0].calendarId
+            user.estimationAccuracy = _array[0].est_accuracy
+            user.calendarId = _array[0].calendarId
           }
           else {
             this.insert()
