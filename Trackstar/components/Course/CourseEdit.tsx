@@ -5,7 +5,12 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { iOSUIKit } from "react-native-typography";
 
 import { Course, Evaluation } from "../../models";
-import { CourseMapper, CourseMapperImpl, EvaluationMapper, EvaluationMapperImpl } from "../../data_mappers";
+import {
+  CourseMapper,
+  CourseMapperImpl,
+  EvaluationMapper,
+  EvaluationMapperImpl
+} from "../../data_mappers";
 
 interface EvalDescriptor {
   editing: boolean;
@@ -55,7 +60,7 @@ export default class CourseEdit extends React.Component {
       evalToEdit
     } = this.state;
 
-    const {code} = this.props.route.params;
+    const { code } = this.props.route.params;
 
     const courseInfoMarkup = (
       <Card style={{ marginTop: 20 }}>
@@ -100,9 +105,17 @@ export default class CourseEdit extends React.Component {
     return (
       <View style={{ flex: 1, alignSelf: "stretch" }}>
         <ScrollView style={{ height: 80, alignSelf: "stretch", padding: 20 }}>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <Text style={iOSUIKit.largeTitleEmphasized}>Edit Course</Text>
-            <Button onPress={() => {this.handleSubmit()}}>Finish</Button>
+            <Button
+              mode="contained"
+              onPress={() => {
+                this.handleSubmit();
+              }}
+              disabled={evalEditingActive}
+            >
+              Finish
+            </Button>
           </View>
           {courseInfoMarkup}
           {evalEditMarkup}
@@ -114,12 +127,17 @@ export default class CourseEdit extends React.Component {
 
   handleSubmit() {
     const courseMapper: CourseMapper = new CourseMapperImpl();
-    const {title, minGrade} = this.state;
-    const {code} = this.props.route.params;
+    const { title, minGrade } = this.state;
+    const { code } = this.props.route.params;
 
     const updatedCourse: Course = new Course(title, code, +minGrade);
-    console.log(updatedCourse);
     courseMapper.update(updatedCourse);
+
+    this.props.navigation.navigate("Course view", {
+      code: code,
+      name: title,
+      minGrade: minGrade,
+    });
   }
 
   generateEvalEditMarkup(evaluation: Evaluation) {
@@ -180,12 +198,20 @@ export default class CourseEdit extends React.Component {
     const { evals } = this.state;
 
     let evalToEdit: Evaluation = this.selectEvalById(id);
+    console.log(evalToEdit);
 
-    this.setState({ evalEditingActive: true, evalToEdit: evalToEdit });
+    this.setState({
+      evalEditingActive: true,
+      evalToEdit: evalToEdit,
+      currEvalEditTitle: evalToEdit.title,
+      currEvalEditWeight: evalToEdit.weight,
+      currEvalEditDate: evalToEdit.due_date
+    });
   }
 
   handleEvalUpdate() {
     const {
+      evals,
       evalToEdit,
       currEvalEditTitle,
       currEvalEditWeight,
@@ -199,6 +225,12 @@ export default class CourseEdit extends React.Component {
     evalToEdit.due_date = currEvalEditDate;
 
     evaluationMapper.update(evalToEdit);
+
+    const newEvals = evals.map(evaluation => {
+      return evaluation.id === evalToEdit.id ? evalToEdit : evaluation;
+    });
+
+    this.setState({ evals: newEvals, evalEditingActive: false });
   }
 
   generateCurrEvalsMarkup() {
