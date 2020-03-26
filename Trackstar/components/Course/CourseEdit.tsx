@@ -1,9 +1,15 @@
 import React from "react";
 import { Text, View, ScrollView, Alert } from "react-native";
 import { Divider, Card, TextInput, Button } from "react-native-paper";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { iOSUIKit } from "react-native-typography";
 
 import { Evaluation } from "../../models";
+
+interface EvalDescriptor {
+  editing: boolean;
+  data: Evaluation;
+}
 
 export default class CourseEdit extends React.Component {
   state: {
@@ -11,6 +17,11 @@ export default class CourseEdit extends React.Component {
     title: string;
     minGrade: string;
     evals: Evaluation[];
+    evalEditingActive: boolean;
+    evalToEdit: Evaluation;
+    currEvalEditTitle: string;
+    currEvalEditDate: Date;
+    currEvalEditWeight: string;
   };
 
   constructor(props) {
@@ -19,16 +30,23 @@ export default class CourseEdit extends React.Component {
 
     this.generateCurrEvalsMarkup = this.generateCurrEvalsMarkup.bind(this);
     this.handleEvalDelete = this.handleEvalDelete.bind(this);
+    this.handleEvalEdit = this.handleEvalEdit.bind(this);
+    this.selectEvalById = this.selectEvalById.bind(this);
     this.state = {
       code: code,
       title: title,
       minGrade: minGrade,
-      evals: evals
+      evals: evals,
+      evalEditingActive: false,
+      evalToEdit: evals[0],
+      currEvalEditTitle: evals[0].title,
+      currEvalEditDate: evals[0].due_date,
+      currEvalEditWeight: evals[0].weight,
     };
   }
 
   render() {
-    const { code, title, minGrade, evals } = this.state;
+    const { code, title, minGrade, evals, evalEditingActive, evalToEdit } = this.state;
 
     const courseInfoMarkup = (
       <Card style={{ marginTop: 20 }}>
@@ -67,6 +85,7 @@ export default class CourseEdit extends React.Component {
     );
 
     const currEvalsMarkup = this.generateCurrEvalsMarkup();
+    const evalEditMarkup = (evalEditingActive) ? this.generateEvalEditMarkup(evalToEdit) : null;
 
     const evaluationsInfoMarkup = (
       <Card style={{ marginTop: 20 }}>
@@ -79,27 +98,71 @@ export default class CourseEdit extends React.Component {
       <View style={{ flex: 1, alignSelf: "stretch" }}>
         <ScrollView style={{ height: 80, alignSelf: "stretch", padding: 20 }}>
           <Text style={iOSUIKit.largeTitleEmphasized}>Edit course</Text>
+          <Text>{this.state.evalToEdit.title}</Text>
           {courseInfoMarkup}
+          {evalEditMarkup}
           {currEvalsMarkup}
         </ScrollView>
       </View>
     );
   }
 
+  generateEvalEditMarkup(evaluation: Evaluation) {
+    const { title, due_date, weight } = evaluation;
+    //let updatedEval: Evaluation = evaluation;
+    console.log(this.state);
+
+    return (
+      <Card>
+        <Card.Title title={`Edit ${title}`} />
+        <Card.Content>
+          <View>
+            <TextInput
+              label="Evaluation title"
+              onChangeText={text => {
+                this.setState({ currEvalTitle: text });
+              }}
+              value={this.state.currEvalEditTitle}
+            />
+            <TextInput
+              label="Evaluation weight (%)"
+              keyboardType="numeric"
+              onChangeText={text => {
+                this.setState({ currEvalWeight: text });
+              }}
+              value={this.state.currEvalEditWeight}
+            />
+            <DateTimePicker
+              testID="dateTimePicker"
+              timeZoneOffsetInMinutes={0}
+              value={this.state.currEvalEditDate}
+              onChange={(event, selectedDate) => {
+                this.setState({ currEvalEditDate: selectedDate });
+              }}
+              display="default"
+            />
+            <Button onPress={() => {}}>Confirm</Button>
+          </View>
+        </Card.Content>
+      </Card>
+    );
+  }
+
   handleEvalDelete(id: number) {
-    const {evals} = this.state;
+    const { evals } = this.state;
 
-    let evalToDelete: Evaluation;
-
-    evals.forEach((evaluation) => {
-      if (evaluation.id === id) {
-        evalToDelete = evaluation;
-        return;
-      }
-    });
+    let evalToDelete: Evaluation = this.selectEvalById(id);
 
     evals.splice(evals.indexOf(evalToDelete), 1);
-    this.setState({evals: evals});
+    this.setState({ evals: evals });
+  }
+
+  handleEvalEdit(id: number) {
+    const { evals } = this.state;
+
+    let evalToEdit: Evaluation = this.selectEvalById(id);
+
+    this.setState({ evalEditingActive: true, evalToEdit: evalToEdit });
   }
 
   generateCurrEvalsMarkup() {
@@ -119,11 +182,27 @@ export default class CourseEdit extends React.Component {
           <Card.Content>
             {dueDateMarkup}
             {weightMarkup}
-            <View style={{flex: 1, flexDirection: "row", justifyContent: "center"}}>
-              <Button icon="close" onPress={() => {this.handleEvalDelete(id)}}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "center"
+              }}
+            >
+              <Button
+                icon="close"
+                onPress={() => {
+                  this.handleEvalDelete(id);
+                }}
+              >
                 Remove
               </Button>
-              <Button icon="pencil" onPress={() => {}}>
+              <Button
+                icon="pencil"
+                onPress={() => {
+                  this.handleEvalEdit(id);
+                }}
+              >
                 Edit
               </Button>
             </View>
@@ -135,5 +214,20 @@ export default class CourseEdit extends React.Component {
     });
 
     return currEvals;
+  }
+
+  selectEvalById(id) {
+    let evalToReturn: Evaluation = null;
+
+    this.state.evals.forEach(evaluation => {
+      if (evaluation.id === id) {
+        evalToReturn = evaluation;
+      }
+    });
+
+    console.log("selecting");
+    console.log(evalToReturn);
+
+    return evalToReturn;
   }
 }
