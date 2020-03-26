@@ -5,6 +5,7 @@ export default class Task {
   due_date:Date;
   complete:boolean;
   est_duration:number;
+  actual_duration?:number;
   priority:number;
   evaluation_id:number;
   id:number;

@@ -93,10 +93,11 @@ const HomeScreen = props => {
         }}
       >
         <Card.Content>
-          <Text style={iOSUIKit.largeTitleEmphasized}>{taskBeingCompleted.task.title}</Text>
           <Text style={iOSUIKit.largeTitleEmphasized}>Complete task</Text>
+          <Text style={iOSUIKit.subheadEmphasized}>{taskBeingCompleted.task.title}</Text>
           <View style={{ flex: 1, marginTop: 20 }}>
-            <Text>How long did you spend on that task?</Text>
+            <Text>{`When you created this task you estimated it would take ${taskBeingCompleted.task.est_duration} minutes.`}</Text>
+            <Text>How long did you actually spend on this task?</Text>
             <TextInput
               label="Time (in minutes)"
               keyboardType="numeric"
