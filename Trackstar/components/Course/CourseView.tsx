@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 import {
   Card,
   Divider,
@@ -25,17 +26,18 @@ export default function CourseView(props) {
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
-    const evalData = retrieveEvalData(code).then((data: Evaluation[]) => {
-      setCourseEvals(data);
-    });
+  useFocusEffect(
+    React.useCallback(() => {
+      const evalData = retrieveEvalData(code).then((data: Evaluation[]) => {
+        setCourseEvals(data);
+      });
 
-    const taskData = retrieveTaskData().then((data: Task[]) => {
-      console.log(data);
-      setTasks(data);
-    });
-
-  }, []);
+      const taskData = retrieveTaskData().then((data: Task[]) => {
+        console.log(data);
+        setTasks(data);
+      });
+    }, [])
+  );
 
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
   // Fix after demo
