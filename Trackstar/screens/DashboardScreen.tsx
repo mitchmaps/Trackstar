@@ -38,6 +38,7 @@ const HomeScreen = props => {
   const [taskBeingCompleted, setTaskBeingCompleted] = useState<
     TaskDescriptor
   >(null);
+  const [currActualDuration, setcurrActualDuration] = useState('');
 
   const taskDataRef = useRef(formattedTaskData);
   const setTaskData = data => {
@@ -53,19 +54,13 @@ const HomeScreen = props => {
     });
   }, []);
 
-  const handleTaskCompletion = useCallback(id => {
-    let taskToUpdate: Task;
+  const handleTaskCompletion = useCallback(() => {
+    let taskToUpdate: TaskDescriptor = taskBeingCompleted;
 
-    taskDataRef.current.forEach(currTask => {
-      if (currTask.task.id === id) {
-        taskToUpdate = currTask.task;
-      }
-    });
-
-    taskToUpdate.complete = !taskToUpdate.complete;
+    taskToUpdate.task.complete = true;
+    taskToUpdate.task.actual_duration = +currActualDuration;
     updateTask(taskToUpdate);
-
-    setModalActive(true);
+    setModalActive(false);
     // trigger re render
     setFakeState(new Date());
   }, []);
@@ -101,13 +96,14 @@ const HomeScreen = props => {
             <TextInput
               label="Time (in minutes)"
               keyboardType="numeric"
-              onChangeText={() => {}}
+              onChangeText={(text) => {setcurrActualDuration(text)}}
+              value={currActualDuration}
             />
           </View>
           <Button
             mode="contained"
             onPress={() => {
-              setModalActive(false);
+              handleTaskCompletion();
             }}
           >
             Submit
@@ -215,10 +211,10 @@ async function formatData() {
   return formattedData;
 }
 
-async function updateTask(task: Task) {
+async function updateTask(task: TaskDescriptor) {
   const taskMapper: TaskMapper = new TaskMapperImpl();
 
-  taskMapper.update(task);
+  taskMapper.update(task.task);
 }
 
 function findTaskById(tasks: TaskDescriptor[], id) {
