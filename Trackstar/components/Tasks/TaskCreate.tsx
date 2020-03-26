@@ -7,6 +7,7 @@ import { Platform, View, Text, ScrollView, Picker } from "react-native";
 import { Divider, Card, TextInput, Button, List } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { iOSUIKit } from "react-native-typography";
+import User from "../../models/User";
 
 export default class TaskCreate extends React.Component {
   state: {
@@ -56,9 +57,8 @@ export default class TaskCreate extends React.Component {
               
             }}
           />
-          
-
-            {showPicker && ( 
+          <Text style={{paddingTop: 20}}>Task due date</Text>
+          {showPicker && 
               <DateTimePicker
                 testID="dateTimePicker"
                 timeZoneOffsetInMinutes={0}
@@ -70,46 +70,9 @@ export default class TaskCreate extends React.Component {
                   }
                 }
                 display="default"
-              />)
-          }
-
-          {() => {
-            if(Platform.OS === 'ios')
-            {
-              <DateTimePicker
-              testID="dateTimePicker"
-              timeZoneOffsetInMinutes={0}
-              value={dueDate}
-              onChange={
-                (event, selectedDate) => {
-                  this.setState({dueDate: selectedDate});
-                }
-              }
-              display="default"
-              />
-            }
-          else{
-            {showPicker && ( 
-              <DateTimePicker
-                testID="dateTimePicker"
-                timeZoneOffsetInMinutes={0}
-                value={dueDate}
-                onChange={
-                  (event, selectedDate) => {
-                    this.setState({dueDate: selectedDate});
-                    this.setState({showPicker: false})
-                  }
-                }
-                display="default"
-              />)
-          }}
-        }}
-
+              />}
           
-
-          <Text style={{paddingTop: 20, paddingBottom: 20}}>Task due date: {Moment(this.state.dueDate).format('d MMM')}</Text>
-          
-          <Text>Estimated time(minutes)</Text>
+      <Text style={{paddingTop: 20}}>Typically underestimate/overestimate by {User.getInstance().estimationAccuracy} minutes</Text>
           <TextInput
             label="Estimated time(minutes)"
             keyboardType="numeric"
@@ -152,6 +115,8 @@ export default class TaskCreate extends React.Component {
       minGrade: courseMinGrade,
     });
   }
+
+  
 
   generateEvalSelectionMarkup(evals: Evaluation[]) {
     const evalSelectionMarkup = [];

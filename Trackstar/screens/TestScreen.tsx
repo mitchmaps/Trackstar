@@ -27,6 +27,83 @@ const TestScreen = (props) => {
           <Text>Init DB</Text>
         </TouchableOpacity>
 
+        
+        <Text>Task</Text>
+
+        <TouchableOpacity style={styles.button} onPress={() => {Database.populateTaskTable()}}>
+          <Text>Load Tasks</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
+          taskMapper.all(true).then((data) => {
+            let tasks: Task[] = data;
+            console.log("All tasks:")
+            console.log(tasks.length)
+            tasks.forEach(task => {
+              console.log(task)
+            })
+          })
+        }}>
+
+          
+          <Text>All Tasks</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
+          taskMapper.findByEval(10).then((data) => {
+            let tasks: Task[] = data;
+            console.log("Task for eval 10:")
+            console.log(tasks.length)
+            tasks.forEach(task => {
+              console.log(task)
+            })
+          })
+        }}>
+          <Text>Find for eval 10</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
+          taskMapper.find(1).then ((task) => {
+            if (task == null) {
+              console.log("task not found")
+            }
+            else {
+              console.log(`found: ${task.title}`)
+            }
+          })
+        }}>
+          <Text>Find Task 1</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
+          taskMapper.find(1).then((task1) => {
+            console.log(`complete (before): ${task1.complete}`)
+            task1.complete = true;
+            taskMapper.update(task1);
+            taskMapper.find(1).then((task2) => {
+              console.log(`complete (after): ${task2.complete}`)
+            })
+          })
+        }}>
+          <Text>Update Task 1</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.wipe} onPress={() => {
+          Database.deleteTaskData()
+          Database.deleteEvalData()
+          Database.deleteCourseData()
+        }}>
+          <Text>Delete Data</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.wipe} onPress={() => {
+          Database.deleteTaskTable()
+          Database.deleteEvalTable()
+          Database.deleteCourseTable()
+        }}>
+          <Text>Drop Tables</Text>
+        </TouchableOpacity>
+
         <Text>Course</Text>
 
         <TouchableOpacity style={styles.button} onPress={() => {Database.populateCourseTable()}}>
@@ -143,79 +220,6 @@ const TestScreen = (props) => {
           <Text>Update Eval 1</Text>
         </TouchableOpacity>
 
-        <Text>Task</Text>
-
-        <TouchableOpacity style={styles.button} onPress={() => {Database.populateTaskTable()}}>
-          <Text>Load Tasks</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={() => {
-          taskMapper.all(true).then((data) => {
-            let tasks: Task[] = data;
-            console.log("All tasks:")
-            console.log(tasks.length)
-            tasks.forEach(task => {
-              console.log(task)
-            })
-          })
-        }}>
-          <Text>All Tasks</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={() => {
-          taskMapper.findByEval(10).then((data) => {
-            let tasks: Task[] = data;
-            console.log("Task for eval 10:")
-            console.log(tasks.length)
-            tasks.forEach(task => {
-              console.log(task)
-            })
-          })
-        }}>
-          <Text>Find for eval 10</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={() => {
-          taskMapper.find(1).then ((task) => {
-            if (task == null) {
-              console.log("task not found")
-            }
-            else {
-              console.log(`found: ${task.title}`)
-            }
-          })
-        }}>
-          <Text>Find Task 1</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={() => {
-          taskMapper.find(1).then((task1) => {
-            console.log(`complete (before): ${task1.complete}`)
-            task1.complete = true;
-            taskMapper.update(task1);
-            taskMapper.find(1).then((task2) => {
-              console.log(`complete (after): ${task2.complete}`)
-            })
-          })
-        }}>
-          <Text>Update Task 1</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.wipe} onPress={() => {
-          Database.deleteTaskData()
-          Database.deleteEvalData()
-          Database.deleteCourseData()
-        }}>
-          <Text>Delete Data</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.wipe} onPress={() => {
-          Database.deleteTaskTable()
-          Database.deleteEvalTable()
-          Database.deleteCourseTable()
-        }}>
-          <Text>Drop Tables</Text>
-        </TouchableOpacity>
       </View>
     );
 };
