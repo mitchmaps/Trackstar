@@ -10,39 +10,9 @@ export default class CalendarHelper {
   static async addEvent(task: Task) {
     const { status } = await Calendar.requestCalendarPermissionsAsync();
     if (status === 'granted') {
-      // const calendars = await Calendar.getCalendarsAsync();
-      // console.log('Here are all your calendars:');
-      // console.log({ calendars });
-      let calendarID: string;
-      let userMapper: UserMapper = new UserMapperImpl;
-      await userMapper.getUser()
-      let user = User.getInstance()
-      console.log(`calendar id: ${user.calendarId}`)
+      const calendarId = await CalendarHelper.getCalendarId();
 
-      if (user.calendarId) {
-        calendarID = user.calendarId;
-      }
-      else {
-        const defaultCalendarSource =
-        Platform.OS === 'ios'
-          ? await CalendarHelper.getDefaultCalendarSource()
-          : { isLocalAccount: true, name: 'Trackstar' };
-
-        calendarID = await Calendar.createCalendarAsync({
-          title: 'Trackstar',
-          color: 'blue',
-          entityType: Calendar.EntityTypes.EVENT,
-          sourceId: defaultCalendarSource.id,
-          source: defaultCalendarSource,
-          name: 'internalCalendarName',
-          ownerAccount: 'personal',
-          accessLevel: Calendar.CalendarAccessLevel.OWNER,
-        });
-        user.calendarId = calendarID;
-        userMapper.update(user);
-      }
-
-      Calendar.createEventAsync(calendarID, {
+      Calendar.createEventAsync(calendarId, { // maybe add checking for if it's already in the calendar
         title: task.title,
         startDate: task.due_date, // maybe change this to be due_date minus est_time
         endDate: task.due_date
@@ -69,5 +39,45 @@ export default class CalendarHelper {
       defaultCalendars = calendars.filter(each => each.source.name === 'iCloud');
     }
     return defaultCalendars[0].source;
+  }
+
+  private static async getCalendarId() {
+    let userMapper: UserMapper = new UserMapperImpl;
+    await userMapper.getUser();
+    let user = User.getInstance();
+    let calendarId: string = user.calendarId;
+
+    const calendars = await Calendar.getCalendarsAsync();
+    if (calendars.filter(each => each.id == calendarId).length > 0) {
+      return calendarId;
+    }
+    else {
+      return await CalendarHelper.createCalendar()
+    }
+  }
+
+  private static async createCalendar() {
+    const defaultCalendarSource =
+    Platform.OS === 'ios'
+      ? await CalendarHelper.getDefaultCalendarSource()
+      : { isLocalAccount: true, name: 'Trackstar' };
+
+    const calendarId = await Calendar.createCalendarAsync({
+      title: 'Trackstar',
+      color: 'blue',
+      entityType: Calendar.EntityTypes.EVENT,
+      sourceId: defaultCalendarSource.id,
+      source: defaultCalendarSource,
+      name: 'internalCalendarName',
+      ownerAccount: 'personal',
+      accessLevel: Calendar.CalendarAccessLevel.OWNER,
+    });
+    let userMapper: UserMapper = new UserMapperImpl;
+    await userMapper.getUser();
+    let user = User.getInstance();
+    user.calendarId = calendarId;
+    userMapper.update(user);
+
+    return calendarId
   }
 }
