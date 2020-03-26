@@ -35,6 +35,9 @@ const HomeScreen = props => {
   );
   const [fakeState, setFakeState] = useState(new Date());
   const [modalActive, setModalActive] = useState(false);
+  const [taskBeingCompleted, setTaskBeingCompleted] = useState<
+    TaskDescriptor
+  >(null);
 
   const taskDataRef = useRef(formattedTaskData);
   const setTaskData = data => {
@@ -51,9 +54,6 @@ const HomeScreen = props => {
   }, []);
 
   const handleTaskCompletion = useCallback(id => {
-    console.log(`trying to click id: ${id}`);
-    console.log(taskDataRef.current);
-
     let taskToUpdate: Task;
 
     taskDataRef.current.forEach(currTask => {
@@ -70,12 +70,18 @@ const HomeScreen = props => {
     setFakeState(new Date());
   }, []);
 
+  const handleTaskSelection = useCallback(id => {
+    const task = findTaskById(taskDataRef.current, id);
+    setTaskBeingCompleted(task);
+    setModalActive(true);
+  }, [taskDataRef.current]);
+
   const tasksMarkup = generateTasksMarkup(
     formattedTaskData,
-    handleTaskCompletion
+    handleTaskSelection,
   );
 
-  const modalMarkup = (
+  const modalMarkup = taskBeingCompleted !== null ? (
     <Modal isVisible={modalActive} hasBackdrop={true}>
       <View
         style={{
@@ -87,6 +93,7 @@ const HomeScreen = props => {
         }}
       >
         <Card.Content>
+          <Text style={iOSUIKit.largeTitleEmphasized}>{taskBeingCompleted.task.title}</Text>
           <Text style={iOSUIKit.largeTitleEmphasized}>Complete task</Text>
           <View style={{ flex: 1, marginTop: 20 }}>
             <Text>How long did you spend on that task?</Text>
@@ -107,7 +114,7 @@ const HomeScreen = props => {
         </Card.Content>
       </View>
     </Modal>
-  );
+  ) : null;
 
   return (
     <LinearGradient
@@ -126,13 +133,6 @@ const HomeScreen = props => {
         </Text>
       </View>
       <ScrollView style={{ marginTop: 50 }}>
-        <Button
-          onPress={() => {
-            setModalActive(true);
-          }}
-        >
-          Toggle modal
-        </Button>
         {modalMarkup}
         {tasksMarkup}
       </ScrollView>
@@ -140,7 +140,10 @@ const HomeScreen = props => {
   );
 };
 
-function generateTasksMarkup(tasks: TaskDescriptor[], handleChange) {
+function generateTasksMarkup(
+  tasks: TaskDescriptor[],
+  handleModalChange
+) {
   const allTasks = [];
 
   tasks.forEach((currTask: TaskDescriptor) => {
@@ -171,9 +174,7 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleChange) {
               checked={complete ? true : false}
               outerColor={"#5273eb"}
               innerColor={"#5273eb"}
-              onToggle={() => {
-                handleChange(id);
-              }}
+              onToggle={() => {handleModalChange(id)}}
             />
           </Card.Content>
         </Card>
@@ -217,6 +218,19 @@ async function updateTask(task: Task) {
   const taskMapper: TaskMapper = new TaskMapperImpl();
 
   taskMapper.update(task);
+}
+
+function findTaskById(tasks: TaskDescriptor[], id) {
+  let task: TaskDescriptor;
+  console.log('the tasks');
+  tasks.forEach((item) => {
+    if (item.task.id === id) {
+      console.log(item.task.title, item.task.id);
+      task = item;
+    }
+  });
+  //console.log(tasks);
+  return task;
 }
 
 export default HomeScreen;
