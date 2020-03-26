@@ -7,19 +7,34 @@ import UserMapperImpl from "../data_mappers/UserMapperImpl";
 
 export default class CalendarHelper {
 
-  static async addEvent(task: Task) {
+  static async addEvent(task: Task, reminder: boolean = false) {
     const { status } = await Calendar.requestCalendarPermissionsAsync();
     if (status === 'granted') {
       const calendarId = await CalendarHelper.getCalendarId();
 
-      Calendar.createEventAsync(calendarId, { // maybe add checking for if it's already in the calendar
-        title: task.title,
-        startDate: task.due_date, // maybe change this to be due_date minus est_time
-        endDate: task.due_date
-      });
+      if (reminder && (Platform.OS === 'ios')) {
+        const { status } = await Calendar.requestRemindersPermissionsAsync();
+        if (status === 'granted') {
+          Calendar.createReminderAsync(calendarId, {
+            title: task.title,
+            startDate: task.due_date,
+            dueDate: task.due_date
+          })
+        }
+        else {
+          console.log("Reminders access denied")
+        }
+      }
+      else {
+        Calendar.createEventAsync(calendarId, { // maybe add checking for if it's already in the calendar
+          title: task.title,
+          startDate: task.due_date, // maybe change this to be due_date minus est_time
+          endDate: task.due_date
+        });
+      }
     }
     else {
-      console.log("access denied")
+      console.log(" Calendar access denied")
     }
   }
 

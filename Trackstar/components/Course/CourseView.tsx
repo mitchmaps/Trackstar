@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import {
   Card,
   Divider,
@@ -162,7 +162,7 @@ function generateTaskMarkup(tasks: Task[]) {
           <Card.Content>
             <Text>{title}</Text>
             {badgeMarkup}
-            <TouchableOpacity onPress={() => {CalendarHelper.addEvent(currTask)}}><Text>Add to calendar</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => {calendarAlert(currTask)}}><Text>Add to calendar</Text></TouchableOpacity>
           </Card.Content>
         </Card>
       </View>
@@ -172,6 +172,18 @@ function generateTaskMarkup(tasks: Task[]) {
 
     return allTasks;
   }, []);
+}
+
+function calendarAlert(task: Task) {
+  Alert.alert(
+    'Add to calendar?',
+    'My Alert Msg',
+    [
+      {text: 'OK + reminder', onPress: () => CalendarHelper.addEvent(task, true)},
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
+    ],
+  )
 }
 
 function determineDaysUntilEval(evalDate: Date) {
