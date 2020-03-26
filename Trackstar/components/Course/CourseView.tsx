@@ -177,7 +177,7 @@ function generateTaskMarkup(tasks: Task[]) {
 function calendarAlert(task: Task) {
   Alert.alert(
     'Add to calendar?',
-    'My Alert Msg',
+    `This will add '${task.title}' to your phone's calendar app`,
     [
       {text: 'OK + reminder', onPress: () => CalendarHelper.addEvent(task, true)},
       {text: 'Cancel', style: 'cancel'},
