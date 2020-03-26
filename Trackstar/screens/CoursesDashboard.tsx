@@ -43,31 +43,26 @@ const CoursesDashboard = props => {
 
   const SingleItem = data => {
     const item = data.item;
-    if (item.color === "#999999" && showComplete === false) {
-      // only render on toggle if course is not pre-req
-      return null;
-    } else {
-      return (
-        <View style={{ marginBottom: 10 }}>
-          <Card
-            style={{ paddingVertical: 10 }}
-            onPress={() => {
-              navigation.navigate("Course", {
-                code: item.code,
-                name: item.title,
-                minGrade: item.minGrade
-              });
-            }}
-          >
-            <Card.Title
-              title={item.code}
-              subtitle={item.title}
-              style={{ width: "100%" }}
-            />
-          </Card>
-        </View>
-      );
-    }
+    return (
+      <View style={{ marginBottom: 10 }}>
+        <Card
+          style={{ paddingVertical: 10 }}
+          onPress={() => {
+            navigation.navigate("Course", {
+              code: item.code,
+              name: item.title,
+              minGrade: item.minGrade
+            });
+          }}
+        >
+          <Card.Title
+            title={item.code}
+            subtitle={item.title}
+            style={{ width: "100%" }}
+          />
+        </Card>
+      </View>
+    );
   };
 
   return (
@@ -81,15 +76,16 @@ const CoursesDashboard = props => {
         alignItems: "center"
       }}
     >
-      <Switch
-        value={showComplete}
-        onValueChange={() => {
-          setShowComplete(!showComplete);
-          const formattedCourses = formatData(!showComplete).then(data => {
-            setFormattedCourseData(data);
-          });
-        }}
-      />
+    <Text>Show Completed</Text>
+    <Switch
+      value={showComplete}
+      onValueChange={() => {
+        setShowComplete(!showComplete);
+        const formattedCourses = formatData(!showComplete).then(data => {
+          setFormattedCourseData(data);
+        });
+      }}
+    />
 
       <SectionList
         style={{ marginTop: 50 }}
