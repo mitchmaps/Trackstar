@@ -114,7 +114,8 @@ async function formatData() {
       data: [
         {
           code: course.code,
-          title: course.title
+          title: course.title,
+          minGrade: course.min_grade,
         }
       ]
     };

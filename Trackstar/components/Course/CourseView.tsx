@@ -22,7 +22,7 @@ import {
 } from "../../data_mappers";
 
 export default function CourseView(props) {
-  const { code, name, term, minGrade } = props.route.params;
+  const { code, name, minGrade } = props.route.params;
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
 

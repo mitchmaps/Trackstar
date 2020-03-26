@@ -11,7 +11,7 @@ import TaskCreate from '../components/Tasks/TaskCreate';
 
 const ViewCourseScreen = ({ route, navigation }) => {
   const Stack = createStackNavigator();
-  const { code, name, term, minGrade } = route.params;
+  const { code, name, minGrade } = route.params;
 
   return (
     <Stack.Navigator headerMode="none">
@@ -21,8 +21,7 @@ const ViewCourseScreen = ({ route, navigation }) => {
         initialParams={{
           code: code,
           name: name,
-          term: term,
-          minGrade: minGrade
+          minGrade: minGrade,
         }}
       />
       <Stack.Screen name="Course Edit" component={CourseEdit} />

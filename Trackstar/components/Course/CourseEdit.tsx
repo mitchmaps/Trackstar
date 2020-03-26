@@ -4,8 +4,8 @@ import { Divider, Card, TextInput, Button } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { iOSUIKit } from "react-native-typography";
 
-import { Evaluation } from "../../models";
-import { EvaluationMapper, EvaluationMapperImpl } from '../../data_mappers';
+import { Course, Evaluation } from "../../models";
+import { CourseMapper, CourseMapperImpl, EvaluationMapper, EvaluationMapperImpl } from "../../data_mappers";
 
 interface EvalDescriptor {
   editing: boolean;
@@ -14,7 +14,6 @@ interface EvalDescriptor {
 
 export default class CourseEdit extends React.Component {
   state: {
-    code: string;
     title: string;
     minGrade: string;
     evals: Evaluation[];
@@ -27,15 +26,15 @@ export default class CourseEdit extends React.Component {
 
   constructor(props) {
     super(props);
-    const { code, title, minGrade, evals } = this.props.route.params;
+    const { title, minGrade, evals } = this.props.route.params;
 
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.generateCurrEvalsMarkup = this.generateCurrEvalsMarkup.bind(this);
     this.handleEvalDelete = this.handleEvalDelete.bind(this);
     this.handleEvalUpdate = this.handleEvalUpdate.bind(this);
     this.handleEvalEdit = this.handleEvalEdit.bind(this);
     this.selectEvalById = this.selectEvalById.bind(this);
     this.state = {
-      code: code,
       title: title,
       minGrade: minGrade,
       evals: evals,
@@ -49,7 +48,6 @@ export default class CourseEdit extends React.Component {
 
   render() {
     const {
-      code,
       title,
       minGrade,
       evals,
@@ -57,19 +55,13 @@ export default class CourseEdit extends React.Component {
       evalToEdit
     } = this.state;
 
+    const {code} = this.props.route.params;
+
     const courseInfoMarkup = (
       <Card style={{ marginTop: 20 }}>
         <Card.Title title="Edit course info" />
         <Card.Content>
-          <TextInput
-            label="Course code"
-            value={code}
-            onChangeText={text => {
-              this.setState({ code: text });
-            }}
-            clearButtonMode="while-editing"
-            autoCorrect={false}
-          />
+          <Text>{code}</Text>
           <TextInput
             label="Course title"
             value={title}
@@ -108,14 +100,26 @@ export default class CourseEdit extends React.Component {
     return (
       <View style={{ flex: 1, alignSelf: "stretch" }}>
         <ScrollView style={{ height: 80, alignSelf: "stretch", padding: 20 }}>
-          <Text style={iOSUIKit.largeTitleEmphasized}>Edit course</Text>
-          <Text>{this.state.evalToEdit.title}</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={iOSUIKit.largeTitleEmphasized}>Edit Course</Text>
+            <Button onPress={() => {this.handleSubmit()}}>Finish</Button>
+          </View>
           {courseInfoMarkup}
           {evalEditMarkup}
           {currEvalsMarkup}
         </ScrollView>
       </View>
     );
+  }
+
+  handleSubmit() {
+    const courseMapper: CourseMapper = new CourseMapperImpl();
+    const {title, minGrade} = this.state;
+    const {code} = this.props.route.params;
+
+    const updatedCourse: Course = new Course(title, code, +minGrade);
+    console.log(updatedCourse);
+    courseMapper.update(updatedCourse);
   }
 
   generateEvalEditMarkup(evaluation: Evaluation) {
@@ -150,7 +154,13 @@ export default class CourseEdit extends React.Component {
               }}
               display="default"
             />
-            <Button onPress={() => {this.handleEvalUpdate()}}>Confirm</Button>
+            <Button
+              onPress={() => {
+                this.handleEvalUpdate();
+              }}
+            >
+              Confirm
+            </Button>
           </View>
         </Card.Content>
       </Card>
@@ -175,7 +185,12 @@ export default class CourseEdit extends React.Component {
   }
 
   handleEvalUpdate() {
-    const {evalToEdit, currEvalEditTitle, currEvalEditWeight, currEvalEditDate} = this.state;
+    const {
+      evalToEdit,
+      currEvalEditTitle,
+      currEvalEditWeight,
+      currEvalEditDate
+    } = this.state;
 
     const evaluationMapper: EvaluationMapper = new EvaluationMapperImpl();
 
