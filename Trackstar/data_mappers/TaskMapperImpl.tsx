@@ -59,7 +59,7 @@ export default class TaskMapperImpl implements TaskMapper {
         tx.executeSql(sql, [],
           (_, { rows: { _array } }) => {
             _array.forEach(task => {
-              task_objs.push(new Task(task.title, new Date(JSON.parse(task.due_date)), task.est_duration, task.eval_id, task.complete, task.priority, task.id))
+              task_objs.push(new Task(task.title, new Date(JSON.parse(task.due_date)), task.est_duration, task.actual_duration, task.eval_id, task.complete, task.priority, task.id))
             })
             resolve(task_objs)
           },
@@ -78,7 +78,7 @@ export default class TaskMapperImpl implements TaskMapper {
               resolve(null)
             }
             else {
-              const task: Task = new Task(_array[0].title, new Date(JSON.parse(_array[0].due_date)), _array[0].est_duration, _array[0].eval_id, _array[0].complete, _array[0].priority, _array[0].id)
+              const task: Task = new Task(_array[0].title, new Date(JSON.parse(_array[0].due_date)), _array[0].est_duration, _array[0].actual_duration, _array[0].eval_id, _array[0].complete, _array[0].priority, _array[0].id)
               resolve(task)
             }
           },
@@ -95,7 +95,7 @@ export default class TaskMapperImpl implements TaskMapper {
         tx.executeSql("select * from Task where eval_id = ?", [evalID],
           (_, { rows: { _array } }) => {
             _array.forEach(task => {
-              task_objs.push(new Task(task.title, new Date(JSON.parse(task.due_date)), task.est_duration, task.eval_id, task.complete, task.priority, task.id))
+              task_objs.push(new Task(task.title, new Date(JSON.parse(task.due_date)), task.est_duration, task.actual_duration, task.eval_id, task.complete, task.priority, task.id))
             })
             resolve(task_objs)
           },
