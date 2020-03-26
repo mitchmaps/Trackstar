@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Alert, Platform } from "react-native";
 import {
   Card,
   Divider,
@@ -175,15 +175,27 @@ function generateTaskMarkup(tasks: Task[]) {
 }
 
 function calendarAlert(task: Task) {
-  Alert.alert(
-    'Add to calendar?',
-    `This will add '${task.title}' to your phone's calendar app`,
-    [
-      {text: 'OK + reminder', onPress: () => CalendarHelper.addEvent(task, true)},
-      {text: 'Cancel', style: 'cancel'},
-      {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
-    ],
-  )
+  if (Platform.OS === 'ios') {
+    Alert.alert(
+      'Add to calendar?',
+      `This will add '${task.title}' to your phone's calendar app`,
+      [
+        {text: 'OK + reminder', onPress: () => CalendarHelper.addEvent(task, true)},
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
+      ],
+    )
+  }
+  else {
+    Alert.alert(
+      'Add to calendar?',
+      `This will add '${task.title}' to your phone's calendar app`,
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
+      ],
+    )
+  }
 }
 
 function determineDaysUntilEval(evalDate: Date) {
