@@ -7,9 +7,11 @@ import {
   SectionList,
   StyleSheet
 } from "react-native";
-import { Card } from "react-native-paper";
+import { Card, TextInput, Button } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import CircleCheckBox, { LABEL_POSITION } from "react-native-circle-checkbox";
+import Modal from "react-native-modal";
+import { iOSUIKit } from "react-native-typography";
 
 import { Task, Evaluation, Course } from "../models";
 import {
@@ -32,12 +34,13 @@ const HomeScreen = props => {
     []
   );
   const [fakeState, setFakeState] = useState(new Date());
+  const [modalActive, setModalActive] = useState(false);
 
   const taskDataRef = useRef(formattedTaskData);
   const setTaskData = data => {
     taskDataRef.current = data;
     setFormattedTaskData(data);
-  }
+  };
 
   const navigation = props.navigation;
 
@@ -47,13 +50,13 @@ const HomeScreen = props => {
     });
   }, []);
 
-  const handleTaskCompletion = useCallback((id) => {
+  const handleTaskCompletion = useCallback(id => {
     console.log(`trying to click id: ${id}`);
     console.log(taskDataRef.current);
 
     let taskToUpdate: Task;
 
-    taskDataRef.current.forEach((currTask) => {
+    taskDataRef.current.forEach(currTask => {
       if (currTask.task.id === id) {
         taskToUpdate = currTask.task;
       }
@@ -62,11 +65,49 @@ const HomeScreen = props => {
     taskToUpdate.complete = !taskToUpdate.complete;
     updateTask(taskToUpdate);
 
+    setModalActive(true);
     // trigger re render
     setFakeState(new Date());
   }, []);
 
-  const tasksMarkup = generateTasksMarkup(formattedTaskData, handleTaskCompletion);
+  const tasksMarkup = generateTasksMarkup(
+    formattedTaskData,
+    handleTaskCompletion
+  );
+
+  const modalMarkup = (
+    <Modal isVisible={modalActive} hasBackdrop={true}>
+      <View
+        style={{
+          marginTop: 40,
+          marginBottom: 40,
+          backgroundColor: "white",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <Card.Content>
+          <Text style={iOSUIKit.largeTitleEmphasized}>Complete task</Text>
+          <View style={{ flex: 1, marginTop: 20 }}>
+            <Text>How long did you spend on that task?</Text>
+            <TextInput
+              label="Time (in minutes)"
+              keyboardType="numeric"
+              onChangeText={() => {}}
+            />
+          </View>
+          <Button
+            mode="contained"
+            onPress={() => {
+              setModalActive(false);
+            }}
+          >
+            Submit
+          </Button>
+        </Card.Content>
+      </View>
+    </Modal>
+  );
 
   return (
     <LinearGradient
@@ -84,7 +125,15 @@ const HomeScreen = props => {
           Due March 10th
         </Text>
       </View>
-      <ScrollView style={{marginTop: 50}}>
+      <ScrollView style={{ marginTop: 50 }}>
+        <Button
+          onPress={() => {
+            setModalActive(true);
+          }}
+        >
+          Toggle modal
+        </Button>
+        {modalMarkup}
         {tasksMarkup}
       </ScrollView>
     </LinearGradient>
@@ -95,7 +144,11 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleChange) {
   const allTasks = [];
 
   tasks.forEach((currTask: TaskDescriptor) => {
-    const {task: {title, complete, priority, id }, evalName, courseCode} = currTask;
+    const {
+      task: { title, complete, priority, id },
+      evalName,
+      courseCode
+    } = currTask;
 
     const formatted_title = `${priority}. ${title}`;
     const formatted_subtitle = `${courseCode} - ${evalName}`;
