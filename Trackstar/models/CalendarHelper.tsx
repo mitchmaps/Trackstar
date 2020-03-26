@@ -23,15 +23,6 @@ export default class CalendarHelper {
     }
   }
 
-  // private static async requestPermission() {
-  //   const { status } = await Calendar.requestCalendarPermissionsAsync();
-  //   if (status === 'granted') {
-  //     const calendars = await Calendar.getCalendarsAsync();
-  //     console.log('Here are all your calendars:');
-  //     console.log({ calendars });
-  //   }
-  // }
-
   private static async getDefaultCalendarSource() {
     const calendars = await Calendar.getCalendarsAsync();
     let defaultCalendars = calendars.filter(each => each.source.name === 'Default');
