@@ -15,7 +15,7 @@ export default class CalendarHelper {
       if (reminder && (Platform.OS === 'ios')) {
         const { status } = await Calendar.requestRemindersPermissionsAsync();
         if (status === 'granted') {
-          Calendar.createReminderAsync(calendarId, {
+          Calendar.createReminderAsync(null, {
             title: task.title,
             startDate: task.due_date,
             dueDate: task.due_date
@@ -25,13 +25,11 @@ export default class CalendarHelper {
           console.log("Reminders access denied")
         }
       }
-      else {
-        Calendar.createEventAsync(calendarId, { // maybe add checking for if it's already in the calendar
-          title: task.title,
-          startDate: task.due_date, // maybe change this to be due_date minus est_time
-          endDate: task.due_date
-        });
-      }
+      Calendar.createEventAsync(calendarId, { // maybe add checking for if it's already in the calendar
+        title: task.title,
+        startDate: task.due_date, // maybe change this to be due_date minus est_time
+        endDate: task.due_date
+      });
     }
     else {
       console.log(" Calendar access denied")
