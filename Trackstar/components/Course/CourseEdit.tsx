@@ -1,10 +1,11 @@
 import React from "react";
 import { Text, View, ScrollView, Alert } from "react-native";
 import { Divider, Card, TextInput, Button } from "react-native-paper";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { iOSUIKit } from "react-native-typography";
 
 import { Evaluation } from "../../models";
+import { EvaluationMapper, EvaluationMapperImpl } from '../../data_mappers';
 
 interface EvalDescriptor {
   editing: boolean;
@@ -30,6 +31,7 @@ export default class CourseEdit extends React.Component {
 
     this.generateCurrEvalsMarkup = this.generateCurrEvalsMarkup.bind(this);
     this.handleEvalDelete = this.handleEvalDelete.bind(this);
+    this.handleEvalUpdate = this.handleEvalUpdate.bind(this);
     this.handleEvalEdit = this.handleEvalEdit.bind(this);
     this.selectEvalById = this.selectEvalById.bind(this);
     this.state = {
@@ -41,12 +43,19 @@ export default class CourseEdit extends React.Component {
       evalToEdit: evals[0],
       currEvalEditTitle: evals[0].title,
       currEvalEditDate: evals[0].due_date,
-      currEvalEditWeight: evals[0].weight,
+      currEvalEditWeight: evals[0].weight
     };
   }
 
   render() {
-    const { code, title, minGrade, evals, evalEditingActive, evalToEdit } = this.state;
+    const {
+      code,
+      title,
+      minGrade,
+      evals,
+      evalEditingActive,
+      evalToEdit
+    } = this.state;
 
     const courseInfoMarkup = (
       <Card style={{ marginTop: 20 }}>
@@ -85,7 +94,9 @@ export default class CourseEdit extends React.Component {
     );
 
     const currEvalsMarkup = this.generateCurrEvalsMarkup();
-    const evalEditMarkup = (evalEditingActive) ? this.generateEvalEditMarkup(evalToEdit) : null;
+    const evalEditMarkup = evalEditingActive
+      ? this.generateEvalEditMarkup(evalToEdit)
+      : null;
 
     const evaluationsInfoMarkup = (
       <Card style={{ marginTop: 20 }}>
@@ -108,9 +119,7 @@ export default class CourseEdit extends React.Component {
   }
 
   generateEvalEditMarkup(evaluation: Evaluation) {
-    const { title, due_date, weight } = evaluation;
-    //let updatedEval: Evaluation = evaluation;
-    console.log(this.state);
+    const { title } = evaluation;
 
     return (
       <Card>
@@ -120,7 +129,7 @@ export default class CourseEdit extends React.Component {
             <TextInput
               label="Evaluation title"
               onChangeText={text => {
-                this.setState({ currEvalTitle: text });
+                this.setState({ currEvalEditTitle: text });
               }}
               value={this.state.currEvalEditTitle}
             />
@@ -128,7 +137,7 @@ export default class CourseEdit extends React.Component {
               label="Evaluation weight (%)"
               keyboardType="numeric"
               onChangeText={text => {
-                this.setState({ currEvalWeight: text });
+                this.setState({ currEvalEditWeight: text });
               }}
               value={this.state.currEvalEditWeight}
             />
@@ -141,7 +150,7 @@ export default class CourseEdit extends React.Component {
               }}
               display="default"
             />
-            <Button onPress={() => {}}>Confirm</Button>
+            <Button onPress={() => {this.handleEvalUpdate()}}>Confirm</Button>
           </View>
         </Card.Content>
       </Card>
@@ -165,6 +174,18 @@ export default class CourseEdit extends React.Component {
     this.setState({ evalEditingActive: true, evalToEdit: evalToEdit });
   }
 
+  handleEvalUpdate() {
+    const {evalToEdit, currEvalEditTitle, currEvalEditWeight, currEvalEditDate} = this.state;
+
+    const evaluationMapper: EvaluationMapper = new EvaluationMapperImpl();
+
+    evalToEdit.title = currEvalEditTitle;
+    evalToEdit.weight = +currEvalEditWeight;
+    evalToEdit.due_date = currEvalEditDate;
+
+    evaluationMapper.update(evalToEdit);
+  }
+
   generateCurrEvalsMarkup() {
     const currEvals: JSX.Element[] = [];
 
@@ -176,36 +197,40 @@ export default class CourseEdit extends React.Component {
       );
       const weightMarkup = <Text>{`Grade weight: ${weight}%`}</Text>;
 
+      const buttonsMarkup = !this.state.evalEditingActive ? (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "center"
+          }}
+        >
+          <Button
+            icon="close"
+            onPress={() => {
+              this.handleEvalDelete(id);
+            }}
+          >
+            Remove
+          </Button>
+          <Button
+            icon="pencil"
+            onPress={() => {
+              this.handleEvalEdit(id);
+            }}
+          >
+            Edit
+          </Button>
+        </View>
+      ) : null;
+
       const evalMarkup = (
         <Card key={`eval-${id}`}>
           <Card.Title title={title} />
           <Card.Content>
             {dueDateMarkup}
             {weightMarkup}
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "center"
-              }}
-            >
-              <Button
-                icon="close"
-                onPress={() => {
-                  this.handleEvalDelete(id);
-                }}
-              >
-                Remove
-              </Button>
-              <Button
-                icon="pencil"
-                onPress={() => {
-                  this.handleEvalEdit(id);
-                }}
-              >
-                Edit
-              </Button>
-            </View>
+            {buttonsMarkup}
           </Card.Content>
         </Card>
       );
