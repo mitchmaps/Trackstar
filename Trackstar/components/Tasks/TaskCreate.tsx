@@ -15,7 +15,6 @@ export default class TaskCreate extends React.Component {
     selectedEval: number;
     dueDate: Date;
     duration: string;
-    showPicker: boolean;
   };
 
   constructor(props) {
@@ -30,12 +29,11 @@ export default class TaskCreate extends React.Component {
       selectedEval: this.props.route.params.evals[0].id,
       dueDate: new Date(),
       duration: "",
-      showPicker: true,
     };
   }
 
   render() {
-    const { title, selectedEval, dueDate, duration, showPicker } = this.state;
+    const { title, selectedEval, dueDate, duration} = this.state;
     const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params;
 
     const evalSelectionMarkup = this.generateEvalSelectionMarkup(this.props.route.params.evals);
@@ -87,18 +85,6 @@ export default class TaskCreate extends React.Component {
           cancelBtnText="Cancel"
         />
         }
-            
-          {/*         showPicker && <DateTimePicker
-            testID="dateTimePicker"
-            timeZoneOffsetInMinutes={0}
-            value={dueDate}
-            onChange={
-              (event, selectedDate) => {
-                this.setState({dueDate: selectedDate});
-                this.setState({showPicker: false})
-              }
-            }
-            display="default"/>*/}
             
 
           
