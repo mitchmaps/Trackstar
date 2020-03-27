@@ -2364,6 +2364,11 @@ expo-asset@~8.0.0:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
+expo-calendar@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/expo-calendar/-/expo-calendar-8.1.0.tgz#367d51481a1aad9e3d87459f680398872990af4d"
+  integrity sha512-9qP7s9zF/0wFwzrWIDV7S+pDrqgUD6lDIZaAsLYIH6zaYqanafQkAPASOyTm7QbtkboVE5MCZ7LdqsBS+UdbNA==
+
 expo-constants@~8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-8.0.0.tgz#e2c5a072dacb4263ccfc57dcb4835ca791960d48"
@@ -3808,6 +3813,11 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
+moment@^2.19.1, moment@^2.22.0, moment@^2.22.1:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
+
 morgan@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.9.1.tgz#0a8d16734a1d9afbc824b99df87e738e58e2da59"
@@ -4403,6 +4413,20 @@ react-native-circle-checkbox@^0.1.6:
   dependencies:
     prop-types latest
 
+react-native-date-picker@^2.7.8:
+  version "2.7.8"
+  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-2.7.8.tgz#3e048ddeb0fbdfd60e706546fd47b903b581536d"
+  integrity sha512-X2+t/Ku8YCcSQBY1N4Qp1iaH0Iy3U4LSIhuPM7n7CeXA8u5BMSq4rp4+rQ9isMWHctGQWydwysMsMcUUeNny5g==
+  dependencies:
+    moment "^2.22.1"
+
+react-native-datepicker@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/react-native-datepicker/-/react-native-datepicker-1.7.2.tgz#58d0822591a0ac9b32aba082650222a0ee29669d"
+  integrity sha1-WNCCJZGgrJsyq6CCZQIioO4pZp0=
+  dependencies:
+    moment "^2.22.0"
+
 react-native-gesture-handler@^1.5.3:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.6.0.tgz#e9a4e1d0c7ac21eb0d6b6ec013e73f9c0c33a629"
@@ -4519,6 +4543,13 @@ react-native-web@~0.11.7:
     normalize-css-color "^1.0.2"
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.4"
+
+react-native-wheel-datepicker@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-wheel-datepicker/-/react-native-wheel-datepicker-2.2.3.tgz#2a93f25819b9478033229f0e715c56de92b78fba"
+  integrity sha512-tnZJZbqdyaRFXBXuHFrijtcr4gxOPbUdtvM3XfceHvVGSKQVoBuaDYRFVe4qTdrR4+6c/OOgUFfRu3nYFSHReQ==
+  dependencies:
+    moment "^2.19.1"
 
 react-native@0.61.2:
   version "0.61.2"
