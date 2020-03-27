@@ -7,7 +7,7 @@ import {
   SectionList,
   StyleSheet
 } from "react-native";
-import { Card, TextInput, Button, Checkbox } from "react-native-paper";
+import { Card, TextInput, Button } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import CircleCheckBox, { LABEL_POSITION } from "react-native-circle-checkbox";
 import Modal from "react-native-modal";
@@ -123,6 +123,7 @@ const HomeScreen = props => {
                 value={currActualDuration}
               />
               <Button
+                disabled={currActualDurationRef.current === ''}
                 style={{ marginTop: 20 }}
                 mode="contained"
                 onPress={() => {

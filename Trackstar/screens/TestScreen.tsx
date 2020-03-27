@@ -19,21 +19,6 @@ const TestScreen = (props) => {
 
     return (
       <View style={{marginTop: 100}}>
-        <TouchableOpacity style={styles.wipe} onPress={() => {
-          Database.deleteTaskData()
-          Database.deleteEvalData()
-          Database.deleteCourseData()
-        }}>
-          <Text>Delete Data</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.wipe} onPress={() => {
-          Database.deleteTaskTable()
-          Database.deleteEvalTable()
-          Database.deleteCourseTable()
-        }}>
-          <Text>Drop Tables</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => {
           let cmapper = new CourseMapperImpl
           let emapper = new EvaluationMapperImpl
@@ -214,6 +199,21 @@ const TestScreen = (props) => {
           })
         }}>
           <Text>Update Task 1</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.wipe} onPress={() => {
+          Database.deleteTaskData()
+          Database.deleteEvalData()
+          Database.deleteCourseData()
+        }}>
+          <Text>Delete Data</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.wipe} onPress={() => {
+          Database.deleteTaskTable()
+          Database.deleteEvalTable()
+          Database.deleteCourseTable()
+        }}>
+          <Text>Drop Tables</Text>
         </TouchableOpacity>
       </View>
     );
