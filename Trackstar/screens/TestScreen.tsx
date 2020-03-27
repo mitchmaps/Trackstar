@@ -1,7 +1,9 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, Platform } from 'react-native';
 import {Course, Evaluation, Task} from '../models';
 import Database from '../Database';
+import * as Calendar from 'expo-calendar';
+
 import {
   CourseMapper,
   CourseMapperImpl,
@@ -18,13 +20,28 @@ const TestScreen = (props) => {
   let taskMapper: TaskMapper = new TaskMapperImpl
 
     return (
-      <View style={{marginTop: 100}}>
+      <ScrollView style={{marginTop: 100}}>
+        <TouchableOpacity style={styles.button} onPress={() =>
+          {
+            (async () => {
+              const { status } = await Calendar.requestCalendarPermissionsAsync();
+              if (status === 'granted') {
+                const calendars = await Calendar.getCalendarsAsync();
+                console.log('Here are all your calendars:');
+                console.log({ calendars });
+              }
+            })();
+          }
+        }>
+          <Text>Request Calendar Permission</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.button} onPress={() => {
           let cmapper = new CourseMapperImpl
           let emapper = new EvaluationMapperImpl
           let tmapper = new TaskMapperImpl
         }}>
-          <Text>Init DB</Text>
+          <Text>Create tables</Text>
         </TouchableOpacity>
 
         <Text>Course</Text>
@@ -201,12 +218,22 @@ const TestScreen = (props) => {
           <Text>Update Task 1</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.wipe} onPress={() => {Database.deleteTaskData()}}>
+          <Text>Delete task data</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.wipe} onPress={() => {Database.deleteEvalData()}}>
+          <Text>Delete eval data</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.wipe} onPress={() => {Database.deleteCourseData()}}>
+          <Text>Delete course data</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.wipe} onPress={() => {
-          Database.deleteTaskData()
-          Database.deleteEvalData()
-          Database.deleteCourseData()
+          Database.deleteUserData()
         }}>
-          <Text>Delete Data</Text>
+          <Text>Delete user data</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.wipe} onPress={() => {
@@ -216,7 +243,7 @@ const TestScreen = (props) => {
         }}>
           <Text>Drop Tables</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     );
 };
 
@@ -240,3 +267,7 @@ const styles = StyleSheet.create({
 })
 
 export default TestScreen;
+
+/* notes:
+save calendar id in user table?
+*/
