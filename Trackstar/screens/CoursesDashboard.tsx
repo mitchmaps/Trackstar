@@ -119,8 +119,7 @@ async function formatData(complete: boolean) {
       data: [
         {
           code: course.code,
-          title: course.title,
-          minGrade: course.min_grade,
+          title: course.title
         }
       ]
     };

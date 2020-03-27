@@ -3,15 +3,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Text, View, Button } from "react-native";
 import Styles from "../Styles/CourseStyles";
 
-// change this to use index files
 import CourseView from '../components/Course/CourseView';
-import CourseEdit from '../components/Course/CourseEdit';
 import TaskCreate from '../components/Tasks/TaskCreate';
-
 
 const ViewCourseScreen = ({ route, navigation }) => {
   const Stack = createStackNavigator();
-  const { code, name, minGrade } = route.params;
+  const { code, name, term, minGrade } = route.params;
 
   return (
     <Stack.Navigator headerMode="none">
@@ -21,11 +18,11 @@ const ViewCourseScreen = ({ route, navigation }) => {
         initialParams={{
           code: code,
           name: name,
-          minGrade: minGrade,
+          term: term,
+          minGrade: minGrade
         }}
       />
-      <Stack.Screen name="Course Edit" component={CourseEdit} />
-      <Stack.Screen name="Task Create" component={TaskCreate} />
+      <Stack.Screen name="Create task" component={TaskCreate} />
     </Stack.Navigator>
   );
 };
