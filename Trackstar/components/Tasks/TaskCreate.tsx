@@ -1,7 +1,7 @@
 import React from "react";
 import {Evaluation, Task} from '../../models';
 import {TaskMapper, TaskMapperImpl} from '../../data_mappers';
-import Moment from 'moment'
+import DatePicker from 'react-native-datepicker'
 
 import { Platform, View, Text, ScrollView, Picker } from "react-native";
 import { Divider, Card, TextInput, Button, List } from "react-native-paper";
@@ -58,19 +58,49 @@ export default class TaskCreate extends React.Component {
             }}
           />
           <Text style={{paddingTop: 20}}>Task due date</Text>
-          {showPicker && 
-              <DateTimePicker
-                testID="dateTimePicker"
-                timeZoneOffsetInMinutes={0}
-                value={dueDate}
-                onChange={
-                  (event, selectedDate) => {
-                    this.setState({dueDate: selectedDate});
-                    this.setState({showPicker: false})
-                  }
-                }
-                display="default"
-              />}
+          
+          
+          { Platform.OS === 'ios' ? 
+            <DateTimePicker
+            testID="dateTimePicker"
+            timeZoneOffsetInMinutes={0}
+            value={dueDate}
+            onChange={
+              (event, selectedDate) => {
+                this.setState({dueDate: selectedDate});
+              }
+            }
+            display="default"/> 
+          : <DatePicker
+          style={{width: 200}}
+          date={this.state.dueDate}
+          mode="datetime"
+          placeholder="select date"
+          format="YYYY-MM-DD"
+          onDateChange={
+            (event, selectedDate) => {
+              this.setState({dueDate: selectedDate});
+            }
+          }
+          androidMode='spinner'
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+        />
+        }
+            
+          {/*         showPicker && <DateTimePicker
+            testID="dateTimePicker"
+            timeZoneOffsetInMinutes={0}
+            value={dueDate}
+            onChange={
+              (event, selectedDate) => {
+                this.setState({dueDate: selectedDate});
+                this.setState({showPicker: false})
+              }
+            }
+            display="default"/>*/}
+            
+
           
       <Text style={{paddingTop: 20}}>Typically underestimate/overestimate by {User.getInstance().estimationAccuracy} minutes</Text>
           <TextInput
