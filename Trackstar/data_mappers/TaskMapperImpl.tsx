@@ -138,10 +138,11 @@ export default class TaskMapperImpl implements TaskMapper {
 
   private updateEstAccuracy(): void {
     let userMapper: UserMapper = new UserMapperImpl;
-    userMapper.getUser() // updates the singleton
-    let user = User.getInstance() // get the singleton
-    user.estimationAccuracy -= 1; // TODO: add actual math here, using this.allCompleted()
-    userMapper.update(user);
+    userMapper.getUser().then(() => { // updates the singleton
+      let user = User.getInstance() // get the singleton
+      user.estimationAccuracy -= 1; // TODO: add actual math here, using this.allCompleted()
+      userMapper.update(user);
+    })
   }
 
   private allCompleted(): Promise<Task[]> {

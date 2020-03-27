@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Alert, Platform } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 import {
   Card,
   Divider,
@@ -19,23 +20,25 @@ import {
   TaskMapper,
   TaskMapperImpl
 } from "../../data_mappers";
+import CalendarHelper from "../../models/CalendarHelper";
 
 export default function CourseView(props) {
   const { code, name, term, minGrade } = props.route.params;
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
-    const evalData = retrieveEvalData(code).then((data: Evaluation[]) => {
-      setCourseEvals(data);
-    });
+  useFocusEffect(
+    React.useCallback(() => {
+      const evalData = retrieveEvalData(code).then((data: Evaluation[]) => {
+        setCourseEvals(data);
+      });
 
-    const taskData = retrieveTaskData().then((data: Task[]) => {
-      console.log(data);
-      setTasks(data);
-    });
-
-  }, []);
+      const taskData = retrieveTaskData().then((data: Task[]) => {
+        console.log(data);
+        setTasks(data);
+      });
+    }, [])
+  );
 
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
   // Fix after demo
@@ -161,6 +164,7 @@ function generateTaskMarkup(tasks: Task[]) {
           <Card.Content>
             <Text>{title}</Text>
             {badgeMarkup}
+            <TouchableOpacity onPress={() => {calendarAlert(currTask)}}><Text>Add to calendar</Text></TouchableOpacity>
           </Card.Content>
         </Card>
       </View>
@@ -170,6 +174,30 @@ function generateTaskMarkup(tasks: Task[]) {
 
     return allTasks;
   }, []);
+}
+
+function calendarAlert(task: Task) {
+  if (Platform.OS === 'ios') {
+    Alert.alert(
+      'Add to calendar?',
+      `This will add '${task.title}' to your phone's calendar app`,
+      [
+        {text: 'OK + reminder', onPress: () => CalendarHelper.addEvent(task, true)},
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
+      ],
+    )
+  }
+  else {
+    Alert.alert(
+      'Add to calendar?',
+      `This will add '${task.title}' to your phone's calendar app`,
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
+      ],
+    )
+  }
 }
 
 function determineDaysUntilEval(evalDate: Date) {
