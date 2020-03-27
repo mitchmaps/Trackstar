@@ -1,0 +1,17 @@
+HaoHao Du
+ID: 101074491
+
+Week 9:
+- brainstormed with team for architecture styles and design patterns, 
+divided tasks for deliverable 3 presentation, interview, as well as document
+- responsible for researching layered architecture style, the implementation
+we decided to use, as well as understanding everyone elses choices in terms of
+architecture styles, design patterns, their relations to layered architecture 
+how they work and how it all fits into our codebase
+- ensured that the organization of our codebase followed up with our choice
+of design patterns, and UML diagrams to ensure that if we are asked 
+(which we were) during the d3 interview to show our contributions to the project
+and how they directly correlated to our diagrams, that everything would match
+- specifically made sure that my own components, and grade calculator section matched
+- had to gain an in depth understanding of our design patterns so that i could use 
+them for implementation during the next week to come
