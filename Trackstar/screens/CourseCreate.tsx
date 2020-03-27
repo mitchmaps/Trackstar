@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Platform, Text, View, ScrollView, Alert } from 'react-native';
+import {Platform, Text, View, ScrollView, Alert } from 'react-native';
 import { Divider, Card, TextInput, Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { iOSUIKit } from 'react-native-typography';
+import DatePicker from 'react-native-datepicker'
+
 
 import {Course, Evaluation} from '../models';
 import {CourseMapper, CourseMapperImpl, EvaluationMapper, EvaluationMapperImpl} from '../data_mappers';
@@ -31,7 +33,6 @@ export default class CourseCreate extends React.Component {
     currDate: Date,
     currTotalGradeWeight: number,
     evaluations: EvaluationDescriptor[],
-    showPicker: boolean,
   }
 
   constructor(props) {
@@ -50,7 +51,6 @@ export default class CourseCreate extends React.Component {
       currDate: new Date(),
       currTotalGradeWeight: 0,
       evaluations: [],
-      showPicker: false,
     }
   }
 
@@ -117,19 +117,29 @@ export default class CourseCreate extends React.Component {
                 onChangeText={(text) => {this.setState({currEvalWeight: text})}}
                 value={this.state.currEvalWeight}
               />
-              {this.state.showPicker && ( 
-              <DateTimePicker
+              { Platform.OS === 'ios' ? <DateTimePicker
                 testID="dateTimePicker"
                 timeZoneOffsetInMinutes={0}
                 value={this.state.currDate}
-                onChange={
-                  (event, selectedDate) => {
-                    this.setState({currDate: selectedDate, showPicker: false});
-                  }
-                }
+                onChange={(event, selectedDate) => {
+                  this.setState({currDate: selectedDate});
+                }}
                 display="default"
-              />)}
-              
+              /> :
+              <DatePicker
+                testID="dateTimePicker"
+                date={this.state.currDate}
+                mode="datetime"
+                placeholder="select date"
+                format="YYYY-MM-DD"
+                onDateChange={(event, selectedDate) => {
+                  this.setState({currDate: selectedDate});
+                }}
+                androidMode='spinner'
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                style={{paddingTop: 10, width:300}}
+              />}
             </View>
           </Card.Content>
           <Button

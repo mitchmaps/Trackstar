@@ -59,39 +59,37 @@ export default class TaskCreate extends React.Component {
           
           
           { Platform.OS === 'ios' ? 
-            <DateTimePicker
-            testID="dateTimePicker"
-            timeZoneOffsetInMinutes={0}
-            value={dueDate}
-            onChange={
-              (event, selectedDate) => {
-                this.setState({dueDate: selectedDate});
-              }
+          <DateTimePicker
+          testID="dateTimePicker"
+          timeZoneOffsetInMinutes={0}
+          value={dueDate}
+          onChange={
+            (event, selectedDate) => {
+              this.setState({dueDate: selectedDate});
             }
-            display="default"/> 
-          : 
-            <DatePicker
-            style={{width: 200}}
-            date={this.state.dueDate}
-            mode="datetime"
-            placeholder="select date"
-            format="YYYY-MM-DD"
-            onDateChange={
-              (event, selectedDate) => {
-                this.setState({dueDate: selectedDate});
-              }
+          }
+          display="default"/> : 
+          <DatePicker
+          date={dueDate}      
+          mode="datetime"
+          placeholder="select date"
+          format="YYYY-MM-DD"
+          onDateChange={
+            (event, selectedDate) => {
+              this.setState({dueDate: selectedDate});
             }
-            androidMode='spinner'
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            />
+          }
+          androidMode='spinner'
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          style={{paddingTop: 10, paddingBottom:20, width:300}}
+          />
         }
             
 
           
-      <Text style={{paddingTop: 20}}>Typically underestimate/overestimate by {User.getInstance().estimationAccuracy} minutes</Text>
-          <TextInput
-            label="Estimated time(minutes)"
+       <TextInput
+            label="Estimated time needed in minutes"
             keyboardType="numeric"
             onChangeText={(text) => {this.setState({duration: text})}}
             value={duration}
