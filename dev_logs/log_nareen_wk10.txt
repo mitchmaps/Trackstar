@@ -20,3 +20,12 @@ To Do:
 Home Page, tell user when the next due evaluation is
 Current Grade, update curr grade for course when curr grade for evaluation is updated
 New User, new user UI when database is empty
+
+March 25th
+Began trying to prevent errors when the database is empty for new user, wouldn't run without the mock data
+ran into difficulty running calendar branch with my laptop
+build issues so returned to using older version, previous branches
+worked in DashboardScren, tried adjusting return values to accurate evaluation name and date
+Next Evaluation and Due Errors encountered
+Group member HaoHao also encountered issues with this trying to store the datamappers return value in a new state didn't work
+Group is Aiming to finish implementations for Saturday
