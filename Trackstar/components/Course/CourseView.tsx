@@ -24,7 +24,7 @@ import {
 import CalendarHelper from "../../models/CalendarHelper";
 
 export default function CourseView(props) {
-  const { code, name, minGrade } = props.route.params;
+  const { code, name, minGrade, term } = props.route.params;
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
 
