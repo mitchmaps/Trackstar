@@ -130,13 +130,19 @@ export default class CourseEdit extends React.Component {
     const { title, minGrade } = this.state;
     const { code } = this.props.route.params;
 
-    const updatedCourse: Course = new Course(title, code, +minGrade);
-    courseMapper.update(updatedCourse);
+    courseMapper.find(code).then((data) => {
+      const courseToEdit = data;
 
-    this.props.navigation.navigate("Course view", {
-      code: code,
-      name: title,
-      minGrade: minGrade,
+      courseToEdit.title = title;
+      courseToEdit.code = code;
+      courseToEdit.min_grade = +minGrade;
+
+      courseMapper.update(courseToEdit);
+      this.props.navigation.navigate("Course view", {
+        code: code,
+        name: title,
+        minGrade: minGrade,
+      });
     });
   }
 
