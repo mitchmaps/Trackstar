@@ -134,7 +134,6 @@ export default class CourseEdit extends React.Component {
       const courseToEdit = data;
 
       courseToEdit.title = title;
-      courseToEdit.code = code;
       courseToEdit.min_grade = +minGrade;
 
       courseMapper.update(courseToEdit);
