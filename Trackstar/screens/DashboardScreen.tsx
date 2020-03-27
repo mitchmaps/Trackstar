@@ -35,10 +35,10 @@ const HomeScreen = props => {
   );
   const [fakeState, setFakeState] = useState(new Date());
   const [modalActive, setModalActive] = useState(false);
-  const [taskBeingCompleted, setTaskBeingCompleted] = useState<
-    TaskDescriptor
-  >(null);
-  const [currActualDuration, setCurrActualDuration] = useState('');
+  const [taskBeingCompleted, setTaskBeingCompleted] = useState<TaskDescriptor>(
+    null
+  );
+  const [currActualDuration, setCurrActualDuration] = useState("");
 
   const taskDataRef = useRef(formattedTaskData);
   const setTaskData = data => {
@@ -50,13 +50,13 @@ const HomeScreen = props => {
   const setTaskCompleted = data => {
     taskCompletedRef.current = data;
     setTaskBeingCompleted(data);
-  }
+  };
 
   const currActualDurationRef = useRef(currActualDuration);
   const setCurrActualDurationRef = data => {
     currActualDurationRef.current = data;
     setCurrActualDuration(data);
-  }
+  };
 
   const navigation = props.navigation;
 
@@ -71,62 +71,69 @@ const HomeScreen = props => {
 
     taskToUpdate.task.complete = true;
     taskToUpdate.task.actual_duration = +currActualDurationRef.current;
-    console.log('task to update');
-    console.log(taskToUpdate);
     updateTask(taskToUpdate);
-    setCurrActualDurationRef('');
+    setCurrActualDurationRef("");
     setModalActive(false);
     // trigger re render
     setFakeState(new Date());
   }, []);
 
-  const handleTaskSelection = useCallback(id => {
-    const task = findTaskById(taskDataRef.current, id);
-    setTaskCompleted(task);
-    setModalActive(true);
-  }, [taskDataRef.current]);
+  const handleTaskSelection = useCallback(
+    id => {
+      const task = findTaskById(taskDataRef.current, id);
+      setTaskCompleted(task);
+      setModalActive(true);
+    },
+    [taskDataRef.current]
+  );
 
   const tasksMarkup = generateTasksMarkup(
     formattedTaskData,
-    handleTaskSelection,
+    handleTaskSelection
   );
 
-  const modalMarkup = taskBeingCompleted !== null ? (
-    <Modal isVisible={modalActive} hasBackdrop={true}>
-      <View
-        style={{
-          marginTop: 40,
-          marginBottom: 40,
-          backgroundColor: "white",
-          justifyContent: "center",
-          alignItems: "center"
-        }}
-      >
-        <Card.Content>
-          <Text style={iOSUIKit.largeTitleEmphasized}>Complete task</Text>
-          <Text style={iOSUIKit.subheadEmphasized}>{taskBeingCompleted.task.title}</Text>
-          <View style={{ flex: 1, marginTop: 20 }}>
-            <Text>{`When you created this task you estimated it would take ${taskBeingCompleted.task.est_duration} minutes.`}</Text>
-            <Text>How long did you actually spend on this task?</Text>
-            <TextInput
-              label="Time (in minutes)"
-              keyboardType="numeric"
-              onChangeText={(text) => {setCurrActualDurationRef(text)}}
-              value={currActualDuration}
-            />
-          </View>
-          <Button
-            mode="contained"
-            onPress={() => {
-              handleTaskCompletion();
-            }}
-          >
-            Submit
-          </Button>
-        </Card.Content>
-      </View>
-    </Modal>
-  ) : null;
+  const modalMarkup =
+    taskBeingCompleted !== null ? (
+      <Modal isVisible={modalActive} hasBackdrop={true}>
+        <View
+          style={{
+            marginTop: 40,
+            marginBottom: 40,
+            backgroundColor: "white",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <Card.Content>
+            <Text style={iOSUIKit.largeTitleEmphasized}>Complete task</Text>
+            <Text style={iOSUIKit.subheadEmphasized}>
+              {taskBeingCompleted.task.title}
+            </Text>
+            <View style={{ flex: 1, marginTop: 20 }}>
+              <Text style={{ marginBottom: 20 }}>{`When you created this task you estimated it would take ${taskBeingCompleted.task.est_duration} minutes.`}</Text>
+              <Text>How long did you actually spend on this task?</Text>
+              <TextInput
+                label="Time (in minutes)"
+                keyboardType="numeric"
+                onChangeText={text => {
+                  setCurrActualDurationRef(text);
+                }}
+                value={currActualDuration}
+              />
+              <Button
+                style={{ marginTop: 20 }}
+                mode="contained"
+                onPress={() => {
+                  handleTaskCompletion();
+                }}
+              >
+                Submit
+              </Button>
+            </View>
+          </Card.Content>
+        </View>
+      </Modal>
+    ) : null;
 
   return (
     <LinearGradient
@@ -152,10 +159,7 @@ const HomeScreen = props => {
   );
 };
 
-function generateTasksMarkup(
-  tasks: TaskDescriptor[],
-  handleModalChange
-) {
+function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
   const allTasks = [];
 
   tasks.forEach((currTask: TaskDescriptor) => {
@@ -186,7 +190,9 @@ function generateTasksMarkup(
               checked={complete ? true : false}
               outerColor={"#5273eb"}
               innerColor={"#5273eb"}
-              onToggle={() => {handleModalChange(id)}}
+              onToggle={() => {
+                handleModalChange(id);
+              }}
             />
           </Card.Content>
         </Card>
@@ -206,8 +212,6 @@ async function formatData() {
 
   const formattedData = [];
   const rawData: Task[] = await taskMapper.all();
-  console.log("raw");
-  console.log(rawData);
 
   for (let i = 0; i < rawData.length; i++) {
     const task = rawData[i];
@@ -234,14 +238,12 @@ async function updateTask(task: TaskDescriptor) {
 
 function findTaskById(tasks: TaskDescriptor[], id) {
   let task: TaskDescriptor;
-  console.log('the tasks');
-  tasks.forEach((item) => {
+  tasks.forEach(item => {
     if (item.task.id === id) {
-      console.log(item.task.title, item.task.id);
       task = item;
     }
   });
-  //console.log(tasks);
+
   return task;
 }
 

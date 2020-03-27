@@ -25,7 +25,7 @@ export default class TaskMapperImpl implements TaskMapper {
   update(t: Task, complete: boolean = false): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("update Task set title=?, due_date=?, est_duration=?, actual_duration=? priority=?, complete=? where id=?", [t.title, JSON.stringify(t.due_date), t.est_duration, t.actual_duration, t.priority, t.complete, t.id],
+        tx.executeSql("update Task set title=?, due_date=?, est_duration=?, actual_duration=?, priority=?, complete=? where id=?", [t.title, JSON.stringify(t.due_date), t.est_duration, t.actual_duration, t.priority, t.complete, t.id],
           () => {
             this.updatePriorities();
             if (complete)
