@@ -18,11 +18,8 @@ import {
   EvaluationMapper,
   EvaluationMapperImpl,
   TaskMapper,
-  TaskMapperImpl,
-  UserMapperImpl,
+  TaskMapperImpl
 } from "../data_mappers";
-import UserMapper from "../data_mappers/UserMapper";
-import User from "../models/User";
 
 interface TaskDescriptor {
   task: Task;
@@ -44,9 +41,6 @@ const HomeScreen = props => {
 
   const navigation = props.navigation;
 
-  // task mapper to update user estimation accuracy
-  const taskMapper: TaskMapper = new TaskMapperImpl();
-
   useEffect(() => {
     const formattedTasks = formatData().then(data => {
       setTaskData(data);
@@ -54,14 +48,8 @@ const HomeScreen = props => {
   }, []);
 
   const handleTaskCompletion = useCallback((id) => {
-    console.log(`\ntrying to click id: ${id}`);
-  //  console.log(taskDataRef.current);
-
-    // update user estimation accuracy every time a task is completed
-    console.log("ESTIMATION ACCURACY: " + User.getInstance().estimationAccuracy)
-    taskMapper.updateEstAccuracy();
-    console.log("ESTIMATION ACCURACY AFTER: " + User.getInstance().estimationAccuracy + "\n")
-  
+    console.log(`trying to click id: ${id}`);
+    console.log(taskDataRef.current);
 
     let taskToUpdate: Task;
 
@@ -174,6 +162,7 @@ async function formatData() {
 
 async function updateTask(task: Task) {
   const taskMapper: TaskMapper = new TaskMapperImpl();
+
   taskMapper.update(task);
 }
 
