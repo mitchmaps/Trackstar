@@ -69,21 +69,22 @@ export default class TaskCreate extends React.Component {
               }
             }
             display="default"/> 
-          : <DatePicker
-          style={{width: 200}}
-          date={this.state.dueDate}
-          mode="datetime"
-          placeholder="select date"
-          format="YYYY-MM-DD"
-          onDateChange={
-            (event, selectedDate) => {
-              this.setState({dueDate: selectedDate});
+          : 
+            <DatePicker
+            style={{width: 200}}
+            date={this.state.dueDate}
+            mode="datetime"
+            placeholder="select date"
+            format="YYYY-MM-DD"
+            onDateChange={
+              (event, selectedDate) => {
+                this.setState({dueDate: selectedDate});
+              }
             }
-          }
-          androidMode='spinner'
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-        />
+            androidMode='spinner'
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            />
         }
             
 
