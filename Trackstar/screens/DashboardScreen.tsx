@@ -38,13 +38,25 @@ const HomeScreen = props => {
   const [taskBeingCompleted, setTaskBeingCompleted] = useState<
     TaskDescriptor
   >(null);
-  const [currActualDuration, setcurrActualDuration] = useState('');
+  const [currActualDuration, setCurrActualDuration] = useState('');
 
   const taskDataRef = useRef(formattedTaskData);
   const setTaskData = data => {
     taskDataRef.current = data;
     setFormattedTaskData(data);
   };
+
+  const taskCompletedRef = useRef(taskBeingCompleted);
+  const setTaskCompleted = data => {
+    taskCompletedRef.current = data;
+    setTaskBeingCompleted(data);
+  }
+
+  const currActualDurationRef = useRef(currActualDuration);
+  const setCurrActualDurationRef = data => {
+    currActualDurationRef.current = data;
+    setCurrActualDuration(data);
+  }
 
   const navigation = props.navigation;
 
@@ -55,11 +67,14 @@ const HomeScreen = props => {
   }, []);
 
   const handleTaskCompletion = useCallback(() => {
-    let taskToUpdate: TaskDescriptor = taskBeingCompleted;
+    const taskToUpdate: TaskDescriptor = taskCompletedRef.current;
 
     taskToUpdate.task.complete = true;
-    taskToUpdate.task.actual_duration = +currActualDuration;
+    taskToUpdate.task.actual_duration = +currActualDurationRef.current;
+    console.log('task to update');
+    console.log(taskToUpdate);
     updateTask(taskToUpdate);
+    setCurrActualDurationRef('');
     setModalActive(false);
     // trigger re render
     setFakeState(new Date());
@@ -67,7 +82,7 @@ const HomeScreen = props => {
 
   const handleTaskSelection = useCallback(id => {
     const task = findTaskById(taskDataRef.current, id);
-    setTaskBeingCompleted(task);
+    setTaskCompleted(task);
     setModalActive(true);
   }, [taskDataRef.current]);
 
@@ -96,7 +111,7 @@ const HomeScreen = props => {
             <TextInput
               label="Time (in minutes)"
               keyboardType="numeric"
-              onChangeText={(text) => {setcurrActualDuration(text)}}
+              onChangeText={(text) => {setCurrActualDurationRef(text)}}
               value={currActualDuration}
             />
           </View>
