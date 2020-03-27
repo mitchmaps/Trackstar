@@ -7,7 +7,7 @@ import {
   SectionList,
   StyleSheet
 } from "react-native";
-import { Card, TextInput, Button } from "react-native-paper";
+import { Card, TextInput, Button, Checkbox } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import CircleCheckBox, { LABEL_POSITION } from "react-native-circle-checkbox";
 import Modal from "react-native-modal";
@@ -110,7 +110,9 @@ const HomeScreen = props => {
               {taskBeingCompleted.task.title}
             </Text>
             <View style={{ flex: 1, marginTop: 20 }}>
-              <Text style={{ marginBottom: 20 }}>{`When you created this task you estimated it would take ${taskBeingCompleted.task.est_duration} minutes.`}</Text>
+              <Text
+                style={{ marginBottom: 20 }}
+              >{`When you created this task you estimated it would take ${taskBeingCompleted.task.est_duration} minutes.`}</Text>
               <Text>How long did you actually spend on this task?</Text>
               <TextInput
                 label="Time (in minutes)"
@@ -171,9 +173,20 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
 
     const formatted_title = `${priority}. ${title}`;
     const formatted_subtitle = `${courseCode} - ${evalName}`;
-
-    const completeText = complete ? <Text>Complete</Text> : null;
     const opacity = complete ? 0.5 : 1;
+
+    const statusMarkup = !complete ? (
+      <CircleCheckBox
+      style={{ flex: 2 }}
+      // checked={item.title == "1. Read Chapter 3" ? true : false}
+      checked={complete ? true : false}
+      outerColor={"#5273eb"}
+      innerColor={"#5273eb"}
+      onToggle={() => {
+        handleModalChange(id);
+      }}
+    />
+    ) : <Text>Complete</Text>;
 
     const taskMarkup = (
       <View opacity={opacity}>
@@ -183,17 +196,7 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
             <Text style={{ flex: 8 }}>
               {courseCode} - {evalName}
             </Text>
-            {completeText}
-            <CircleCheckBox
-              style={{ flex: 2 }}
-              // checked={item.title == "1. Read Chapter 3" ? true : false}
-              checked={complete ? true : false}
-              outerColor={"#5273eb"}
-              innerColor={"#5273eb"}
-              onToggle={() => {
-                handleModalChange(id);
-              }}
-            />
+            {statusMarkup}
           </Card.Content>
         </Card>
       </View>
