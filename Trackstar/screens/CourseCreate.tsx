@@ -117,7 +117,8 @@ export default class CourseCreate extends React.Component {
                 onChangeText={(text) => {this.setState({currEvalWeight: text})}}
                 value={this.state.currEvalWeight}
               />
-              { Platform.OS === 'ios' ? <DateTimePicker
+              { Platform.OS === 'ios' ? 
+              <DateTimePicker
                 testID="dateTimePicker"
                 timeZoneOffsetInMinutes={0}
                 value={this.state.currDate}

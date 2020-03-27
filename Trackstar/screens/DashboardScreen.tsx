@@ -18,7 +18,7 @@ import {
   EvaluationMapper,
   EvaluationMapperImpl,
   TaskMapper,
-  TaskMapperImpl
+  TaskMapperImpl,
 } from "../data_mappers";
 
 interface TaskDescriptor {
@@ -40,6 +40,7 @@ const HomeScreen = props => {
   }
 
   const navigation = props.navigation;
+  const userMapper userMapper
 
   useEffect(() => {
     const formattedTasks = formatData().then(data => {
