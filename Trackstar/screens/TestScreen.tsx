@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView, Platform } from 'react-native';
 import {Course, Evaluation, Task} from '../models';
 import Database from '../Database';
+import * as Calendar from 'expo-calendar';
 
 import {
   CourseMapper,
@@ -227,6 +228,12 @@ const TestScreen = (props) => {
 
         <TouchableOpacity style={styles.wipe} onPress={() => {Database.deleteCourseData()}}>
           <Text>Delete course data</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.wipe} onPress={() => {
+          Database.deleteUserData()
+        }}>
+          <Text>Delete user data</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.wipe} onPress={() => {

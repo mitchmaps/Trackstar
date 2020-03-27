@@ -1,0 +1,22 @@
+HaoHao Du
+ID: 101074491
+
+Week 10:
+- heavy implementation week , lots of code to be written , lots of tasks to be met
+- brainstormed, chose, and developed a task prioritizer algorithm that was used
+in organizing which tasks are projected to the user first, second, etc.
+- implemented Gaby's dataMappers class in order to complete my part, and to access
+database (not an easy task as the dataMappers were not easy to work with)
+- collaborated with Gaby in order to better understand and work with the back end
+- collaborated and asked Mitch questions to gain a more insightful view of React and
+the State design pattern, and how it relates to our app specifically
+- connected our Home Screen which had all the task objects to our data mappers, 
+which then retrieved information from our database
+- presented research and my portion of the application to our respective TA, 
+everyone on our team did really well and I am very lucky to have very patient and
+knowledgeful team members !
+
+next week:
+- one of our screens has been crashing on my phone for the past week, we believe
+that this is because of a cross platform error , found a few articles to help
+overcome this error , I am confident we will be able to solve

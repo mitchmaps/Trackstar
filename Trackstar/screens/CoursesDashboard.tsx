@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import React from "react";
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   SectionList,
@@ -28,43 +29,40 @@ import {Course} from "../models";
 import { CourseMapper, CourseMapperImpl } from "../data_mappers";
 
 const CoursesDashboard = props => {
-  const [oldCourses, setOldCourses] = useState(true); // hook state for toggle
+  const [showComplete, setShowComplete] = useState(false); // hook state for toggle
   const [formattedCourseData, setFormattedCourseData] = useState([]);
   const navigation = props.navigation;
 
-  useEffect(() => {
-    const formattedCourses = formatData().then(data => {
-      setFormattedCourseData(data);
-    });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const formattedCourses = formatData(showComplete).then(data => {
+        setFormattedCourseData(data);
+      });
+    }, [])
+  );
 
   const SingleItem = data => {
     const item = data.item;
-    if (item.color === "#999999" && oldCourses === false) {
-      // only render on toggle if course is not pre-req
-      return null;
-    } else {
-      return (
-        <View style={{ marginBottom: 10 }}>
-          <Card
-            style={{ paddingVertical: 10 }}
-            onPress={() => {
-              navigation.navigate("Course", {
-                code: item.code,
-                name: item.title,
-                minGrade: item.minGrade
-              });
-            }}
-          >
-            <Card.Title
-              title={item.code}
-              subtitle={item.title}
-              style={{ width: "100%" }}
-            />
-          </Card>
-        </View>
-      );
-    }
+    return (
+      <View style={{ marginBottom: 10 }}>
+        <Card
+          style={{ paddingVertical: 10 }}
+          onPress={() => {
+            navigation.navigate("Course", {
+              code: item.code,
+              name: item.title,
+              minGrade: item.minGrade
+            });
+          }}
+        >
+          <Card.Title
+            title={item.code}
+            subtitle={item.title}
+            style={{ width: "100%" }}
+          />
+        </Card>
+      </View>
+    );
   };
 
   return (
@@ -78,9 +76,16 @@ const CoursesDashboard = props => {
         alignItems: "center"
       }}
     >
-      {/* <View style={Styles.dashboardRowOne}>
-        <Text style={iOSUIKit.largeTitleEmphasized}>Dashboard</Text>
-      </View> */}
+    <Text>Show Completed</Text>
+    <Switch
+      value={showComplete}
+      onValueChange={() => {
+        setShowComplete(!showComplete);
+        const formattedCourses = formatData(!showComplete).then(data => {
+          setFormattedCourseData(data);
+        });
+      }}
+    />
 
       <SectionList
         style={{ marginTop: 50 }}
@@ -102,11 +107,11 @@ const CoursesDashboard = props => {
   );
 };
 
-async function formatData() {
+async function formatData(complete: boolean) {
   const formattedData = [];
 
   const courseMapper: CourseMapper = new CourseMapperImpl();
-  const rawData: Course[] = await courseMapper.all();
+  const rawData: Course[] = await courseMapper.all(complete);
 
   rawData.forEach(course => {
     const courseInfo = {
