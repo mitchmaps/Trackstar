@@ -1,9 +1,11 @@
 export default class User {
   estimationAccuracy: number;
+  calendarId: string;
   private static instance: User;
 
-  private constructor(ea: number=100) {
-    this.estimationAccuracy = ea;
+  private constructor() {
+    this.estimationAccuracy = 100;
+    this.calendarId = null;
   }
 
   static getInstance() {

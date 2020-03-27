@@ -8,14 +8,13 @@ export default class UserMapperImpl implements UserMapper {
 
   constructor() {
     this.createTable()
-    this.insert()
-
+    this.getUser();
   }
 
   update(user: User): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("update User set est_accuracy=?", [user.estimationAccuracy]);
+        tx.executeSql("update User set est_accuracy=?, calendarId=?", [user.estimationAccuracy, user.calendarId], null, this.errorHandler);
       },
       null
     );
@@ -26,9 +25,16 @@ export default class UserMapperImpl implements UserMapper {
       this.db.transaction(tx => {
         tx.executeSql("select * from User", [], (_, { rows: { _array } }) => {
           const user = User.getInstance();
-          user.estimationAccuracy = _array[0].est_accuracy
+          if (_array[0]) {
+            user.estimationAccuracy = _array[0].est_accuracy
+            user.calendarId = _array[0].calendarId
+          }
+          else {
+            this.insert()
+          }
           resolve(user)
-        })
+        }),
+        this.errorHandler
       })
     })
   }
@@ -36,7 +42,7 @@ export default class UserMapperImpl implements UserMapper {
   private insert(): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into User (est_accuracy) values (100)");
+        tx.executeSql("insert into User (est_accuracy) values (100)", [], null, this.errorHandler);
       },
       null
     );
@@ -44,7 +50,12 @@ export default class UserMapperImpl implements UserMapper {
 
   private createTable(): void {
     this.db.transaction(tx => {
-      tx.executeSql("create table if not exists User (est_accuracy)")
+      tx.executeSql("create table if not exists User (est_accuracy float, calendarId text default null)")
     })
+  }
+
+  private errorHandler(transaction, error): boolean {
+    console.log(error);
+    return true
   }
 }
