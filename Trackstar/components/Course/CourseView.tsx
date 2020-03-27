@@ -10,7 +10,6 @@ import {
   Button
 } from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
-import { AntDesign } from '@expo/vector-icons';
 
 import Evaluation from "../../models/Evaluation";
 import Task from "../../models/Task";
@@ -24,7 +23,7 @@ import {
 import CalendarHelper from "../../models/CalendarHelper";
 
 export default function CourseView(props) {
-  const { code, name, minGrade } = props.route.params;
+  const { code, name, term, minGrade } = props.route.params;
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
 
@@ -59,19 +58,7 @@ export default function CourseView(props) {
           padding: 20
         }}
       >
-        <View style={{ flexDirection: 'row'}}>
-          <Text style={iOSUIKit.largeTitleEmphasized}>{code}</Text>
-          <Button onPress={
-            () => {
-              props.navigation.navigate("Course Edit", {
-                code: code,
-                title: name,
-                minGrade: minGrade,
-                evals: courseEvals,
-              });
-            }
-          }>Edit</Button>
-        </View>
+        <Text style={iOSUIKit.largeTitleEmphasized}>{code}</Text>
         <Text style={iOSUIKit.subhead}>{name}</Text>
         <View style={{ paddingTop: 10 }}>
           <Text style={iOSUIKit.title3Emphasized}>Evaluations</Text>
@@ -84,7 +71,7 @@ export default function CourseView(props) {
       <Button
         mode="contained"
         onPress={() => {
-          props.navigation.navigate("Task Create", {
+          props.navigation.navigate("Create task", {
             evals: courseEvals,
             courseCode: code,
             courseName: name,
