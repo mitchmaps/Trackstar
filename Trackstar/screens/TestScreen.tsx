@@ -27,6 +27,22 @@ const TestScreen = (props) => {
           <Text>Init DB</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.wipe} onPress={() => {
+          Database.deleteTaskData()
+          Database.deleteEvalData()
+          Database.deleteCourseData()
+        }}>
+          <Text>Delete Data</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.wipe} onPress={() => {
+          Database.deleteTaskTable()
+          Database.deleteEvalTable()
+          Database.deleteCourseTable()
+        }}>
+          <Text>Drop Tables</Text>
+        </TouchableOpacity>
+
         <Text>Course</Text>
 
         <TouchableOpacity style={styles.button} onPress={() => {Database.populateCourseTable()}}>

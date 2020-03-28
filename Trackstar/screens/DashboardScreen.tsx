@@ -237,7 +237,7 @@ async function formatData() {
 async function updateTask(task: TaskDescriptor) {
   const taskMapper: TaskMapper = new TaskMapperImpl();
 
-  taskMapper.update(task.task);
+  taskMapper.update(task.task, true);
 }
 
 function findTaskById(tasks: TaskDescriptor[], id) {
