@@ -88,6 +88,7 @@ export default class TaskCreate extends React.Component {
             
 
           
+       <Text>{"Usually overestimate by " + User.getInstance().estimationAccuracy + " minutes"}</Text>
        <TextInput
             label="Estimated time needed in minutes"
             keyboardType="numeric"

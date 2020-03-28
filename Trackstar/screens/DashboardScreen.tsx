@@ -49,7 +49,7 @@ const HomeScreen = props => {
 
   const handleTaskCompletion = useCallback((id) => {
     console.log(`trying to click id: ${id}`);
-    console.log(taskDataRef.current);
+    // console.log(taskDataRef.current);
 
     let taskToUpdate: Task;
 
@@ -163,7 +163,7 @@ async function formatData() {
 async function updateTask(task: Task) {
   const taskMapper: TaskMapper = new TaskMapperImpl();
 
-  taskMapper.update(task);
+  taskMapper.update(task, true);
 }
 
 export default HomeScreen;
