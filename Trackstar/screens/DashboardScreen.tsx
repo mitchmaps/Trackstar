@@ -7,9 +7,11 @@ import {
   SectionList,
   StyleSheet
 } from "react-native";
-import { Card } from "react-native-paper";
+import { Card, TextInput, Button } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import CircleCheckBox, { LABEL_POSITION } from "react-native-circle-checkbox";
+import Modal from "react-native-modal";
+import { iOSUIKit } from "react-native-typography";
 
 import { Task, Evaluation, Course } from "../models";
 import {
@@ -32,12 +34,29 @@ const HomeScreen = props => {
     []
   );
   const [fakeState, setFakeState] = useState(new Date());
+  const [modalActive, setModalActive] = useState(false);
+  const [taskBeingCompleted, setTaskBeingCompleted] = useState<TaskDescriptor>(
+    null
+  );
+  const [currActualDuration, setCurrActualDuration] = useState("");
 
   const taskDataRef = useRef(formattedTaskData);
   const setTaskData = data => {
     taskDataRef.current = data;
     setFormattedTaskData(data);
-  }
+  };
+
+  const taskCompletedRef = useRef(taskBeingCompleted);
+  const setTaskCompleted = data => {
+    taskCompletedRef.current = data;
+    setTaskBeingCompleted(data);
+  };
+
+  const currActualDurationRef = useRef(currActualDuration);
+  const setCurrActualDurationRef = data => {
+    currActualDurationRef.current = data;
+    setCurrActualDuration(data);
+  };
 
   const navigation = props.navigation;
 
@@ -47,26 +66,83 @@ const HomeScreen = props => {
     });
   }, []);
 
-  const handleTaskCompletion = useCallback((id) => {
-    console.log(`trying to click id: ${id}`);
-    console.log(taskDataRef.current);
+  const handleTaskCompletion = useCallback(() => {
+    const taskToUpdate: TaskDescriptor = taskCompletedRef.current;
 
-    let taskToUpdate: Task;
-
-    taskDataRef.current.forEach((currTask) => {
-      if (currTask.task.id === id) {
-        taskToUpdate = currTask.task;
-      }
-    });
-
-    taskToUpdate.complete = !taskToUpdate.complete;
+    taskToUpdate.task.complete = true;
+    taskToUpdate.task.actual_duration = +currActualDurationRef.current;
     updateTask(taskToUpdate);
-
+    setCurrActualDurationRef("");
+    setModalActive(false);
     // trigger re render
     setFakeState(new Date());
   }, []);
 
-  const tasksMarkup = generateTasksMarkup(formattedTaskData, handleTaskCompletion);
+  const handleTaskSelection = useCallback(
+    id => {
+      const task = findTaskById(taskDataRef.current, id);
+      setTaskCompleted(task);
+      setModalActive(true);
+    },
+    [taskDataRef.current]
+  );
+
+  const tasksMarkup = generateTasksMarkup(
+    formattedTaskData,
+    handleTaskSelection
+  );
+
+  const modalMarkup =
+    taskBeingCompleted !== null ? (
+      <Modal isVisible={modalActive} hasBackdrop={true}>
+        <View
+          style={{
+            marginTop: 40,
+            marginBottom: 40,
+            backgroundColor: "white",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <Card.Content>
+            <Text style={iOSUIKit.largeTitleEmphasized}>Complete task</Text>
+            <Text style={iOSUIKit.subheadEmphasized}>
+              {taskBeingCompleted.task.title}
+            </Text>
+            <View style={{ flex: 1, marginTop: 20 }}>
+              <Text
+                style={{ marginBottom: 20 }}
+              >{`When you created this task you estimated it would take ${taskBeingCompleted.task.est_duration} minutes.`}</Text>
+              <Text>How long did you actually spend on this task?</Text>
+              <TextInput
+                label="Time (in minutes)"
+                keyboardType="numeric"
+                onChangeText={text => {
+                  setCurrActualDurationRef(text);
+                }}
+                value={currActualDuration}
+              />
+              <Button
+                disabled={currActualDurationRef.current === ''}
+                style={{ marginTop: 20 }}
+                mode="contained"
+                onPress={() => {
+                  handleTaskCompletion();
+                }}
+              >
+                Submit
+              </Button>
+            </View>
+          </Card.Content>
+        </View>
+      </Modal>
+    ) : null;
+  
+  //can use these to set the return value
+  var nm = "";
+  var dt = "";
+  //Next Evaluation: PHIL 1200 - Test 1
+  //March 10th
 
   return (
     <LinearGradient
@@ -78,30 +154,46 @@ const HomeScreen = props => {
           Welcome Back!
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Next Evaluation: PHIL 1200 - Test 1
+          Next Evaluation:  {nm}
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Due March 10th
+          Due:  {dt}
         </Text>
       </View>
-      <ScrollView style={{marginTop: 50}}>
+      <ScrollView style={{ marginTop: 50 }}>
+        {modalMarkup}
         {tasksMarkup}
       </ScrollView>
     </LinearGradient>
   );
 };
 
-function generateTasksMarkup(tasks: TaskDescriptor[], handleChange) {
+function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
   const allTasks = [];
 
   tasks.forEach((currTask: TaskDescriptor) => {
-    const {task: {title, complete, priority, id }, evalName, courseCode} = currTask;
+    const {
+      task: { title, complete, priority, id },
+      evalName,
+      courseCode
+    } = currTask;
 
     const formatted_title = `${priority}. ${title}`;
     const formatted_subtitle = `${courseCode} - ${evalName}`;
-
-    const completeText = complete ? <Text>Complete</Text> : null;
     const opacity = complete ? 0.5 : 1;
+
+    const statusMarkup = !complete ? (
+      <CircleCheckBox
+      style={{ flex: 2 }}
+      // checked={item.title == "1. Read Chapter 3" ? true : false}
+      checked={complete ? true : false}
+      outerColor={"#5273eb"}
+      innerColor={"#5273eb"}
+      onToggle={() => {
+        handleModalChange(id);
+      }}
+    />
+    ) : <Text>Complete</Text>;
 
     const taskMarkup = (
       <View opacity={opacity}>
@@ -111,17 +203,7 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleChange) {
             <Text style={{ flex: 8 }}>
               {courseCode} - {evalName}
             </Text>
-            {completeText}
-            <CircleCheckBox
-              style={{ flex: 2 }}
-              // checked={item.title == "1. Read Chapter 3" ? true : false}
-              checked={complete ? true : false}
-              outerColor={"#5273eb"}
-              innerColor={"#5273eb"}
-              onToggle={() => {
-                handleChange(id);
-              }}
-            />
+            {statusMarkup}
           </Card.Content>
         </Card>
       </View>
@@ -140,13 +222,13 @@ async function formatData() {
 
   const formattedData = [];
   const rawData: Task[] = await taskMapper.all();
-  console.log("raw");
-  console.log(rawData);
 
   for (let i = 0; i < rawData.length; i++) {
     const task = rawData[i];
     const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
     const course: Course = await courseMapper.find(evaluation.course_code);
+    nm = Evaluation = await evalMapper.find(task.title);
+    dt = Evaluation = await evalMapper.find(task.due_date);
 
     const taskInfo: TaskDescriptor = {
       task: task,
@@ -160,10 +242,21 @@ async function formatData() {
   return formattedData;
 }
 
-async function updateTask(task: Task) {
+async function updateTask(task: TaskDescriptor) {
   const taskMapper: TaskMapper = new TaskMapperImpl();
 
-  taskMapper.update(task);
+  taskMapper.update(task.task, true);
+}
+
+function findTaskById(tasks: TaskDescriptor[], id) {
+  let task: TaskDescriptor;
+  tasks.forEach(item => {
+    if (item.task.id === id) {
+      task = item;
+    }
+  });
+
+  return task;
 }
 
 export default HomeScreen;
