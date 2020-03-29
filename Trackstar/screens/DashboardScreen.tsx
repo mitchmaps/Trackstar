@@ -67,7 +67,13 @@ const HomeScreen = props => {
   }, []);
 
   const tasksMarkup = generateTasksMarkup(formattedTaskData, handleTaskCompletion);
-
+  
+  //can use these to set the return value
+  var nm = "";
+  var dt = "";
+  //Next Evaluation: PHIL 1200 - Test 1
+  //March 10th
+  
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
@@ -78,10 +84,10 @@ const HomeScreen = props => {
           Welcome Back!
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Next Evaluation: PHIL 1200 - Test 1
+          Next Evaluation:  {nm}
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Due March 10th
+          Due:  {dt}
         </Text>
       </View>
       <ScrollView style={{marginTop: 50}}>
@@ -147,6 +153,8 @@ async function formatData() {
     const task = rawData[i];
     const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
     const course: Course = await courseMapper.find(evaluation.course_code);
+    nm = Evaluation = await evalMapper.find(task.title);
+    dt = Evaluation = await evalMapper.find(task.due_date);
 
     const taskInfo: TaskDescriptor = {
       task: task,
