@@ -31,10 +31,11 @@ export default class GradesForm extends React.Component {
       desired_grade: 0,
       grade_info: null,
       courses: [],
-      courseCodes: [{}]
+      courseCodes: [{}],
     }
 
-    // this.state.courseCodes.shift
+    this.get_courses();
+
   }
 
   update_array(index1, index2, value) {
@@ -47,14 +48,16 @@ export default class GradesForm extends React.Component {
   }
 
   field(row_id) {
-    console.log ("row_id: " + row_id);
-    console.log ("grades_and_weight length: " + this.state.grades_and_weights.length);
-    console.log (this.state.grades_and_weights[row_id]);
+    console.log ("row_id: " + row_id + " grades_and_weights_length: " + this.state.grades_and_weights.length);
+
 
     const grade_index = 0;
     const weight_index = 1;
 
     if(row_id < this.state.grades_and_weights.length)
+    {
+    console.log ("grade: " + this.state.grades_and_weights[row_id][0]);
+    console.log ("weight: " + this.state.grades_and_weights[row_id][1]);
       return(<View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
         {/*add the keyboardtype numeric!*/}
         <TextInput
@@ -65,9 +68,10 @@ export default class GradesForm extends React.Component {
         <TextInput
           style={{ height: 30, width: 40, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
           onChangeText={text => this.update_array(row_id, weight_index, text)}
-          // value={(this.state.grades_and_weights[row_id][1]).toString()}
+          value={(this.state.grades_and_weights[row_id][1]).toString()}
         />
       </View>);
+    }
     else{
       return(<View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
         {/*add the keyboardtype numeric!*/}
@@ -107,20 +111,20 @@ export default class GradesForm extends React.Component {
     }
   }
 
+
   get_courses(){
     console.log("get courses is called");
     const courseMapper: CourseMapper = new CourseMapperImpl;
+    let courseList = this.state.courseCodes;
     // get courses from database
-    courseMapper.all().then(elements=>{
-      this.state.courses = elements;
+    courseMapper.all(true).then(elements=>{
       // update state variable with all the course codes
       elements.forEach(course=>{
-        this.state.courseCodes.push({value:course.code})
+        courseList.push({value: course.code}) 
       })
-      // make sure there isn't the first undefined element
-      this.state.courseCodes.shift();
-      this.state.courseCodes.forEach(e=>{console.log(e.value)});
     })
+    courseList.shift();
+    // this.setState({courseCodes: courseList});
   }
 
   /* The calculations are done in GradesCalculator.tsx now*/
@@ -130,7 +134,7 @@ export default class GradesForm extends React.Component {
       <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
       style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around'}}>
-        {this.get_courses()}
+
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
           <Text style={{fontSize: 20, textAlign: "center", textAlignVertical: "center"}}>Grade Calculator</Text>
           
@@ -140,23 +144,41 @@ export default class GradesForm extends React.Component {
             data={this.state.courseCodes}
             containerStyle={{width:150}}
             onChangeText={value=>{
-              console.log("different course selected") // --> 0 <--
-              this.state.grades_and_weights = []; // reset current grade and weight --> 1 <--
+              console.log("\n\n\ndifferent course selected: " + value);
               const evalMapper : EvaluationMapper = new EvaluationMapperImpl;
+              let newGradeWeight = [];
               evalMapper.findByCourse(value).then(evals=>{ // get all the evaluations associated with the course --> 2 <--
                 console.log("starting to push evaluations");
+                
+
                 evals.forEach(singleEval=>{ // update the state that holds all the grades and weights --> 3 <--
-                  // this.setState({grades_and_weights: this.state.grades_and_weights.push([singleEval.grade, singleEval.weight]) })
+                  console.log("LOOP BEING CALLED !!!!");
+                  newGradeWeight.push([singleEval.grade, singleEval.weight]);
                   console.log("evaluation pushed");
-                  console.log((this.state.grades_and_weights[0][0]).toString());
-                  console.log((this.state.grades_and_weights[0][1]).toString());
                 })
-              })   
+
+                return newGradeWeight;
+              }).then(newState=>{
+                console.log("SETTING STATE");
+                console.log("newState.length: " + newState.length);
+                  this.setState({grades_and_weights: newState}); 
+              }).then(()=>{
+                const courseMapper: CourseMapper = new CourseMapperImpl;
+                courseMapper.find(value).then(val=>{
+                  
+                  console.log("desired_grade: ");
+                  console.log(val.min_grade);
+                  console.log("desired_grade 2: ");
+                  console.log(this.state.desired_grade.toString());
+
+                  this.setState({desired_grade: val.min_grade})
+                })
+              })
             }}
             
           />
         </View>
-        {/* Course selector */}
+        {/* Course selector */} 
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}> 
           <Text>Grade</Text>
           <Text>Weight</Text>
@@ -173,12 +195,12 @@ export default class GradesForm extends React.Component {
         {this.field(7)} */}
 
         <View style={{alignItems: 'center'}}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}>
-            <Text>Desired grade: </Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}> 
+          <Text>Desired grade: </Text>
             <TextInput
-              style={{ height: 30, width: 40, borderColor: 'gray', borderWidth: 1}}
+              style={{ height: 30, width: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'white'}}
               onChangeText={text => this.setState({ desired_grade: text})}
-              //value={this.state.text}
+              value={this.state.desired_grade.toString()}
             />
           </View>
           <View style={{paddingBottom: 20}}>
