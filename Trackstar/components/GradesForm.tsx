@@ -38,6 +38,11 @@ export default class GradesForm extends React.Component {
 
   }
 
+  clear_field(){
+    // not working / or functional
+    this.setState({grades_and_weights: []})
+  }
+
   update_array(index1, index2, value) {
     const grades_and_weights = this.state.grades_and_weights
     if (grades_and_weights[index1] == undefined)
@@ -146,32 +151,18 @@ export default class GradesForm extends React.Component {
             onChangeText={value=>{
               console.log("\n\n\ndifferent course selected: " + value);
               const evalMapper : EvaluationMapper = new EvaluationMapperImpl;
-              let newGradeWeight = [];
-              evalMapper.findByCourse(value).then(evals=>{ // get all the evaluations associated with the course --> 2 <--
-                console.log("starting to push evaluations");
-                
-
-                evals.forEach(singleEval=>{ // update the state that holds all the grades and weights --> 3 <--
-                  console.log("LOOP BEING CALLED !!!!");
+              let newGradeWeight = []; // new grades_and_weight 2d array to be passed back
+              evalMapper.findByCourse(value).then(evals=>{ // get all the evaluations associated with the selected course
+                evals.forEach(singleEval=>{ 
                   newGradeWeight.push([singleEval.grade, singleEval.weight]);
-                  console.log("evaluation pushed");
                 })
-
                 return newGradeWeight;
               }).then(newState=>{
-                console.log("SETTING STATE");
-                console.log("newState.length: " + newState.length);
-                  this.setState({grades_and_weights: newState}); 
+                  this.setState({grades_and_weights: newState}); // set the grades_and_weight state to the array we just made
               }).then(()=>{
                 const courseMapper: CourseMapper = new CourseMapperImpl;
                 courseMapper.find(value).then(val=>{
-                  
-                  console.log("desired_grade: ");
-                  console.log(val.min_grade);
-                  console.log("desired_grade 2: ");
-                  console.log(this.state.desired_grade.toString());
-
-                  this.setState({desired_grade: val.min_grade})
+                  this.setState({desired_grade: val.min_grade}) // set the desired weight state to the retrieved
                 })
               })
             }}
