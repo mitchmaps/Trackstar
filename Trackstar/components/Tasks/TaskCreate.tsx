@@ -1,11 +1,13 @@
 import React from "react";
 import {Evaluation, Task} from '../../models';
 import {TaskMapper, TaskMapperImpl} from '../../data_mappers';
+import DatePicker from 'react-native-datepicker'
 
-import { View, Text, ScrollView, Picker } from "react-native";
+import { Platform, View, Text, ScrollView, Picker } from "react-native";
 import { Divider, Card, TextInput, Button, List } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { iOSUIKit } from "react-native-typography";
+import User from "../../models/User";
 
 export default class TaskCreate extends React.Component {
   state: {
@@ -31,7 +33,7 @@ export default class TaskCreate extends React.Component {
   }
 
   render() {
-    const { title, selectedEval, dueDate, duration } = this.state;
+    const { title, selectedEval, dueDate, duration} = this.state;
     const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params;
 
     const evalSelectionMarkup = this.generateEvalSelectionMarkup(this.props.route.params.evals);
@@ -44,26 +46,49 @@ export default class TaskCreate extends React.Component {
           <Picker selectedValue={this.state.selectedEval} onValueChange={(itemValue, itemIndex) => {this.setState({selectedEval: itemValue})}}>
             {evalSelectionMarkup}
           </Picker>
+          
           <TextInput
             label="Task title"
             value={this.state.title}
             onChangeText={text => {
               this.setState({ title: text });
+              
             }}
           />
           <Text style={{paddingTop: 20}}>Task due date</Text>
+          
+          
+          { Platform.OS === 'ios' ? 
           <DateTimePicker
-            testID="dateTimePicker"
-            timeZoneOffsetInMinutes={0}
-            value={dueDate}
-            onChange={
-              (event, selectedDate) => {
-                this.setState({dueDate: selectedDate});
-              }
+          testID="dateTimePicker"
+          timeZoneOffsetInMinutes={0}
+          value={dueDate}
+          onChange={
+            (event, selectedDate) => {
+              this.setState({dueDate: selectedDate});
             }
-            display="default"
+          }
+          display="default"/> : 
+          <DatePicker
+          date={dueDate}      
+          mode="datetime"
+          placeholder="select date"
+          format="YYYY-MM-DD"
+          onDateChange={
+            (event, selectedDate) => {
+              this.setState({dueDate: selectedDate});
+            }
+          }
+          androidMode='spinner'
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          style={{paddingTop: 10, paddingBottom:20, width:300}}
           />
-          <TextInput
+        }
+            
+
+          
+       <TextInput
             label="Estimated time needed in minutes"
             keyboardType="numeric"
             onChangeText={(text) => {this.setState({duration: text})}}
@@ -105,6 +130,8 @@ export default class TaskCreate extends React.Component {
       minGrade: courseMinGrade,
     });
   }
+
+  
 
   generateEvalSelectionMarkup(evals: Evaluation[]) {
     const evalSelectionMarkup = [];
