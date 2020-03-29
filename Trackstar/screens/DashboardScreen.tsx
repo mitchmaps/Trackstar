@@ -137,8 +137,6 @@ const HomeScreen = props => {
         </View>
       </Modal>
     ) : null;
-
-  const tasksMarkup = generateTasksMarkup(formattedTaskData, handleTaskCompletion);
   
   //can use these to set the return value
   var nm = "";
