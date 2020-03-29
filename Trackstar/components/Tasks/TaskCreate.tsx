@@ -121,7 +121,7 @@ export default class TaskCreate extends React.Component {
     const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params.evals;
 
     const taskMapper: TaskMapper = new TaskMapperImpl();
-    const newTask = new Task(title, dueDate, +duration, selectedEval);
+    const newTask = new Task(title, dueDate, +duration, 0, selectedEval);
     taskMapper.insert(newTask);
 
     this.props.navigation.navigate("Course view", {

@@ -32,7 +32,7 @@ export default class Database {
         })
       }).then(() => {
         db.transaction(tx => {
-          tx.executeSql("create table if not exists Task (id integer primary key, title text not null, due_date text, est_duration number not null, priority number, complete boolean default 0, eval_id integer not null, foreign key(eval_id) references Evaluation(id))")
+          tx.executeSql("create table if not exists Task (id integer primary key, title text not null, due_date text, est_duration number not null, actual_duration number default 0, priority number, complete boolean default 0, eval_id integer not null, foreign key(eval_id) references Evaluation(id))")
         })
       })
     }
@@ -87,12 +87,12 @@ export default class Database {
   static populateTaskTable = () => {
     let taskMapper: TaskMapper = new TaskMapperImpl
 
-    let task1  = new Task ("Study unit 1", new Date(), 120, 10, false, 1);
-    let task2  = new Task ("Study unit 2", new Date(), 120, 10, false, 2);
-    let task3  = new Task ("Brainstorm project ideas", new Date(), 30, 2, false, 3);
-    let task4  = new Task ("Make class diagram", new Date(), 30, 7, false, 4);
-    let task5  = new Task ("Make sequence diagram", new Date(), 30, 7, false, 5);
-    let task6  = new Task ("Write pseudocode", new Date(), 30, 2, true, 6);
+    let task1  = new Task ("Study unit 1", new Date(), 120, 0, 10, false, 1);
+    let task2  = new Task ("Study unit 2", new Date(), 120, 0, 10, false, 2);
+    let task3  = new Task ("Brainstorm project ideas", new Date(), 30, 0, 2, false, 3);
+    let task4  = new Task ("Make class diagram", new Date(), 30, 0, 7, false, 4);
+    let task5  = new Task ("Make sequence diagram", new Date(), 30, 0, 7, false, 5);
+    let task6  = new Task ("Write pseudocode", new Date(), 30, 0, 2, true, 6);
 
     taskMapper.insert(task1)
     taskMapper.insert(task2)
