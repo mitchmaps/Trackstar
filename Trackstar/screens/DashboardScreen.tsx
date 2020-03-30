@@ -222,6 +222,7 @@ async function formatData() {
     const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
     const course: Course = await courseMapper.find(evaluation.course_code);
 
+
     const taskInfo: TaskDescriptor = {
       task: task,
       evalName: evaluation.title,
