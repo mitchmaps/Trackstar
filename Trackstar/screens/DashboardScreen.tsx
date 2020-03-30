@@ -224,7 +224,7 @@ async function formatData() {
   const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
   const courseMapper: CourseMapper = new CourseMapperImpl();
   name_Display = await evalMapper.find(task.title);
-	date_Display = await evalMapper.find(task.due_date);
+  date_Display = await evalMapper.find(task.due_date);
 
   const formattedData = [];
   const rawData: Task[] = await taskMapper.all();
