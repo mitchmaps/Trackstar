@@ -22,6 +22,7 @@ import {
   TaskMapper,
   TaskMapperImpl
 } from "../data_mappers";
+import { useFocusEffect } from "@react-navigation/native";
 
 interface TaskDescriptor {
   task: Task;
@@ -60,11 +61,13 @@ const HomeScreen = props => {
 
   const navigation = props.navigation;
 
-  useEffect(() => {
-    const formattedTasks = formatData().then(data => {
-      setTaskData(data);
-    });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const formattedTasks = formatData().then(data => {
+        setTaskData(data);
+      });
+    }, [])
+  );
 
   const handleTaskCompletion = useCallback(() => {
     const taskToUpdate: TaskDescriptor = taskCompletedRef.current;
