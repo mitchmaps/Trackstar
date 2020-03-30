@@ -3,6 +3,10 @@ import { Text, View,TouchableOpacity, ImageEditor, Alert } from 'react-native';
 import { TextInput } from 'react-native';
 import GradeInfo from './GradeInfo';
 import GradesCalculator from './GradesCalculator';
+import { LinearGradient } from "expo-linear-gradient";
+import { Course } from '../models';
+import { CourseMapper, CourseMapperImpl, EvaluationMapper, EvaluationMapperImpl } from '../data_mappers';
+import { Dropdown } from 'react-native-material-dropdown';
 
 
 export default class GradesForm extends React.Component {
@@ -10,7 +14,9 @@ export default class GradesForm extends React.Component {
   state: {
     grades_and_weights: number[][],
     desired_grade: number,
-    grade_info: GradeInfo
+    grade_info: GradeInfo,
+    courses: Course[],
+    courseCodes: [{}],
   }
 
   constructor(props) {
@@ -23,8 +29,18 @@ export default class GradesForm extends React.Component {
     this.state = {
       grades_and_weights: [], // looks like [ [grade1, weight1], [grade2, weight2], [grade3, weight3], ...]
       desired_grade: 0,
-      grade_info: null
+      grade_info: null,
+      courses: [],
+      courseCodes: [{}],
     }
+
+    this.get_courses();
+
+  }
+
+  clear_field(){
+    // not working / or functional
+    this.setState({grades_and_weights: []})
   }
 
   update_array(index1, index2, value) {
@@ -37,23 +53,40 @@ export default class GradesForm extends React.Component {
   }
 
   field(row_id) {
+    console.log ("row_id: " + row_id + " grades_and_weights_length: " + this.state.grades_and_weights.length);
+
+
     const grade_index = 0;
     const weight_index = 1;
-    return (
-      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+
+    if(row_id < this.state.grades_and_weights.length)
+    {
+    console.log ("grade: " + this.state.grades_and_weights[row_id][0]);
+    console.log ("weight: " + this.state.grades_and_weights[row_id][1]);
+      return(<View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
         {/*add the keyboardtype numeric!*/}
         <TextInput
-          style={{ height: 30, width: 40, borderColor: 'gray', borderWidth: 1}}
+          style={{ height: 30, width: 40, backgroundColor:'white', borderColor: 'gray', borderWidth: 1}}
           onChangeText={text => this.update_array(row_id, grade_index, text)}
-          //value={this.state.text}
-        />
+          value={(this.state.grades_and_weights[row_id][0]).toString()}
+        /> 
         <TextInput
-          style={{ height: 30, width: 40, borderColor: 'gray', borderWidth: 1}}
+          style={{ height: 30, width: 40, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
           onChangeText={text => this.update_array(row_id, weight_index, text)}
-          //value={this.state.text}
+          value={(this.state.grades_and_weights[row_id][1]).toString()}
         />
-      </View>
-    )
+      </View>);
+    }
+    else{
+      return(<View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+        {/*add the keyboardtype numeric!*/}
+        <TextInput
+          style={{ height: 30, width: 40, backgroundColor:'white', borderColor: 'gray', borderWidth: 1}}
+        /> 
+        <TextInput
+          style={{ height: 30, width: 40, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
+        />
+      </View>)}
   }
 
   handle_submit() {
@@ -83,34 +116,83 @@ export default class GradesForm extends React.Component {
     }
   }
 
+
+  get_courses(){
+    console.log("get courses is called");
+    const courseMapper: CourseMapper = new CourseMapperImpl;
+    let courseList = this.state.courseCodes;
+    // get courses from database
+    courseMapper.all(true).then(elements=>{
+      // update state variable with all the course codes
+      elements.forEach(course=>{
+        courseList.push({value: course.code}) 
+      })
+      courseList.push({value: 'none'})
+    })
+    courseList.shift();
+    // this.setState({courseCodes: courseList});
+  }
+
   /* The calculations are done in GradesCalculator.tsx now*/
 
   render() {
     return (
-      <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around'}}>
-        <Text style={{fontSize: 30, textAlign: "center"}}>Grade Calculator</Text>
-        {/* Course selector */}
+      <LinearGradient
+      colors={["#bcf7ed", "#5273eb"]}
+      style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around'}}>
+
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <Text style={{fontSize: 20, textAlign: "center", textAlignVertical: "center"}}>Grade Calculator</Text>
+          
+          
+          <Dropdown
+            label="Course Selection"
+            data={this.state.courseCodes}
+            containerStyle={{width:150}}
+            onChangeText={value=>{
+              console.log("\n\n\ndifferent course selected: " + value);
+              const evalMapper : EvaluationMapper = new EvaluationMapperImpl;
+              let newGradeWeight = []; // new grades_and_weight 2d array to be passed back
+              evalMapper.findByCourse(value).then(evals=>{ // get all the evaluations associated with the selected course
+                evals.forEach(singleEval=>{ 
+                  newGradeWeight.push([singleEval.grade, singleEval.weight]);
+                })
+                return newGradeWeight;
+              }).then(newState=>{
+                  this.setState({grades_and_weights: newState}); // set the grades_and_weight state to the array we just made
+              }).then(()=>{
+                const courseMapper: CourseMapper = new CourseMapperImpl;
+                courseMapper.find(value).then(val=>{
+                  this.setState({desired_grade: val.min_grade}) // set the desired weight state to the retrieved
+                })
+              })
+            }}
+            
+          />
+        </View>
+        {/* Course selector */} 
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}> 
           <Text>Grade</Text>
           <Text>Weight</Text>
         </View>
+        {this.state.grades_and_weights.length > 1 ? this.state.grades_and_weights.forEach( e => {console.log(e[0])}) : console.log("not called yet")}
         {/*Figure out how to loop instead*/}
         {this.field(0)}
         {this.field(1)}
         {this.field(2)}
-        {this.field(3)}
+        {this.field(3)}  
         {this.field(4)}
-        {this.field(5)}
+        {/*{this.field(5)}
         {this.field(6)}
-        {this.field(7)}
+        {this.field(7)} */}
 
         <View style={{alignItems: 'center'}}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}>
-            <Text>Desired grade: </Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}> 
+          <Text>Desired grade: </Text>
             <TextInput
-              style={{ height: 30, width: 40, borderColor: 'gray', borderWidth: 1}}
+              style={{ height: 30, width: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'white'}}
               onChangeText={text => this.setState({ desired_grade: text})}
-              //value={this.state.text}
+              value={this.state.desired_grade.toString()}
             />
           </View>
           <View style={{paddingBottom: 20}}>
@@ -123,7 +205,7 @@ export default class GradesForm extends React.Component {
             <Text style={{color: "white"}}>Clear Fields</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </LinearGradient>
     )
   }
 }
