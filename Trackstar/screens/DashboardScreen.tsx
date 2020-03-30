@@ -141,6 +141,8 @@ const HomeScreen = props => {
       </Modal>
     ) : null;
 
+let name_Display = "";
+let date_Display = "";
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
@@ -150,13 +152,18 @@ const HomeScreen = props => {
         <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
           Welcome Back!
         </Text>
-        <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Next Evaluation: PHIL 1200 - Test 1
-        </Text>
-        <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Due March 10th
-        </Text>
-      </View>
+	  </View>
+				
+	  <View style={{flex: 1, flexDirection: "row", alignContent: "space-between"}}>
+	    <Text>Next Evaluation:</Text>
+	  <Text>{name_Display}</Text>
+	  </View>
+	  
+	  <View style={{flex: 1, flexDirection: "row", alignContent: "space-between"}}>
+	    <Text>Due On:</Text>
+	  <Text>{date_Display}</Text>
+	  </View>
+      
       <ScrollView style={{ marginTop: 50 }}>
         {modalMarkup}
         {tasksMarkup}
@@ -216,6 +223,8 @@ async function formatData() {
   const taskMapper: TaskMapper = new TaskMapperImpl();
   const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
   const courseMapper: CourseMapper = new CourseMapperImpl();
+  name_Display = await evalMapper.find(task.title);
+	date_Display = await evalMapper.find(task.due_date);
 
   const formattedData = [];
   const rawData: Task[] = await taskMapper.all();
