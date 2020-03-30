@@ -150,8 +150,11 @@ export default class TaskMapperImpl implements TaskMapper {
     this.allCompleted().then(tasks => {
       tasks.forEach(element => {
         tasksList.push(element); // take this list to be stored for later
-        calculation+=(element.est_duration - element.actual_duration); // for each completed task look at how far off they were from actual duration
+        let estimation = element.est_duration - element.actual_duration
+        console.log("estimation: " + estimation);
+        calculation+=estimation; // for each completed task look at how far off they were from actual duration
       })
+      console.log(calculation);
       calculation/=tasksList.length; // divide the total amount of (positive or negative) minutes they were under or over their estimated duration by by the # of tasks
       user.estimationAccuracy = calculation; // set user.estimationAccuracy = to the result
       
