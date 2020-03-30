@@ -1,5 +1,5 @@
 import Task from './Task'
-import { TaskMapper, TaskMapperImpl, EvaluationMapper, EvaluationMapperImpl } from '../data_mappers';
+import { EvaluationMapper, EvaluationMapperImpl } from '../data_mappers';
 import { Evaluation } from '.';
 
 export default class TaskPrioritizer{
