@@ -127,6 +127,7 @@ export default class GradesForm extends React.Component {
       elements.forEach(course=>{
         courseList.push({value: course.code}) 
       })
+      courseList.push({value: 'none'})
     })
     courseList.shift();
     // this.setState({courseCodes: courseList});
