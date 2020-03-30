@@ -137,12 +137,6 @@ const HomeScreen = props => {
         </View>
       </Modal>
     ) : null;
-  
-  //can use these to set the return value
-  var nm = "";
-  var dt = "";
-  //Next Evaluation: PHIL 1200 - Test 1
-  //March 10th
 
   return (
     <LinearGradient
@@ -154,10 +148,10 @@ const HomeScreen = props => {
           Welcome Back!
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Next Evaluation:  {nm}
+          Next Evaluation: PHIL 1200 - Test 1
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Due:  {dt}
+          Due March 10th
         </Text>
       </View>
       <ScrollView style={{ marginTop: 50 }}>
@@ -227,8 +221,6 @@ async function formatData() {
     const task = rawData[i];
     const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
     const course: Course = await courseMapper.find(evaluation.course_code);
-    nm = Evaluation = await evalMapper.find(task.title);
-    dt = Evaluation = await evalMapper.find(task.due_date);
 
     const taskInfo: TaskDescriptor = {
       task: task,
