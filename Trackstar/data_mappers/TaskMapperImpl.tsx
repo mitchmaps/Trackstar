@@ -138,26 +138,30 @@ export default class TaskMapperImpl implements TaskMapper {
 
   private updateEstAccuracy(): void {
     console.log("updating accuracy. . .");
+    console.log(`before: ${User.getInstance().estimationAccuracy}` )
     let userMapper: UserMapper = new UserMapperImpl;
     userMapper.getUser().then(() => { // updates the singleton
 
       let user = User.getInstance() // get the singleton
-      // user.estimationAccuracy -= 1; // TODO: add actual math here, using this.allCompleted()
       let calculation = 0;
       console.log("starting calculation...");
 
       this.allCompleted().then(tasks => {
         tasks.forEach(element => {
-          calculation+=element.est_duration - element.actual_duration;
+          console.log("task pushed");
+          calculation+=(element.est_duration - element.actual_duration);
         })
         
         console.log("total calculation time: " + calculation + "\ntotal tasks: " + tasks.length + "\naccuracy calculation: " + calculation/tasks.length);
         calculation/=tasks.length;
         user.estimationAccuracy = calculation;
+      }).then(()=>{
+        console.log("estimation accuracy: " + User.getInstance().estimationAccuracy);
+        console.log("estimation accuracy: " + user.estimationAccuracy);
+        userMapper.update(user);
       })
-
-      userMapper.update(user);
     })
+    console.log(`after: ${User.getInstance().estimationAccuracy}` )
   }
 
   private allCompleted(): Promise<Task[]> {

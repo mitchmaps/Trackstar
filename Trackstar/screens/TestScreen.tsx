@@ -36,6 +36,16 @@ const TestScreen = (props) => {
           <Text>Request Calendar Permission</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity onPress={()=>{
+          taskMapper.find(1).then((task1) =>{
+            task1.complete = true;
+            taskMapper.update(task1, true);
+          })
+        }}>
+          <Text>Update Task 1</Text>
+
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.button} onPress={() => {
           let cmapper = new CourseMapperImpl
           let emapper = new EvaluationMapperImpl
