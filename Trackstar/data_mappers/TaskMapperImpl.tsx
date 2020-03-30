@@ -157,9 +157,7 @@ export default class TaskMapperImpl implements TaskMapper {
       console.log(calculation);
       calculation/=tasksList.length; // divide the total amount of (positive or negative) minutes they were under or over their estimated duration by by the # of tasks
       user.estimationAccuracy = calculation; // set user.estimationAccuracy = to the result
-      
-      }).then(()=>{
-          userMapper.update(user);
+      userMapper.update(user);
       })
 
     })
