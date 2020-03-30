@@ -35,14 +35,34 @@ const TestScreen = (props) => {
         }>
           <Text>Request Calendar Permission</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={()=>{
+ 
+        <TouchableOpacity  style={styles.button}  onPress={()=>{
           taskMapper.find(1).then((task1) =>{
             task1.complete = true;
             taskMapper.update(task1, true);
           })
         }}>
-          <Text>Update Task 1</Text>
+          <Text>Complete Task 1</Text>
+
+        </TouchableOpacity>
+
+        <TouchableOpacity  style={styles.button}  onPress={()=>{
+          taskMapper.find(2).then((task1) =>{
+            task1.complete = true;
+            taskMapper.update(task1, true);
+          })
+        }}>
+          <Text>Complete Task 2</Text>
+
+        </TouchableOpacity>
+
+        <TouchableOpacity  style={styles.button}  onPress={()=>{
+          taskMapper.find(3).then((task1) =>{
+            task1.complete = true;
+            taskMapper.update(task1, true);
+          })
+        }}>
+          <Text>Complete Task 3</Text>
 
         </TouchableOpacity>
 

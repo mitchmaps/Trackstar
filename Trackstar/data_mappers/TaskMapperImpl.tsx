@@ -139,29 +139,27 @@ export default class TaskMapperImpl implements TaskMapper {
   private updateEstAccuracy(): void {
     console.log("updating accuracy. . .");
     console.log(`before: ${User.getInstance().estimationAccuracy}` )
+    
     let userMapper: UserMapper = new UserMapperImpl;
     userMapper.getUser().then(() => { // updates the singleton
 
-      let user = User.getInstance() // get the singleton
-      let calculation = 0;
-      console.log("starting calculation...");
+    let user = User.getInstance() // get the singleton
+    let tasksList: Task[] = [];
+    let calculation = 0;
 
-      this.allCompleted().then(tasks => {
-        tasks.forEach(element => {
-          console.log("task pushed");
-          calculation+=(element.est_duration - element.actual_duration);
-        })
-        
-        console.log("total calculation time: " + calculation + "\ntotal tasks: " + tasks.length + "\naccuracy calculation: " + calculation/tasks.length);
-        calculation/=tasks.length;
-        user.estimationAccuracy = calculation;
-      }).then(()=>{
-        console.log("estimation accuracy: " + User.getInstance().estimationAccuracy);
-        console.log("estimation accuracy: " + user.estimationAccuracy);
-        userMapper.update(user);
+    this.allCompleted().then(tasks => {
+      tasks.forEach(element => {
+        tasksList.push(element); // take this list to be stored for later
+        calculation+=(element.est_duration - element.actual_duration); // for each completed task look at how far off they were from actual duration
       })
+      calculation/=tasksList.length; // divide the total amount of (positive or negative) minutes they were under or over their estimated duration by by the # of tasks
+      user.estimationAccuracy = calculation; // set user.estimationAccuracy = to the result
+      
+      }).then(()=>{
+          userMapper.update(user);
+      })
+
     })
-    console.log(`after: ${User.getInstance().estimationAccuracy}` )
   }
 
   private allCompleted(): Promise<Task[]> {
