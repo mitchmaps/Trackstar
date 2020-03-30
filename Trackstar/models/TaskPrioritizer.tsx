@@ -1,4 +1,6 @@
 import Task from './Task'
+import { EvaluationMapper, EvaluationMapperImpl } from '../data_mappers';
+import { Evaluation } from '.';
 
 export default class TaskPrioritizer{
 
@@ -11,17 +13,21 @@ export default class TaskPrioritizer{
         let DueDate;
         let priorityCounter = 0;
 
+        let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
+
         for (let index = 0; index < t.length; index++) {
 
             priorityCounter = 0;
             
             // find metrics to be later put into buckets
             DueDate = this.date_diff_indays(new Date(),t[index].due_date); 
+            let evaluation: Evaluation = evalMapper.find(t[index].evaluation_id);
 
             // calculate priority
             priorityCounter += this.due_date_levels(DueDate)
             priorityCounter += this.duration_levels(t[index].est_duration)
-            priorityCounter/=2.0000;
+            priorityCounter += this.weighting_levels(evaluation.weight);
+            priorityCounter/=3.0000;
 
             // pass in the priority values into a list , and then priority + the task objects into a map
             sortList = this.insertList(sortList, priorityCounter);
@@ -87,6 +93,14 @@ export default class TaskPrioritizer{
         else if (value<=60)return 2
         else if (value<=120)return 3
         else if (value<=240)return 4
+        else return 5
+    }
+
+    private weighting_levels = value =>{
+        if(value<=5)return 1
+        else if (value<=10)return 2
+        else if (value<=20)return 3
+        else if (value<=40)return 4
         else return 5
     }
 }
