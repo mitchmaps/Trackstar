@@ -13,7 +13,6 @@ export default class TaskPrioritizer{
         let DueDate;
         let priorityCounter = 0;
 
-        let taskMapper: TaskMapper = new TaskMapperImpl;
         let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
 
         for (let index = 0; index < t.length; index++) {
