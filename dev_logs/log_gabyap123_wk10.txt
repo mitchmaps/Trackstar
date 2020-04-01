@@ -12,3 +12,4 @@ Week 10: March 17 - March 24
 - add code in task mapper for calling prioritize()
 - create gradeInfo class and implement the design layed out for grade calculation in D3
 - create oral exam presentation slides
+
