@@ -1,0 +1,10 @@
+Mitchell Soares
+ID: 101103889
+
+Week 10 log:
+
+- Wrote task completion w/ modal and estimation accuracy editing implemented
+- Got reviews from team and merged task completion modal PR
+- Wrote the course and evaluation editing logic
+- Got reviews from team and merged course and evaluation editing PR
+- Prepped for D4
