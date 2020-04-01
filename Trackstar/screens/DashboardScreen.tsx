@@ -36,6 +36,7 @@ const HomeScreen = props => {
   );
   const [fakeState, setFakeState] = useState(new Date());
   const [modalActive, setModalActive] = useState(false);
+  const [toDisplay, setDisplay] = useState("");  //for evaluation display
   const [taskBeingCompleted, setTaskBeingCompleted] = useState<TaskDescriptor>(
     null
   );
@@ -80,6 +81,7 @@ const HomeScreen = props => {
     // trigger re render
     setFakeState(new Date());
   }, []);
+    setDisplay(data);     
 
   const handleTaskSelection = useCallback(
     id => {
