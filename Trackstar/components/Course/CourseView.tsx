@@ -44,7 +44,7 @@ export default function CourseView(props) {
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
   // Fix after demo
   const filteredTasks = filterTasks(courseEvals, tasks);
-  const tasksMarkup = generateTaskMarkup(filteredTasks);
+  const tasksMarkup = generateTaskMarkup(filteredTasks, props);
 
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
@@ -146,7 +146,7 @@ function filterTasks(evaluations: Evaluation[], allTasks: Task[]) {
   return courseTasks;
 }
 
-function generateTaskMarkup(tasks: Task[]) {
+function generateTaskMarkup(tasks: Task[], props) {
   return tasks.reduce((allTasks, currTask) => {
     const { title, due_date, est_duration } = currTask;
 
@@ -175,9 +175,16 @@ function generateTaskMarkup(tasks: Task[]) {
       <View key={title} style={{ paddingVertical: 5 }}>
         <Card>
           <Card.Content>
-            <Text>{title}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={iOSUIKit.bodyEmphasized}>{title}</Text>
+              <Button onPress={
+                () => {
+                  props.navigation.navigate("Task Edit");
+                }
+              }>Edit</Button>
+            </View>
             {badgeMarkup}
-            <TouchableOpacity onPress={() => {calendarAlert(currTask)}}><Text>Add to calendar</Text></TouchableOpacity>
+            <Button onPress={() => {calendarAlert(currTask)}}>Add to Calendar</Button>
           </Card.Content>
         </Card>
       </View>
