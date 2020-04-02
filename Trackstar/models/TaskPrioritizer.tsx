@@ -4,7 +4,7 @@ import { Evaluation } from '.';
 
 export default class TaskPrioritizer{
 
-    prioritize = (t: Task[]) => {
+    prioritize(t: Task[]) {
 
         let returnValue = [];
         let sortList = []; // take all priority values and put them into a list, to be sorted
@@ -13,21 +13,22 @@ export default class TaskPrioritizer{
         let DueDate;
         let priorityCounter = 0;
 
-        let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
+        // let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
 
         for (let index = 0; index < t.length; index++) {
 
             priorityCounter = 0;
-            
+
             // find metrics to be later put into buckets
-            DueDate = this.date_diff_indays(new Date(),t[index].due_date); 
-            let evaluation: Evaluation = evalMapper.find(t[index].evaluation_id);
+            DueDate = this.date_diff_indays(new Date(),t[index].due_date);
+            // let evaluation: Evaluation = evalMapper.find(t[index].evaluation_id);
 
             // calculate priority
             priorityCounter += this.due_date_levels(DueDate)
             priorityCounter += this.duration_levels(t[index].est_duration)
-            priorityCounter += this.weighting_levels(evaluation.weight);
-            priorityCounter/=3.0000;
+            // priorityCounter += this.weighting_levels(evaluation.weight);
+            // priorityCounter/=3.0000;
+            priorityCounter/=2.0000;
 
             // pass in the priority values into a list , and then priority + the task objects into a map
             sortList = this.insertList(sortList, priorityCounter);
@@ -42,21 +43,21 @@ export default class TaskPrioritizer{
         sortList.forEach(element => {
             returnValue.push(mappingList.get(element))
         });
-        
+
         // return the sorted tasks list as well
         return returnValue;
     }
 
 
     // difference between two days
-    private date_diff_indays = (date1: Date, date2: Date) => {
+    private date_diff_indays(date1: Date, date2: Date) {
         let dt1: Date = new Date(date1);
         let dt2: Date = new Date(date2);
         return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) /(1000 * 60 * 60 * 24));
     }
 
     // insert a task as the value, and its priority as its key
-    private insertKey = (tempMap: Map<number, Task>, key: number, value: Task) => {
+    private insertKey(tempMap: Map<number, Task>, key: number, value: Task) {
         while(true){
             if(tempMap.has(key))
                 key+=0.01
@@ -69,11 +70,11 @@ export default class TaskPrioritizer{
     }
 
     // populate an entire list of priority values, if a value already exists add 0.01 to its value before pushing it
-    private insertList = (tempList, value) => {
+    private insertList(tempList, value) {
         while(true){
             if(tempList.includes(value))
                 value+=0.01
-            
+
             else
             {
                 tempList.push(value)
@@ -81,14 +82,14 @@ export default class TaskPrioritizer{
             }
         }
     }
-    
+
     // unfair to divide due dates into buckets so decided to create generic counter instead
-    private due_date_levels = value => {
+    private due_date_levels(value) {
         return 10000 - value;
     }
 
     // estimated duration bucketing
-    private duration_levels = value => {
+    private duration_levels(value) {
         if(value<=30)return 1
         else if (value<=60)return 2
         else if (value<=120)return 3
@@ -96,7 +97,7 @@ export default class TaskPrioritizer{
         else return 5
     }
 
-    private weighting_levels = value =>{
+    private weighting_levels(value) {
         if(value<=5)return 1
         else if (value<=10)return 2
         else if (value<=20)return 3
