@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Alert, Platform } from "react-native";
-import { useFocusEffect } from '@react-navigation/native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  Platform
+} from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   Card,
   Divider,
@@ -10,7 +17,7 @@ import {
   Button
 } from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 
 import Evaluation from "../../models/Evaluation";
 import Task from "../../models/Task";
@@ -44,7 +51,7 @@ export default function CourseView(props) {
 
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
   const filteredTasks = filterTasks(courseEvals, tasks);
-
+  
   const tasksMarkup = filteredTasks.length > 0 ? generateTaskMarkup(filteredTasks) : (
     <View>
       <Text>You haven't added any tasks yet.</Text>
@@ -64,18 +71,20 @@ export default function CourseView(props) {
           padding: 20
         }}
       >
-        <View style={{ flexDirection: 'row'}}>
+        <View style={{ flexDirection: "row" }}>
           <Text style={iOSUIKit.largeTitleEmphasized}>{code}</Text>
-          <Button onPress={
-            () => {
+          <Button
+            onPress={() => {
               props.navigation.navigate("Course Edit", {
                 code: code,
                 title: name,
                 minGrade: minGrade,
-                evals: courseEvals,
+                evals: courseEvals
               });
-            }
-          }>Edit</Button>
+            }}
+          >
+            Edit
+          </Button>
         </View>
         <Text style={iOSUIKit.subhead}>{name}</Text>
         <View style={{ paddingTop: 10 }}>
@@ -94,7 +103,7 @@ export default function CourseView(props) {
             courseCode: code,
             courseName: name,
             courseTerm: term,
-            courseMinGrade: minGrade,
+            courseMinGrade: minGrade
           });
         }}
       >
@@ -107,7 +116,7 @@ export default function CourseView(props) {
 function generateEvaluationMarkup(evals: Evaluation[]) {
   const gradingSchemeMarkup = evals.reduce((allEvals, currEval) => {
     const evalMarkup = (
-      <Card.Content>
+      <View style={{marginBottom: 5}}>
         <View
           style={{
             flex: 1,
@@ -128,35 +137,41 @@ function generateEvaluationMarkup(evals: Evaluation[]) {
           </Badge>
         </View>
         <Divider />
-      </Card.Content>
+      </View>
     );
-
+    
     if (currEval.title !== 'General tasks') {
-      allEvals.push(evalMarkup);
+      allEvals.push(<View key={currEval.id}>{evalMarkup}</View>);
     }
 
     return allEvals;
   }, []);
 
-  return <Card>{gradingSchemeMarkup}</Card>;
+  return (
+    <Card>
+      <Card.Content>{gradingSchemeMarkup}</Card.Content>
+    </Card>
+  );
 }
 
 function filterTasks(evaluations: Evaluation[], allTasks: Task[]) {
   const courseTasks: Task[] = [];
-  evaluations.forEach((evaluation) => {
-    allTasks.forEach((task) => {
+  evaluations.forEach(evaluation => {
+    allTasks.forEach(task => {
       if (task.evaluation_id === evaluation.id) {
         courseTasks.push(task);
       }
-    })
+    });
   });
 
   return courseTasks;
 }
 
-function generateTaskMarkup(tasks: Task[]) {
+function generateTaskMarkup(tasks: Task[], props) {
+  const { code, name, minGrade } = props.route.params;
+
   return tasks.reduce((allTasks, currTask) => {
-    const { title, due_date, est_duration } = currTask;
+    const { id, title, due_date, est_duration } = currTask;
 
     const formattedDate = new Date(due_date);
     const subTitle = `Due on ${formattedDate.toDateString()}`;
@@ -209,7 +224,35 @@ function generateTaskMarkup(tasks: Task[]) {
       <View key={title} style={{ paddingVertical: 5 }}>
         <Card>
           <Card.Content>
-            <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-around"
+              }}
+            >
+              <View>
+                <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
+                <Text
+                  style={{ color: "#aaaaaa" }}
+                >{`Estimated to take ${est_duration} minutes`}</Text>
+              </View>
+              <Button
+                onPress={() => {
+                  props.navigation.navigate("Task Edit", {
+                    title: title,
+                    dueDate: due_date,
+                    duration: est_duration,
+                    id: id,
+                    courseCode: code,
+                    courseName: name,
+                    courseMinGrade: minGrade
+                  });
+                }}
+              >
+                Edit
+              </Button>
+            </View>
             <View style={{paddingTop: 10, display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
               <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 {calendarMarkup}
