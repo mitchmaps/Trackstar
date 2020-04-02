@@ -29,7 +29,7 @@ import {
   TaskMapperImpl
 } from "../../data_mappers";
 import CalendarHelper from "../../models/CalendarHelper";
-import { Icon } from 'react-native-elements'
+import { Icon } from "react-native-elements";
 
 export default function CourseView(props) {
   const { code, name, minGrade, term } = props.route.params;
@@ -51,12 +51,15 @@ export default function CourseView(props) {
 
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
   const filteredTasks = filterTasks(courseEvals, tasks);
-  
-  const tasksMarkup = filteredTasks.length > 0 ? generateTaskMarkup(filteredTasks, props) : (
-    <View>
-      <Text>You haven't added any tasks yet.</Text>
-    </View>
-  );
+
+  const tasksMarkup =
+    filteredTasks.length > 0 ? (
+      generateTaskMarkup(filteredTasks, props)
+    ) : (
+      <View>
+        <Text>You haven't added any tasks yet.</Text>
+      </View>
+    );
 
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
@@ -115,43 +118,50 @@ export default function CourseView(props) {
 
 function generateEvaluationMarkup(evals: Evaluation[]) {
   const gradingSchemeMarkup = evals.reduce((allEvals, currEval) => {
+    const { title, due_date, weight, complete } = currEval;
+
     const evalMarkup = (
-      <View style={{marginBottom: 5}}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between"
-          }}
-        >
-          <Paragraph>{currEval.title}</Paragraph>
-          <Badge
-            visible={true}
+      <Card style={{ marginBottom: 10 }}>
+        <Card.Content>
+          <View
             style={{
-              backgroundColor: "#408ff7",
-              fontWeight: "bold",
-              color: "#ffffff"
+              flex: 1,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start"
             }}
           >
-            {`${currEval.weight}%`}
-          </Badge>
-        </View>
-        <Divider />
-      </View>
+            <View style={{ flex: 1, flexDirection: "column" }}>
+              <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
+              <Text
+                style={{ color: "#aaaaaa" }}
+              >{`Due on ${due_date.toLocaleDateString()}`}</Text>
+            </View>
+            <View>
+              <Badge
+                visible={true}
+                style={{
+                  backgroundColor: "#408ff7",
+                  fontWeight: "bold",
+                  color: "#ffffff"
+                }}
+              >
+                {`${currEval.weight}%`}
+              </Badge>
+            </View>
+          </View>
+        </Card.Content>
+      </Card>
     );
-    
-    if (currEval.title !== 'General tasks') {
+
+    if (currEval.title !== "General tasks") {
       allEvals.push(<View key={currEval.id}>{evalMarkup}</View>);
     }
 
     return allEvals;
   }, []);
 
-  return (
-    <Card>
-      <Card.Content>{gradingSchemeMarkup}</Card.Content>
-    </Card>
-  );
+  return gradingSchemeMarkup;
 }
 
 function filterTasks(evaluations: Evaluation[], allTasks: Task[]) {
@@ -194,31 +204,32 @@ function generateTaskMarkup(tasks: Task[], props) {
       </Badge>
     );
 
-    const notificationMarkup = (
-      Platform.OS === "ios"
-      ? (
+    const notificationMarkup =
+      Platform.OS === "ios" ? (
         <TouchableOpacity>
           <Icon
-            name='bell-plus-outline'
-            type='material-community'
-            color='#517fa4'
-            onPress={() => {notificationAlert(currTask)}}
+            name="bell-plus-outline"
+            type="material-community"
+            color="#517fa4"
+            onPress={() => {
+              notificationAlert(currTask);
+            }}
           />
         </TouchableOpacity>
-      )
-      : null
-    )
+      ) : null;
 
     const calendarMarkup = (
-      <TouchableOpacity style={{paddingRight: 10}}>
+      <TouchableOpacity style={{ paddingRight: 10 }}>
         <Icon
-          name='calendar-plus'
-          type='material-community'
-          color='#517fa4'
-          onPress={() => {calendarAlert(currTask)}}
+          name="calendar-plus"
+          type="material-community"
+          color="#517fa4"
+          onPress={() => {
+            calendarAlert(currTask);
+          }}
         />
       </TouchableOpacity>
-    )
+    );
 
     const taskMarkup = (
       <View key={title} style={{ paddingVertical: 5 }}>
@@ -253,8 +264,21 @@ function generateTaskMarkup(tasks: Task[], props) {
                 Edit
               </Button>
             </View>
-            <View style={{paddingTop: 10, display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-              <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+            <View
+              style={{
+                paddingTop: 10,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between"
+              }}
+            >
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between"
+                }}
+              >
                 {calendarMarkup}
                 {notificationMarkup}
               </View>
@@ -273,24 +297,24 @@ function generateTaskMarkup(tasks: Task[], props) {
 
 function calendarAlert(task: Task) {
   Alert.alert(
-    'Add to calendar?',
+    "Add to calendar?",
     `This will add '${task.title}' to your phone's calendar app`,
     [
-      {text: 'Cancel', style: 'cancel'},
-      {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
-    ],
-  )
+      { text: "Cancel", style: "cancel" },
+      { text: "OK", onPress: () => CalendarHelper.addEvent(task) }
+    ]
+  );
 }
 
 function notificationAlert(task: Task) {
   Alert.alert(
-    'Set a reminder?',
+    "Set a reminder?",
     `This will add '${task.title}' to your phone's reminders app`,
     [
-      {text: 'Cancel', style: 'cancel'},
-      {text: 'OK', onPress: () => CalendarHelper.addEvent(task, true)},
-    ],
-  )
+      { text: "Cancel", style: "cancel" },
+      { text: "OK", onPress: () => CalendarHelper.addEvent(task, true) }
+    ]
+  );
 }
 
 function determineDaysUntilEval(evalDate: Date) {
