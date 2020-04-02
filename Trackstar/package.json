@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@mdi/font": "^5.0.45",
     "@react-native-community/datetimepicker": "^2.2.2",
     "@react-navigation/bottom-tabs": "^5.1.0",
     "@react-navigation/native": "^5.0.8",
@@ -24,6 +25,7 @@
     "react-native-circle-checkbox": "^0.1.6",
     "react-native-date-picker": "^2.7.8",
     "react-native-datepicker": "^1.7.2",
+    "react-native-elements": "^1.2.7",
     "react-native-gesture-handler": "^1.5.3",
     "react-native-material-dropdown": "^0.11.1",
     "react-native-modal": "^11.5.6",

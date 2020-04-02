@@ -1,0 +1,15 @@
+Gabrielle Pancu
+ID: 101104085
+
+Week 10: March 24 - March 31
+- add new "complete" param to taskMapper and courseMapper all() methods (controls whether courses/tasks marked as complete get returned)
+- add a method to courseMapper that gets only the complete courses
+- add new "complete" param to taskMapper.update so that we know if the "complete" attribute has been updated
+- add skeleton logic for updating the user's estimation accuracy
+- fix errors in the userMapper and User class
+- exploring APIs for calendar and notification integration
+- set up calendar and reminder integration so that there's a new button on tasks which allows users to add their tasks as events to their
+  phone's calendar app and as reminders in their reminder app
+- add toggle to course dashboard that controls whether or not complete courses are displayed
+- update courseView, courseDashboard, and home page so that they get the latest data when navigated to (as opposed to requiring a reload)
+- provided guidance for grade screen autofill and updating estimation accuracy

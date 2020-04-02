@@ -29,6 +29,7 @@ import {
   TaskMapperImpl
 } from "../../data_mappers";
 import CalendarHelper from "../../models/CalendarHelper";
+import { Icon } from 'react-native-elements'
 
 export default function CourseView(props) {
   const { code, name, minGrade, term } = props.route.params;
@@ -186,6 +187,32 @@ function generateTaskMarkup(tasks: Task[], props) {
       </Badge>
     );
 
+    const notificationMarkup = (
+      Platform.OS === "ios"
+      ? (
+        <TouchableOpacity>
+          <Icon
+            name='bell-plus-outline'
+            type='material-community'
+            color='#517fa4'
+            onPress={() => {notificationAlert(currTask)}}
+          />
+        </TouchableOpacity>
+      )
+      : null
+    )
+
+    const calendarMarkup = (
+      <TouchableOpacity style={{paddingRight: 10}}>
+        <Icon
+          name='calendar-plus'
+          type='material-community'
+          color='#517fa4'
+          onPress={() => {calendarAlert(currTask)}}
+        />
+      </TouchableOpacity>
+    )
+
     const taskMarkup = (
       <View key={title} style={{ paddingVertical: 5 }}>
         <Card>
@@ -219,14 +246,13 @@ function generateTaskMarkup(tasks: Task[], props) {
                 Edit
               </Button>
             </View>
-            {badgeMarkup}
-            <Button
-              onPress={() => {
-                calendarAlert(currTask);
-              }}
-            >
-              Add to Calendar
-            </Button>
+            <View style={{paddingTop: 10, display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+              <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                {calendarMarkup}
+                {notificationMarkup}
+              </View>
+              {badgeMarkup}
+            </View>
           </Card.Content>
         </Card>
       </View>
@@ -239,29 +265,25 @@ function generateTaskMarkup(tasks: Task[], props) {
 }
 
 function calendarAlert(task: Task) {
-  if (Platform.OS === "ios") {
-    Alert.alert(
-      "Add to calendar?",
-      `This will add '${task.title}' to your phone's calendar app`,
-      [
-        {
-          text: "OK + reminder",
-          onPress: () => CalendarHelper.addEvent(task, true)
-        },
-        { text: "Cancel", style: "cancel" },
-        { text: "OK", onPress: () => CalendarHelper.addEvent(task) }
-      ]
-    );
-  } else {
-    Alert.alert(
-      "Add to calendar?",
-      `This will add '${task.title}' to your phone's calendar app`,
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "OK", onPress: () => CalendarHelper.addEvent(task) }
-      ]
-    );
-  }
+  Alert.alert(
+    'Add to calendar?',
+    `This will add '${task.title}' to your phone's calendar app`,
+    [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
+    ],
+  )
+}
+
+function notificationAlert(task: Task) {
+  Alert.alert(
+    'Set a reminder?',
+    `This will add '${task.title}' to your phone's reminders app`,
+    [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'OK', onPress: () => CalendarHelper.addEvent(task, true)},
+    ],
+  )
 }
 
 function determineDaysUntilEval(evalDate: Date) {
