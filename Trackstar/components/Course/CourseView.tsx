@@ -220,7 +220,7 @@ function generateTaskMarkup(tasks: Task[], props) {
     )
 
     const taskMarkup = (
-      <View key={title} style={{ paddingVertical: 5 }}>
+      <View key={id} style={{ paddingVertical: 5 }}>
         <Card>
           <Card.Content>
             <View

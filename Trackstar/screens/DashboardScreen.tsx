@@ -4,7 +4,6 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  SectionList,
   StyleSheet
 } from "react-native";
 import { Card, TextInput, Button } from "react-native-paper";
