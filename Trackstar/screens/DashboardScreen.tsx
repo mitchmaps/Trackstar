@@ -135,6 +135,15 @@ const HomeScreen = props => {
               >
                 Submit
               </Button>
+              <Button
+                style={{ marginTop: 20 }}
+                mode="contained"
+                onPress={() => {
+                  setModalActive(false);
+                }}
+              >
+                Cancel
+              </Button>
             </View>
           </Card.Content>
         </View>

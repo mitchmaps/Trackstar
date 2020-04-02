@@ -91,6 +91,7 @@ const CoursesDashboard = props => {
         style={{ marginTop: 50 }}
         sections={formattedCourseData}
         renderItem={SingleItem}
+        keyExtractor={(item, index) => index.toString()}
       />
 
       <View style={{ paddingBottom: 100 }}>
