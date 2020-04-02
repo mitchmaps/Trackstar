@@ -169,7 +169,7 @@ export default class TaskCreate extends React.Component {
     evals.forEach((currEval) => {
       const {id, course_code, due_date, title, weight} = currEval;
       const evalMarkup = (
-        <Picker.Item label={title} value={id} />
+        <Picker.Item label={title} value={id} key={id}/>
       );
 
       evalSelectionMarkup.push(evalMarkup);
