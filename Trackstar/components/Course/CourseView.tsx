@@ -52,7 +52,7 @@ export default function CourseView(props) {
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
   const filteredTasks = filterTasks(courseEvals, tasks);
   
-  const tasksMarkup = filteredTasks.length > 0 ? generateTaskMarkup(filteredTasks) : (
+  const tasksMarkup = filteredTasks.length > 0 ? generateTaskMarkup(filteredTasks, props) : (
     <View>
       <Text>You haven't added any tasks yet.</Text>
     </View>
