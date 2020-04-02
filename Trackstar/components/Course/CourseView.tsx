@@ -147,8 +147,11 @@ function filterTasks(evaluations: Evaluation[], allTasks: Task[]) {
 }
 
 function generateTaskMarkup(tasks: Task[], props) {
+  const { code, name, minGrade } = props.route.params;
+
   return tasks.reduce((allTasks, currTask) => {
-    const { title, due_date, est_duration } = currTask;
+    const { id, title, due_date, est_duration } = currTask;
+
 
     const formattedDate = new Date(due_date);
     const subTitle = `Due on ${formattedDate.toDateString()}`;
@@ -179,7 +182,15 @@ function generateTaskMarkup(tasks: Task[], props) {
               <Text style={iOSUIKit.bodyEmphasized}>{title}</Text>
               <Button onPress={
                 () => {
-                  props.navigation.navigate("Task Edit");
+                  props.navigation.navigate("Task Edit", {
+                    title: title,
+                    dueDate: due_date,
+                    duration: est_duration,
+                    id: id,
+                    courseCode: code,
+                    courseName: name,
+                    courseMinGrade: minGrade,
+                  });
                 }
               }>Edit</Button>
             </View>
