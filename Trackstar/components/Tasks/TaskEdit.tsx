@@ -35,8 +35,6 @@ export default class TaskEdit extends React.Component {
     const { title, dueDate, duration } = this.state;
     const {courseCode, courseName} = this.props.route.params;
 
-    console.log(duration);
-
     const detailsMarkup = (
       <Card style={{marginTop: 20}}>
         <Card.Content>

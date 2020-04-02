@@ -2,7 +2,6 @@ import React from "react";
 import {Evaluation, Task} from '../../models';
 import {TaskMapper, TaskMapperImpl} from '../../data_mappers';
 import DatePicker from 'react-native-datepicker'
-
 import { Platform, View, Text, ScrollView, Picker } from "react-native";
 import { Divider, Card, TextInput, Button, List } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -13,6 +12,13 @@ export default class TaskCreate extends React.Component {
   state: {
     title: string;
     selectedEval: number;
+    dueDateYear: number;
+    dueDateMonth: number;
+    dueDateDay: number;
+    dueDateHour: number;
+    dueDateMinute: number;
+    curDueDate: Date;
+    curDueDateTime: Date;
     dueDate: Date;
     duration: string;
   };
@@ -27,13 +33,20 @@ export default class TaskCreate extends React.Component {
     this.state = {
       title: "",
       selectedEval: this.props.route.params.evals[0].id,
+      dueDateYear: 0,
+      dueDateMonth: 0,
+      dueDateDay: 0,
+      dueDateHour: 0,
+      dueDateMinute: 0,
+      curDueDate: new Date(),
+      curDueDateTime: new Date(),
       dueDate: new Date(),
       duration: "",
     };
   }
 
   render() {
-    const { title, selectedEval, dueDate, duration} = this.state;
+    const { title, selectedEval, dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, curDueDate, curDueDateTime, dueDate, duration} = this.state;
     const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params;
 
     const evalSelectionMarkup = this.generateEvalSelectionMarkup(this.props.route.params.evals);
@@ -52,25 +65,37 @@ export default class TaskCreate extends React.Component {
             value={this.state.title}
             onChangeText={text => {
               this.setState({ title: text });
-              
+
             }}
           />
           <Text style={{paddingTop: 20}}>Task due date</Text>
-          
-          
-          { Platform.OS === 'ios' ? 
-          <DateTimePicker
-          testID="dateTimePicker"
-          timeZoneOffsetInMinutes={0}
-          value={dueDate}
-          onChange={
-            (event, selectedDate) => {
-              this.setState({dueDate: selectedDate});
+
+
+          { Platform.OS === 'ios' ?
+          <View>
+            <DateTimePicker
+            testID="dateTimePicker"
+            value={curDueDate}
+            mode={'date'}
+            onChange={
+              (event, selectedDate) => {
+                this.setState({curDueDate: selectedDate, dueDateYear: selectedDate.getFullYear(), dueDateMonth: selectedDate.getMonth(), dueDateDay: selectedDate.getDate()});
+              }
             }
-          }
-          display="default"/> : 
+            display="default"/>
+            <DateTimePicker
+            testID="dateTimePicker"
+            value={curDueDateTime}
+            mode={'time'}
+            onChange={
+              (event, selectedTime) => {
+                this.setState({curDueDateTime: selectedTime, dueDateHour: selectedTime.getHours(), dueDateMinute: selectedTime.getMinutes()});
+              }
+            }
+            display="default"/>
+          </View> :
           <DatePicker
-          date={dueDate}      
+          date={dueDate}
           mode="datetime"
           placeholder="select date"
           format="YYYY-MM-DD"
@@ -85,10 +110,8 @@ export default class TaskCreate extends React.Component {
           style={{paddingTop: 10, paddingBottom:20, width:300}}
           />
         }
-            
 
-        
-       <Text> {User.getInstance().estimationAccuracy >= 100 ? `Heads up: you typically overestimate by about ${(User.getInstance().estimationAccuracy-100).toFixed(2)}%` 
+       <Text> {User.getInstance().estimationAccuracy >= 100 ? `Heads up: you typically overestimate by about ${(User.getInstance().estimationAccuracy-100).toFixed(2)}%`
        : `Heads up: you typically underestimate by about ${Math.abs(User.getInstance().estimationAccuracy).toFixed(2)}%` }}
        </Text>
        <TextInput
@@ -119,8 +142,13 @@ export default class TaskCreate extends React.Component {
   }
 
   handleSubmit() {
-    const { title, selectedEval, dueDate, duration } = this.state;
+    const { title, selectedEval, dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, duration } = this.state;
+    let dueDate = this.state.dueDate;
     const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params.evals;
+
+    if (Platform.OS === "ios") {
+      dueDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
+    }
 
     const taskMapper: TaskMapper = new TaskMapperImpl();
     const newTask = new Task(title, dueDate, +duration, 0, selectedEval);
@@ -134,7 +162,7 @@ export default class TaskCreate extends React.Component {
     });
   }
 
-  
+
 
   generateEvalSelectionMarkup(evals: Evaluation[]) {
     const evalSelectionMarkup = [];
