@@ -43,9 +43,13 @@ export default function CourseView(props) {
   );
 
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
-  // Fix after demo
   const filteredTasks = filterTasks(courseEvals, tasks);
-  const tasksMarkup = generateTaskMarkup(filteredTasks);
+
+  const tasksMarkup = filteredTasks.length > 0 ? generateTaskMarkup(filteredTasks) : (
+    <View>
+      <Text>You haven't added any tasks yet.</Text>
+    </View>
+  );
 
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
@@ -127,7 +131,10 @@ function generateEvaluationMarkup(evals: Evaluation[]) {
       </Card.Content>
     );
 
-    allEvals.push(evalMarkup);
+    if (currEval.title !== 'General tasks') {
+      allEvals.push(evalMarkup);
+    }
+
     return allEvals;
   }, []);
 
@@ -202,7 +209,7 @@ function generateTaskMarkup(tasks: Task[]) {
       <View key={title} style={{ paddingVertical: 5 }}>
         <Card>
           <Card.Content>
-            <Text>{title}</Text>
+            <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
             <View style={{paddingTop: 10, display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
               <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 {calendarMarkup}

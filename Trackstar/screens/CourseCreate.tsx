@@ -266,5 +266,8 @@ export default class CourseCreate extends React.Component {
       const newEval = new Evaluation(currEval.title, currEval.date, currEval.weight, courseCode, false, 0);
       evaluationMapper.insert(newEval);
     });
+
+    const placeholderEval = new Evaluation('General tasks', new Date(), 0, courseCode, false, 0);
+    evaluationMapper.insert(placeholderEval);
   }
 }
