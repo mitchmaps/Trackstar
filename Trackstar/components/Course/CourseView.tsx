@@ -14,7 +14,8 @@ import {
   Title,
   Badge,
   Paragraph,
-  Button
+  Button,
+  List,
 } from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
 import { AntDesign } from "@expo/vector-icons";
@@ -39,6 +40,7 @@ export default function CourseView(props) {
   const [tasks, setTasks] = useState([]);
   const [evalBeingCompleted, setEvalBeingCompleted] = useState(null);
   const [modalActive, setModalActive] = useState(false);
+  const [tasksRemaining, setTasksRemaining] = useState<Task[]>([]);
   const [fakeState, setFakeState] = useState(new Date());
 
   const evalBeingCompletedRef = useRef(evalBeingCompleted);
@@ -54,9 +56,14 @@ export default function CourseView(props) {
       });
 
       const taskData = retrieveTaskData().then((data: Task[]) => {
-        console.log(data);
         setTasks(data);
       });
+
+      if (evalBeingCompletedRef.current !== null) {
+        determineRemainingTasks(evalBeingCompletedRef.current).then((data: Task[]) => {
+          setTasksRemaining(data);
+        });
+      }
     }, [])
   );
 
@@ -118,6 +125,7 @@ export default function CourseView(props) {
           >{`Complete ${evalBeingCompleted.title}`}</Text>
           <Text>Good job!</Text>
           <View style={{ flex: 1, marginTop: 20 }}>
+            {generateRemainingTasksMarkup(tasksRemaining)}
             <Button
               style={{ marginTop: 20 }}
               mode="contained"
@@ -240,6 +248,22 @@ function generateEvaluationMarkup(evals: Evaluation[], handleEvalComplete) {
   }, []);
 
   return gradingSchemeMarkup;
+}
+
+function generateRemainingTasksMarkup(tasks: Task[]) {
+  const remainingTasksMarkup: JSX.Element[] = [];
+  tasks.forEach((item) => {
+    const taskMarkup = <Text>{item.title}</Text>
+
+    remainingTasksMarkup.push(taskMarkup);
+  });
+
+  return (
+    <View>
+      <Text style={iOSUIKit.subheadEmphasized}>You still have these tasks remaining for this evaluation:</Text>
+      {remainingTasksMarkup}
+    </View>
+  )
 }
 
 function filterTasks(evaluations: Evaluation[], allTasks: Task[]) {
@@ -440,4 +464,10 @@ async function updateEval(updatedEval: Evaluation) {
   const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
 
   evalMapper.update(updatedEval);
+}
+
+async function determineRemainingTasks(evalToComplete: Evaluation) {
+  const taskMapper: TaskMapper = new TaskMapperImpl();
+  const tasks = await taskMapper.findByEval(evalToComplete.id);
+  return tasks;
 }
