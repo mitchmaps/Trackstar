@@ -50,9 +50,13 @@ export default function CourseView(props) {
   );
 
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
-  // Fix after demo
   const filteredTasks = filterTasks(courseEvals, tasks);
-  const tasksMarkup = generateTaskMarkup(filteredTasks, props);
+  
+  const tasksMarkup = filteredTasks.length > 0 ? generateTaskMarkup(filteredTasks, props) : (
+    <View>
+      <Text>You haven't added any tasks yet.</Text>
+    </View>
+  );
 
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
@@ -135,8 +139,11 @@ function generateEvaluationMarkup(evals: Evaluation[]) {
         <Divider />
       </View>
     );
+    
+    if (currEval.title !== 'General tasks') {
+      allEvals.push(<View key={currEval.id}>{evalMarkup}</View>);
+    }
 
-    allEvals.push(<View key={currEval.id}>{evalMarkup}</View>);
     return allEvals;
   }, []);
 
@@ -225,7 +232,7 @@ function generateTaskMarkup(tasks: Task[], props) {
               }}
             >
               <View>
-                <Text style={iOSUIKit.bodyEmphasized}>{title}</Text>
+                <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
                 <Text
                   style={{ color: "#aaaaaa" }}
                 >{`Estimated to take ${est_duration} minutes`}</Text>

@@ -43,10 +43,10 @@ export default class TaskCreate extends React.Component {
       <Card>
         <Card.Content>
           <Text>Select the evaluation this task is for:</Text>
+          <Text style={{color: '#7c7c7c', marginTop: 5}}>{ `Select 'General tasks' to create tasks that aren't linked to any specific evaluation but are still relevant to ${courseCode}`}</Text>
           <Picker selectedValue={this.state.selectedEval} onValueChange={(itemValue, itemIndex) => {this.setState({selectedEval: itemValue})}}>
             {evalSelectionMarkup}
           </Picker>
-          
           <TextInput
             label="Task title"
             value={this.state.title}
