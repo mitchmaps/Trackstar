@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Alert, Platform } from "react-native";
-import { useFocusEffect } from '@react-navigation/native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  Platform
+} from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   Card,
   Divider,
@@ -10,7 +17,7 @@ import {
   Button
 } from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 
 import Evaluation from "../../models/Evaluation";
 import Task from "../../models/Task";
@@ -59,18 +66,20 @@ export default function CourseView(props) {
           padding: 20
         }}
       >
-        <View style={{ flexDirection: 'row'}}>
+        <View style={{ flexDirection: "row" }}>
           <Text style={iOSUIKit.largeTitleEmphasized}>{code}</Text>
-          <Button onPress={
-            () => {
+          <Button
+            onPress={() => {
               props.navigation.navigate("Course Edit", {
                 code: code,
                 title: name,
                 minGrade: minGrade,
-                evals: courseEvals,
+                evals: courseEvals
               });
-            }
-          }>Edit</Button>
+            }}
+          >
+            Edit
+          </Button>
         </View>
         <Text style={iOSUIKit.subhead}>{name}</Text>
         <View style={{ paddingTop: 10 }}>
@@ -89,7 +98,7 @@ export default function CourseView(props) {
             courseCode: code,
             courseName: name,
             courseTerm: term,
-            courseMinGrade: minGrade,
+            courseMinGrade: minGrade
           });
         }}
       >
@@ -102,7 +111,7 @@ export default function CourseView(props) {
 function generateEvaluationMarkup(evals: Evaluation[]) {
   const gradingSchemeMarkup = evals.reduce((allEvals, currEval) => {
     const evalMarkup = (
-      <Card.Content>
+      <View style={{marginBottom: 5}}>
         <View
           style={{
             flex: 1,
@@ -123,24 +132,28 @@ function generateEvaluationMarkup(evals: Evaluation[]) {
           </Badge>
         </View>
         <Divider />
-      </Card.Content>
+      </View>
     );
 
-    allEvals.push(evalMarkup);
+    allEvals.push(<View key={currEval.id}>{evalMarkup}</View>);
     return allEvals;
   }, []);
 
-  return <Card>{gradingSchemeMarkup}</Card>;
+  return (
+    <Card>
+      <Card.Content>{gradingSchemeMarkup}</Card.Content>
+    </Card>
+  );
 }
 
 function filterTasks(evaluations: Evaluation[], allTasks: Task[]) {
   const courseTasks: Task[] = [];
-  evaluations.forEach((evaluation) => {
-    allTasks.forEach((task) => {
+  evaluations.forEach(evaluation => {
+    allTasks.forEach(task => {
       if (task.evaluation_id === evaluation.id) {
         courseTasks.push(task);
       }
-    })
+    });
   });
 
   return courseTasks;
@@ -151,7 +164,6 @@ function generateTaskMarkup(tasks: Task[], props) {
 
   return tasks.reduce((allTasks, currTask) => {
     const { id, title, due_date, est_duration } = currTask;
-
 
     const formattedDate = new Date(due_date);
     const subTitle = `Due on ${formattedDate.toDateString()}`;
@@ -178,10 +190,21 @@ function generateTaskMarkup(tasks: Task[], props) {
       <View key={title} style={{ paddingVertical: 5 }}>
         <Card>
           <Card.Content>
-            <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={iOSUIKit.bodyEmphasized}>{title}</Text>
-              <Button onPress={
-                () => {
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-around"
+              }}
+            >
+              <View>
+                <Text style={iOSUIKit.bodyEmphasized}>{title}</Text>
+                <Text
+                  style={{ color: "#aaaaaa" }}
+                >{`Estimated to take ${est_duration} minutes`}</Text>
+              </View>
+              <Button
+                onPress={() => {
                   props.navigation.navigate("Task Edit", {
                     title: title,
                     dueDate: due_date,
@@ -189,13 +212,21 @@ function generateTaskMarkup(tasks: Task[], props) {
                     id: id,
                     courseCode: code,
                     courseName: name,
-                    courseMinGrade: minGrade,
+                    courseMinGrade: minGrade
                   });
-                }
-              }>Edit</Button>
+                }}
+              >
+                Edit
+              </Button>
             </View>
             {badgeMarkup}
-            <Button onPress={() => {calendarAlert(currTask)}}>Add to Calendar</Button>
+            <Button
+              onPress={() => {
+                calendarAlert(currTask);
+              }}
+            >
+              Add to Calendar
+            </Button>
           </Card.Content>
         </Card>
       </View>
@@ -208,26 +239,28 @@ function generateTaskMarkup(tasks: Task[], props) {
 }
 
 function calendarAlert(task: Task) {
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === "ios") {
     Alert.alert(
-      'Add to calendar?',
+      "Add to calendar?",
       `This will add '${task.title}' to your phone's calendar app`,
       [
-        {text: 'OK + reminder', onPress: () => CalendarHelper.addEvent(task, true)},
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
-      ],
-    )
-  }
-  else {
+        {
+          text: "OK + reminder",
+          onPress: () => CalendarHelper.addEvent(task, true)
+        },
+        { text: "Cancel", style: "cancel" },
+        { text: "OK", onPress: () => CalendarHelper.addEvent(task) }
+      ]
+    );
+  } else {
     Alert.alert(
-      'Add to calendar?',
+      "Add to calendar?",
       `This will add '${task.title}' to your phone's calendar app`,
       [
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
-      ],
-    )
+        { text: "Cancel", style: "cancel" },
+        { text: "OK", onPress: () => CalendarHelper.addEvent(task) }
+      ]
+    );
   }
 }
 
