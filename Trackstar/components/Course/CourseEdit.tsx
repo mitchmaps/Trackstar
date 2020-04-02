@@ -47,7 +47,7 @@ export default class CourseEdit extends React.Component {
       evalToEdit: evals[0],
       currEvalEditTitle: evals[0].title,
       currEvalEditDate: evals[0].due_date,
-      currEvalEditWeight: evals[0].weight
+      currEvalEditWeight: evals[0].weight.toString()
     };
   }
 
@@ -208,7 +208,7 @@ export default class CourseEdit extends React.Component {
       evalEditingActive: true,
       evalToEdit: evalToEdit,
       currEvalEditTitle: evalToEdit.title,
-      currEvalEditWeight: evalToEdit.weight,
+      currEvalEditWeight: evalToEdit.weight.toString(),
       currEvalEditDate: evalToEdit.due_date
     });
   }
