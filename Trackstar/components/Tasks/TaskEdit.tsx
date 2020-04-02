@@ -13,6 +13,13 @@ export default class TaskEdit extends React.Component {
     title: string;
     dueDate: Date;
     duration: string;
+    dueDateYear: number;
+    dueDateMonth: number;
+    dueDateDay: number;
+    dueDateHour: number;
+    dueDateMinute: number;
+    curDueDate: Date;
+    curDueDateTime: Date;
     id: number;
   };
 
@@ -27,15 +34,20 @@ export default class TaskEdit extends React.Component {
       title: title,
       dueDate: dueDate,
       duration: duration,
+      dueDateYear: 0,
+      dueDateMonth: 0,
+      dueDateDay: 0,
+      dueDateHour: 0,
+      dueDateMinute: 0,
+      curDueDate: new Date(),
+      curDueDateTime: new Date(),
       id: id,
     };
   }
 
   render() {
-    const { title, dueDate, duration } = this.state;
+    const { title, dueDate, duration, dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, curDueDate, curDueDateTime} = this.state;
     const {courseCode, courseName} = this.props.route.params;
-
-    console.log(duration);
 
     const detailsMarkup = (
       <Card style={{marginTop: 20}}>
@@ -50,15 +62,28 @@ export default class TaskEdit extends React.Component {
           <Text style={{ paddingTop: 20 }}>Task due date</Text>
 
           {Platform.OS === "ios" ? (
+            <View>
             <DateTimePicker
-              testID="dateTimePicker"
-              timeZoneOffsetInMinutes={0}
-              value={dueDate}
-              onChange={(event, selectedDate) => {
-                this.setState({ dueDate: selectedDate });
-              }}
-              display="default"
-            />
+            testID="dateTimePicker"
+            value={curDueDate}
+            mode={'date'}
+            onChange={
+              (event, selectedDate) => {
+                this.setState({curDueDate: selectedDate, dueDateYear: selectedDate.getFullYear(), dueDateMonth: selectedDate.getMonth(), dueDateDay: selectedDate.getDate()});
+              }
+            }
+            display="default"/>
+            <DateTimePicker
+            testID="dateTimePicker"
+            value={curDueDateTime}
+            mode={'time'}
+            onChange={
+              (event, selectedTime) => {
+                this.setState({curDueDateTime: selectedTime, dueDateHour: selectedTime.getHours(), dueDateMinute: selectedTime.getMinutes()});
+              }
+            }
+            display="default"/>
+          </View>
           ) : (
             <DatePicker
               date={dueDate}
@@ -118,7 +143,12 @@ export default class TaskEdit extends React.Component {
 
   handleSubmit() {
     const taskMapper: TaskMapper = new TaskMapperImpl();
-    const { title, dueDate, duration, id } = this.state;
+    const {  title, dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, duration , id } = this.state;
+    let dueDate = this.state.dueDate;
+
+    if (Platform.OS === "ios") {
+      dueDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
+    }
 
     taskMapper.find(id).then((data) => {
       const taskToEdit: Task = data;

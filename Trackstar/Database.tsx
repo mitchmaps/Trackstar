@@ -156,9 +156,6 @@ export default class Database {
   }
 
   static courseTest() {
-    console.log("inside course test")
     let course  = new Course ("COMP3008", "HCI", 80);
-    console.log(course.code)
-    course.save()
   }
 }

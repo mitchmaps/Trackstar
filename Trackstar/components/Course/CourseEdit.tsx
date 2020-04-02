@@ -203,7 +203,6 @@ export default class CourseEdit extends React.Component {
     const { evals } = this.state;
 
     let evalToEdit: Evaluation = this.selectEvalById(id);
-    console.log(evalToEdit);
 
     this.setState({
       evalEditingActive: true,
@@ -301,9 +300,6 @@ export default class CourseEdit extends React.Component {
         evalToReturn = evaluation;
       }
     });
-
-    console.log("selecting");
-    console.log(evalToReturn);
 
     return evalToReturn;
   }

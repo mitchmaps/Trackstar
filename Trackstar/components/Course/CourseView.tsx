@@ -43,7 +43,6 @@ export default function CourseView(props) {
       });
 
       const taskData = retrieveTaskData().then((data: Task[]) => {
-        console.log(data);
         setTasks(data);
       });
     }, [])
@@ -51,7 +50,7 @@ export default function CourseView(props) {
 
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
   const filteredTasks = filterTasks(courseEvals, tasks);
-  
+
   const tasksMarkup = filteredTasks.length > 0 ? generateTaskMarkup(filteredTasks, props) : (
     <View>
       <Text>You haven't added any tasks yet.</Text>
@@ -139,7 +138,7 @@ function generateEvaluationMarkup(evals: Evaluation[]) {
         <Divider />
       </View>
     );
-    
+
     if (currEval.title !== 'General tasks') {
       allEvals.push(<View key={currEval.id}>{evalMarkup}</View>);
     }
@@ -285,10 +284,10 @@ function calendarAlert(task: Task) {
 function notificationAlert(task: Task) {
   Alert.alert(
     'Set a reminder?',
-    `This will add '${task.title}' to your phone's reminders app`,
+    `This will add '${task.title}' to your phone's reminders app at ${task.due_date}`,
     [
       {text: 'Cancel', style: 'cancel'},
-      {text: 'OK', onPress: () => CalendarHelper.addEvent(task, true)},
+      {text: 'OK', onPress: () => CalendarHelper.addReminder(task)},
     ],
   )
 }
