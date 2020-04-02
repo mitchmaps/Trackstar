@@ -79,7 +79,7 @@ export default class CourseEdit extends React.Component {
           <TextInput
             label="Minimum desired grade"
             keyboardType={"numeric"}
-            value={minGrade}
+            value={minGrade.toString()}
             onChangeText={text => {
               this.setState({ minGrade: text });
             }}
