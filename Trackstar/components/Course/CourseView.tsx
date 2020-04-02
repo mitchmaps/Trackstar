@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   View,
   Text,
@@ -18,6 +18,8 @@ import {
 } from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
 import { AntDesign } from "@expo/vector-icons";
+import CircleCheckBox from "react-native-circle-checkbox";
+import Modal from "react-native-modal";
 
 import Evaluation from "../../models/Evaluation";
 import Task from "../../models/Task";
@@ -35,6 +37,15 @@ export default function CourseView(props) {
   const { code, name, minGrade, term } = props.route.params;
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [evalBeingCompleted, setEvalBeingCompleted] = useState(null);
+  const [modalActive, setModalActive] = useState(false);
+  const [fakeState, setFakeState] = useState(new Date());
+
+  const evalBeingCompletedRef = useRef(evalBeingCompleted);
+  const setEvalBeingCompletedRef = data => {
+    evalBeingCompletedRef.current = data;
+    setEvalBeingCompleted(data);
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -49,7 +60,32 @@ export default function CourseView(props) {
     }, [])
   );
 
-  const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
+  const handleEvalCompletion = useCallback(() => {
+    const evalToUpdate: Evaluation = evalBeingCompletedRef.current;
+
+    evalToUpdate.complete = !evalToUpdate.complete;
+    updateEval(evalToUpdate);
+    setModalActive(false);
+  }, []);
+
+  const handleEvalSelection = useCallback((currEval: Evaluation) => {
+    setEvalBeingCompletedRef(currEval);
+
+    if (currEval.complete) {
+      const evalToUpdate: Evaluation = evalBeingCompletedRef.current;
+      evalToUpdate.complete = false;
+      updateEval(evalToUpdate);
+      // need to trigger a rerender in order to immediatley reflect the DB changes
+      setFakeState(new Date());
+    } else {
+      setModalActive(true);
+    }
+  }, []);
+
+  const evaluationsMarkup = generateEvaluationMarkup(
+    courseEvals,
+    handleEvalSelection
+  );
   const filteredTasks = filterTasks(courseEvals, tasks);
 
   const tasksMarkup =
@@ -64,6 +100,36 @@ export default function CourseView(props) {
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
   )}% of your total grade.`;
+
+  const modalMarkup = evalBeingCompleted !== null ? (
+    <Modal isVisible={modalActive}>
+      <View
+        style={{
+          marginTop: "25%",
+          marginBottom: "25%",
+          backgroundColor: "white",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <Card.Content>
+          <Text
+            style={iOSUIKit.largeTitleEmphasized}
+          >{`Complete ${evalBeingCompleted.title}`}</Text>
+          <Text>Good job!</Text>
+          <View style={{ flex: 1, marginTop: 20 }}>
+            <Button
+              style={{ marginTop: 20 }}
+              mode="contained"
+              onPress={() => {handleEvalCompletion()}}
+            >
+              Submit
+            </Button>
+          </View>
+        </Card.Content>
+      </View>
+    </Modal>
+  ) : null;
 
   return (
     <View style={{ flex: 1, alignSelf: "stretch" }}>
@@ -97,6 +163,7 @@ export default function CourseView(props) {
         <View style={{ paddingVertical: 20 }}>{evaluationsMarkup}</View>
         <Text style={iOSUIKit.title3Emphasized}>Tasks</Text>
         {tasksMarkup}
+        {modalMarkup}
       </ScrollView>
       <Button
         mode="contained"
@@ -116,9 +183,9 @@ export default function CourseView(props) {
   );
 }
 
-function generateEvaluationMarkup(evals: Evaluation[]) {
+function generateEvaluationMarkup(evals: Evaluation[], handleEvalComplete) {
   const gradingSchemeMarkup = evals.reduce((allEvals, currEval) => {
-    const { title, due_date, weight, complete } = currEval;
+    const { title, due_date, weight, complete, id } = currEval;
 
     const evalMarkup = (
       <Card style={{ marginBottom: 10 }}>
@@ -148,6 +215,17 @@ function generateEvaluationMarkup(evals: Evaluation[]) {
               >
                 {`${currEval.weight}%`}
               </Badge>
+            </View>
+            <View style={{ marginLeft: 20 }}>
+              <CircleCheckBox
+                style={{ flex: 2 }}
+                onToggle={() => {
+                  handleEvalComplete(currEval);
+                }}
+                checked={complete ? true : false}
+                outerColor={"#408ff7"}
+                innerColor={"#408ff7"}
+              />
             </View>
           </View>
         </Card.Content>
@@ -356,4 +434,10 @@ async function retrieveTaskData() {
   let tasks: Task[] = await taskMapper.all();
 
   return tasks;
+}
+
+async function updateEval(updatedEval: Evaluation) {
+  const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
+
+  evalMapper.update(updatedEval);
 }
