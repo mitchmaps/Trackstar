@@ -38,6 +38,7 @@ const CoursesDashboard = props => {
     React.useCallback(() => {
       const formattedCourses = formatData(showComplete).then(data => {
         setFormattedCourseData(data);
+		setCheckForCourses(course.title);
       });
     }, [])
   );
@@ -66,22 +67,6 @@ const CoursesDashboard = props => {
     );
   };
 
-
-  /*	
-	//setup an alert for if there are no courses then say "You have no courses, Please add a course."
-    if(listCourses == []){
-      Alert.alert(
-        "You have no courses.",
-        "Please add a course.",
-        [
-          {
-            text: 'Back'
-          }
-        ]
-      )
-    }
-	*/
-
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
@@ -102,13 +87,12 @@ const CoursesDashboard = props => {
           setFormattedCourseData(data);
 
 		  
-		  if(listCourses == []){
+		  if(checkForCourses == [] || checkForCourses == null){
             Alert.alert(
             "You have no courses.",
              "Please add a course.",
          [{text: 'Back'}])}
 		 
-
         });
       }}
     />
@@ -143,7 +127,7 @@ async function formatData(complete: boolean) {
 
   const courseMapper: CourseMapper = new CourseMapperImpl();
   const rawData: Course[] = await courseMapper.all(complete);
-  let listCourses = []; //array to list courses we have
+  let listCourses = []; //made array to list courses we have
   
   rawData.forEach(course => {
     const courseInfo = {
@@ -155,11 +139,13 @@ async function formatData(complete: boolean) {
           minGrade: course.min_grade,
         }
       ]
+	  
     };
     formattedData.push(courseInfo);
 	listCourses.push(course.title); //using title but could be anything from course
+    //setCheckForCourses(listCourses[0]);
   });
-   //setCheckForCourses(listCourses[0]);
+   
   return formattedData;
 }
 
