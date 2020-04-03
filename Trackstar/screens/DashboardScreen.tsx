@@ -185,7 +185,6 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
     } = currTask;
 
     const formatted_title = `${priority}. ${title}`;
-    const formatted_subtitle = `${courseCode} - ${evalName}`;
     const opacity = complete ? 0.5 : 1;
 
     const statusMarkup = !complete ? (
@@ -204,9 +203,9 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
     const taskMarkup = (
       <View opacity={opacity}>
         <Card style={{ width: 350, marginBottom: 10 }}>
-          <Card.Title title={formatted_title} subtitle={formatted_subtitle} />
+          <Card.Title title={formatted_title} />
           <Card.Content style={{ flex: 1, flexDirection: "row" }}>
-            <Text style={{ flex: 8 }}>
+            <Text style={{ flex: 8, color: "#7c7c7c"}}>
               {courseCode} - {evalName}
             </Text>
             {statusMarkup}
@@ -229,13 +228,13 @@ async function formatData() {
   date_Display = await evalMapper.find(task.due_date);
 
   const formattedData = [];
+
   const rawData: Task[] = await taskMapper.all();
 
   for (let i = 0; i < rawData.length; i++) {
     const task = rawData[i];
     const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
     const course: Course = await courseMapper.find(evaluation.course_code);
-
 
     const taskInfo: TaskDescriptor = {
       task: task,
@@ -244,6 +243,7 @@ async function formatData() {
     };
 
     formattedData.push(taskInfo);
+
   }
 
   return formattedData;

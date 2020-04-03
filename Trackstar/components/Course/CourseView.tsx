@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Alert, Platform } from "react-native";
-import { useFocusEffect } from '@react-navigation/native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  Platform
+} from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   Card,
   Divider,
@@ -10,7 +17,7 @@ import {
   Button
 } from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 
 import Evaluation from "../../models/Evaluation";
 import Task from "../../models/Task";
@@ -22,6 +29,7 @@ import {
   TaskMapperImpl
 } from "../../data_mappers";
 import CalendarHelper from "../../models/CalendarHelper";
+import { Icon } from 'react-native-elements'
 
 export default function CourseView(props) {
   const { code, name, minGrade, term } = props.route.params;
@@ -35,16 +43,19 @@ export default function CourseView(props) {
       });
 
       const taskData = retrieveTaskData().then((data: Task[]) => {
-        console.log(data);
         setTasks(data);
       });
     }, [])
   );
 
   const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
-  // Fix after demo
   const filteredTasks = filterTasks(courseEvals, tasks);
-  const tasksMarkup = generateTaskMarkup(filteredTasks);
+
+  const tasksMarkup = filteredTasks.length > 0 ? generateTaskMarkup(filteredTasks, props) : (
+    <View>
+      <Text>You haven't added any tasks yet.</Text>
+    </View>
+  );
 
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
@@ -59,18 +70,20 @@ export default function CourseView(props) {
           padding: 20
         }}
       >
-        <View style={{ flexDirection: 'row'}}>
+        <View style={{ flexDirection: "row" }}>
           <Text style={iOSUIKit.largeTitleEmphasized}>{code}</Text>
-          <Button onPress={
-            () => {
+          <Button
+            onPress={() => {
               props.navigation.navigate("Course Edit", {
                 code: code,
                 title: name,
                 minGrade: minGrade,
-                evals: courseEvals,
+                evals: courseEvals
               });
-            }
-          }>Edit</Button>
+            }}
+          >
+            Edit
+          </Button>
         </View>
         <Text style={iOSUIKit.subhead}>{name}</Text>
         <View style={{ paddingTop: 10 }}>
@@ -89,7 +102,7 @@ export default function CourseView(props) {
             courseCode: code,
             courseName: name,
             courseTerm: term,
-            courseMinGrade: minGrade,
+            courseMinGrade: minGrade
           });
         }}
       >
@@ -102,7 +115,7 @@ export default function CourseView(props) {
 function generateEvaluationMarkup(evals: Evaluation[]) {
   const gradingSchemeMarkup = evals.reduce((allEvals, currEval) => {
     const evalMarkup = (
-      <Card.Content>
+      <View style={{marginBottom: 5}}>
         <View
           style={{
             flex: 1,
@@ -123,32 +136,41 @@ function generateEvaluationMarkup(evals: Evaluation[]) {
           </Badge>
         </View>
         <Divider />
-      </Card.Content>
+      </View>
     );
 
-    allEvals.push(evalMarkup);
+    if (currEval.title !== 'General tasks') {
+      allEvals.push(<View key={currEval.id}>{evalMarkup}</View>);
+    }
+
     return allEvals;
   }, []);
 
-  return <Card>{gradingSchemeMarkup}</Card>;
+  return (
+    <Card>
+      <Card.Content>{gradingSchemeMarkup}</Card.Content>
+    </Card>
+  );
 }
 
 function filterTasks(evaluations: Evaluation[], allTasks: Task[]) {
   const courseTasks: Task[] = [];
-  evaluations.forEach((evaluation) => {
-    allTasks.forEach((task) => {
+  evaluations.forEach(evaluation => {
+    allTasks.forEach(task => {
       if (task.evaluation_id === evaluation.id) {
         courseTasks.push(task);
       }
-    })
+    });
   });
 
   return courseTasks;
 }
 
-function generateTaskMarkup(tasks: Task[]) {
+function generateTaskMarkup(tasks: Task[], props) {
+  const { code, name, minGrade } = props.route.params;
+
   return tasks.reduce((allTasks, currTask) => {
-    const { title, due_date, est_duration } = currTask;
+    const { id, title, due_date, est_duration } = currTask;
 
     const formattedDate = new Date(due_date);
     const subTitle = `Due on ${formattedDate.toDateString()}`;
@@ -171,13 +193,72 @@ function generateTaskMarkup(tasks: Task[]) {
       </Badge>
     );
 
+    const notificationMarkup = (
+      Platform.OS === "ios"
+      ? (
+        <TouchableOpacity>
+          <Icon
+            name='bell-plus-outline'
+            type='material-community'
+            color='#517fa4'
+            onPress={() => {notificationAlert(currTask)}}
+          />
+        </TouchableOpacity>
+      )
+      : null
+    )
+
+    const calendarMarkup = (
+      <TouchableOpacity style={{paddingRight: 10}}>
+        <Icon
+          name='calendar-plus'
+          type='material-community'
+          color='#517fa4'
+          onPress={() => {calendarAlert(currTask)}}
+        />
+      </TouchableOpacity>
+    )
+
     const taskMarkup = (
       <View key={title} style={{ paddingVertical: 5 }}>
         <Card>
           <Card.Content>
-            <Text>{title}</Text>
-            {badgeMarkup}
-            <TouchableOpacity onPress={() => {calendarAlert(currTask)}}><Text>Add to calendar</Text></TouchableOpacity>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-around"
+              }}
+            >
+              <View>
+                <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
+                <Text
+                  style={{ color: "#aaaaaa" }}
+                >{`Estimated to take ${est_duration} minutes`}</Text>
+              </View>
+              <Button
+                onPress={() => {
+                  props.navigation.navigate("Task Edit", {
+                    title: title,
+                    dueDate: due_date,
+                    duration: est_duration,
+                    id: id,
+                    courseCode: code,
+                    courseName: name,
+                    courseMinGrade: minGrade
+                  });
+                }}
+              >
+                Edit
+              </Button>
+            </View>
+            <View style={{paddingTop: 10, display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+              <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                {calendarMarkup}
+                {notificationMarkup}
+              </View>
+              {badgeMarkup}
+            </View>
           </Card.Content>
         </Card>
       </View>
@@ -190,27 +271,25 @@ function generateTaskMarkup(tasks: Task[]) {
 }
 
 function calendarAlert(task: Task) {
-  if (Platform.OS === 'ios') {
-    Alert.alert(
-      'Add to calendar?',
-      `This will add '${task.title}' to your phone's calendar app`,
-      [
-        {text: 'OK + reminder', onPress: () => CalendarHelper.addEvent(task, true)},
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
-      ],
-    )
-  }
-  else {
-    Alert.alert(
-      'Add to calendar?',
-      `This will add '${task.title}' to your phone's calendar app`,
-      [
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
-      ],
-    )
-  }
+  Alert.alert(
+    'Add to calendar?',
+    `This will add '${task.title}' to your phone's calendar app`,
+    [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
+    ],
+  )
+}
+
+function notificationAlert(task: Task) {
+  Alert.alert(
+    'Set a reminder?',
+    `This will add '${task.title}' to your phone's reminders app at ${task.due_date}`,
+    [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'OK', onPress: () => CalendarHelper.addReminder(task)},
+    ],
+  )
 }
 
 function determineDaysUntilEval(evalDate: Date) {

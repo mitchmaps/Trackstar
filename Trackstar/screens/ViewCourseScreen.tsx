@@ -7,6 +7,7 @@ import Styles from "../Styles/CourseStyles";
 import CourseView from '../components/Course/CourseView';
 import CourseEdit from '../components/Course/CourseEdit';
 import TaskCreate from '../components/Tasks/TaskCreate';
+import TaskEdit from '../components/Tasks/TaskEdit';
 
 
 const ViewCourseScreen = ({ route, navigation }) => {
@@ -27,6 +28,7 @@ const ViewCourseScreen = ({ route, navigation }) => {
       />
       <Stack.Screen name="Course Edit" component={CourseEdit} />
       <Stack.Screen name="Task Create" component={TaskCreate} />
+      <Stack.Screen name="Task Edit" component={TaskEdit} />
     </Stack.Navigator>
   );
 };
