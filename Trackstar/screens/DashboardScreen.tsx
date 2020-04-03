@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   Text,
   View,
+  Alert,
   ScrollView,
   TouchableOpacity,
   SectionList,
@@ -142,6 +143,15 @@ const HomeScreen = props => {
   }
 
 
+  function checkForNoEvaluations(){
+	  if(nextEvalDueDate == "Temporary Evaluation Due Date"){
+		  return(
+		  Alert.alert(
+			  "You currently have no evaluations",
+			  "Please use the course screen to edit and add evaluations",
+			  [{text: 'Back'}]));}
+  }
+
 
   const modalMarkup = 
     taskBeingCompleted !== null ? (
@@ -196,6 +206,8 @@ const HomeScreen = props => {
       style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
     >
       {getNextEval()}
+	  {checkForNoEvaluations()}
+
       <View style={{ flexDirection: "column", marginTop: 100 }}>
         <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
           Welcome Back!
@@ -213,6 +225,7 @@ const HomeScreen = props => {
       </ScrollView>
     </LinearGradient>
   );
+
 };
 
 function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
@@ -287,7 +300,7 @@ async function formatData() {
 
     formattedData.push(taskInfo);
     evalDueDate.push(evaluation.due_date);
-
+    checkForNoEvaluations();
   }
 
   return formattedData;
