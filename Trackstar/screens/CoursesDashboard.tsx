@@ -32,7 +32,8 @@ const CoursesDashboard = props => {
   const [showComplete, setShowComplete] = useState(false); // hook state for toggle
   const [formattedCourseData, setFormattedCourseData] = useState([]);
   const navigation = props.navigation;
-
+  const [anyCourse, setAnyCourse ] = useState();  //for checking if there's no course
+ 
   useFocusEffect(
     React.useCallback(() => {
       const formattedCourses = formatData(showComplete).then(data => {
@@ -64,6 +65,24 @@ const CoursesDashboard = props => {
       </View>
     );
   };
+
+
+  /*	
+	//setup an alert for if there are no courses then say "You have no courses, Please add a course."
+    if(listCourses == []){
+      Alert.alert(
+        "You have no courses.",
+        "Please add a course.",
+        [
+          {
+            text: 'Back'
+          }
+        ]
+      )
+    }
+	*/
+	
+
 
   return (
     <LinearGradient
@@ -104,15 +123,21 @@ const CoursesDashboard = props => {
         </Button>
       </View>
     </LinearGradient>
+
+
+
   );
 };
+
+
 
 async function formatData(complete: boolean) {
   const formattedData = [];
 
   const courseMapper: CourseMapper = new CourseMapperImpl();
   const rawData: Course[] = await courseMapper.all(complete);
-
+  let listCourses = []; //array to list courses we have
+  
   rawData.forEach(course => {
     const courseInfo = {
       title: course.title,
@@ -125,8 +150,9 @@ async function formatData(complete: boolean) {
       ]
     };
     formattedData.push(courseInfo);
+	listCourses.push(course.title); //using title but could be anything from course
   });
-
+   setAnyCourse(listCourses[0]);
   return formattedData;
 }
 
