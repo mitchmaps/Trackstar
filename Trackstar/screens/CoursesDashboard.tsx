@@ -90,7 +90,7 @@ const CoursesDashboard = props => {
 		  if(checkForCourses == [] || checkForCourses == null){
             Alert.alert(
             "You currently have no courses",
-             "Please add a course using the ADD COURSE button below",
+             "Please use the ADD COURSE button below",
          [{text: 'Back'}])}
 		 
         });
@@ -114,6 +114,9 @@ const CoursesDashboard = props => {
         </Button>
       </View>
     </LinearGradient>
+
+
+
   );
 };
 
