@@ -101,8 +101,8 @@ const HomeScreen = props => {
     handleTaskSelection
   );
 
+  // get the next evaluation 
   function getNextEval(){
-    console.log("calling getNExtEval")
     const taskMapper: TaskMapper = new TaskMapperImpl();
     const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
   
@@ -111,46 +111,29 @@ const HomeScreen = props => {
     let finalList: Evaluation[] = [];
     let currentEval: Evaluation;
   
-    let nextEval = {
-      title: "Temporary Evaluation Title",
-      dueDate: "Temporary Evaluation Due Date",
-    }
-  
-    evalMapper.all().then(evals=>{
-      console.log("\n\npassing through first checkpoint");
+    evalMapper.all().then(evals=>{ // get all evaluations for user
       return evals;
     }).then( evals =>{
-      console.log("passing through secon checkpoint");
-      taskMapper.all(false).then(tasks=>{
+      taskMapper.all(false).then(tasks=>{ // get all incompleted tasks for user
        
-        tasks.forEach( tasks_element =>{
-          evals.forEach( evals_element =>{
+        tasks.forEach( tasks_element =>{ // loop through each task
+          evals.forEach( evals_element =>{ // for each task check which evaluation it maps to
             if(tasks_element.evaluation_id ===  evals_element.id){
               if(!evalList.has(evals_element)){
-                evalDDList.push(evals_element.due_date);
-                evalList.set(evals_element.due_date, evals_element);
+                evalDDList.push(evals_element.due_date); // push evaluation due date to a list
+                evalList.set(evals_element.due_date, evals_element); // push evaluation due date and its respective evaluation to a map
               }
             }
           });
         });
       }).then(()=>{
-        console.log("passing through third checkpoint");
-        console.log("evaluation list currently:" + evalDDList);
-        evalDDList = evalDDList.sort((a,b)=>{return b.getTime()-a.getTime()});
-        console.log("just sorted the list" + evalDDList);
+        evalDDList = evalDDList.sort((a,b)=>{return b.getTime()-a.getTime()}); // sort the evaluation due date list
         evalDDList.forEach(element=>{
-          console.log("pusehd an element"); 
-          finalList.push(evalList.get(element));
+          finalList.push(evalList.get(element)); // retrieve all the evaluation objects based off of due date and store them into a final list
         })
-        console.log("final list: " + finalList);
-        
-        currentEval = finalList[0];
+        currentEval = finalList[0]; // take the largest one and reset states equal to that
 
-        console.log("course code: "+ currentEval.course_code);
-        console.log("due date: " + currentEval.due_date.toDateString());
-
-    
-        setNextCourseCode(currentEval.course_code);  
+        setNextCourseCode(currentEval.course_code);  // make sure that all of this resides in the .then statement so that it acts synchronously
         setNextEvalDueDate(currentEval.due_date.toDateString());
         setNextEvalTitle(currentEval.title);
       })
