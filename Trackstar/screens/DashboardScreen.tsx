@@ -36,6 +36,7 @@ const HomeScreen = props => {
   );
   const [fakeState, setFakeState] = useState(new Date());
   const [modalActive, setModalActive] = useState(false);
+  const [toDisplay, setDisplay] = useState();  //for evaluation display
   const [taskBeingCompleted, setTaskBeingCompleted] = useState<TaskDescriptor>(
     null
   );
@@ -95,6 +96,38 @@ const HomeScreen = props => {
     handleTaskSelection
   );
 
+  async function formatData() {
+    const taskMapper: TaskMapper = new TaskMapperImpl();
+    const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
+    const courseMapper: CourseMapper = new CourseMapperImpl();
+  
+    const formattedData = [];
+  
+    let evalDueDate = [];
+  
+    const rawData: Task[] = await taskMapper.all();
+  
+    for (let i = 0; i < rawData.length; i++) {
+      const task = rawData[i];
+      const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
+      const course: Course = await courseMapper.find(evaluation.course_code);
+  
+      const taskInfo: TaskDescriptor = {
+        task: task,
+        evalName: evaluation.title,
+        courseCode: course.code
+      };
+  
+      formattedData.push(taskInfo);
+      evalDueDate.push(evaluation.due_date);
+  
+    }
+    evalDueDate =  evalDueDate.sort(function(a,b){return b - a }); 
+    setDisplay(evalDueDate[0]);
+  
+    return formattedData;
+  }
+
   const modalMarkup =
     taskBeingCompleted !== null ? (
       <Modal isVisible={modalActive} hasBackdrop={true}>
@@ -151,7 +184,7 @@ const HomeScreen = props => {
           Welcome Back!
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Next Evaluation: PHIL 1200 - Test 1
+			{`Next Evaluation: ${toDisplay}` }
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
           Due March 10th
@@ -211,31 +244,7 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
   return allTasks;
 }
 
-async function formatData() {
-  const taskMapper: TaskMapper = new TaskMapperImpl();
-  const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
-  const courseMapper: CourseMapper = new CourseMapperImpl();
 
-  const formattedData = [];
-  const rawData: Task[] = await taskMapper.all();
-
-  for (let i = 0; i < rawData.length; i++) {
-    const task = rawData[i];
-    const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
-    const course: Course = await courseMapper.find(evaluation.course_code);
-
-
-    const taskInfo: TaskDescriptor = {
-      task: task,
-      evalName: evaluation.title,
-      courseCode: course.code
-    };
-
-    formattedData.push(taskInfo);
-  }
-
-  return formattedData;
-}
 
 async function updateTask(task: TaskDescriptor) {
   const taskMapper: TaskMapper = new TaskMapperImpl();
