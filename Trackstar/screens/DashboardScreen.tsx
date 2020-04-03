@@ -217,13 +217,13 @@ async function formatData() {
   const courseMapper: CourseMapper = new CourseMapperImpl();
 
   const formattedData = [];
+
   const rawData: Task[] = await taskMapper.all();
 
   for (let i = 0; i < rawData.length; i++) {
     const task = rawData[i];
     const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
     const course: Course = await courseMapper.find(evaluation.course_code);
-
 
     const taskInfo: TaskDescriptor = {
       task: task,
@@ -232,6 +232,7 @@ async function formatData() {
     };
 
     formattedData.push(taskInfo);
+
   }
 
   return formattedData;
