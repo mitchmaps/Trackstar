@@ -5,6 +5,7 @@ import { Evaluation } from '.';
 export default class TaskPrioritizer{
 
     prioritize = (t: Task[]) => {
+        console.log("prioritize is called");
 
         let returnValue = [];
         let sortList = []; // take all priority values and put them into a list, to be sorted
@@ -18,6 +19,7 @@ export default class TaskPrioritizer{
         
         // have an 'evals' variable that will be used to represent all evaluations
         evalMapper.all().then(evals=>{
+            console.log("evaluation mappers reached");
             
             // loop through all the task elements that were past in
             t.forEach(task_element=>{
@@ -41,11 +43,13 @@ export default class TaskPrioritizer{
                 sortList = this.insertList(sortList, priorityCounter);
                 mappingList = this.insertKey(mappingList, parseFloat(priorityCounter.toFixed(5)), task_element)
             })
+            console.log("evaluation mappers finished");
         }).then(()=>{ 
             
             // after all elements have been inserted into lists, continue on with functionality 
             // start by sorting our (priorityList)
             sortList = sortList.sort(function(a,b){return b-a});
+            console.log("this is the sorted list " + sortList);
 
             // populate a new sorted list of tasks based off of our sorted list
             // use our sorted list values as keys to retrieve the actual task objects
@@ -53,6 +57,7 @@ export default class TaskPrioritizer{
                 returnValue.push(mappingList.get(element))
             });
             
+            console.log("about to return prioritized list");
             // return the sorted tasks list as well
             return returnValue;
         })
