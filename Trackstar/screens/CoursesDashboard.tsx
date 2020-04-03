@@ -114,9 +114,6 @@ const CoursesDashboard = props => {
         </Button>
       </View>
     </LinearGradient>
-
-
-
   );
 };
 
