@@ -36,7 +36,12 @@ const HomeScreen = props => {
   );
   const [fakeState, setFakeState] = useState(new Date());
   const [modalActive, setModalActive] = useState(false);
-  const [toDisplay, setDisplay] = useState();  //for evaluation display
+
+  // to be added: 
+  const [nextCourseCode, setNextCourseCode] = useState("Temporary Evaluation Course Code");  //for evaluation display
+  const [nextEvalDueDate, setNextEvalDueDate] = useState("Temporary Evaluation Due Date");
+  const [nextEvalTitle, setNextEvalTitle] = useState("Temporary Evaluation Title");
+
   const [taskBeingCompleted, setTaskBeingCompleted] = useState<TaskDescriptor>(
     null
   );
@@ -96,41 +101,68 @@ const HomeScreen = props => {
     handleTaskSelection
   );
 
-  async function formatData() {
+  function getNextEval(){
+    console.log("calling getNExtEval")
     const taskMapper: TaskMapper = new TaskMapperImpl();
     const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
-    const courseMapper: CourseMapper = new CourseMapperImpl();
   
-    const formattedData = [];
+    let evalList = new Map();
+    let evalDDList: Date[] = [];
+    let finalList: Evaluation[] = [];
+    let currentEval: Evaluation;
   
-    let evalDueDate = [];
-  
-    const rawData: Task[] = await taskMapper.all();
-  
-    for (let i = 0; i < rawData.length; i++) {
-      const task = rawData[i];
-      const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
-      const course: Course = await courseMapper.find(evaluation.course_code);
-  
-      const taskInfo: TaskDescriptor = {
-        task: task,
-        evalName: evaluation.title,
-        courseCode: course.code
-      };
-  
-      formattedData.push(taskInfo);
-      evalDueDate.push(evaluation.due_date);
-  
+    let nextEval = {
+      title: "Temporary Evaluation Title",
+      dueDate: "Temporary Evaluation Due Date",
     }
-    evalDueDate =  evalDueDate.sort(function(a,b){return b - a }); 
-    setDisplay(evalDueDate[0]);
   
-    return formattedData;
+    evalMapper.all().then(evals=>{
+      console.log("\n\npassing through first checkpoint");
+      return evals;
+    }).then( evals =>{
+      console.log("passing through secon checkpoint");
+      taskMapper.all(false).then(tasks=>{
+       
+        tasks.forEach( tasks_element =>{
+          evals.forEach( evals_element =>{
+            if(tasks_element.evaluation_id ===  evals_element.id){
+              if(!evalList.has(evals_element)){
+                evalDDList.push(evals_element.due_date);
+                evalList.set(evals_element.due_date, evals_element);
+              }
+            }
+          });
+        });
+      }).then(()=>{
+        console.log("passing through third checkpoint");
+        console.log("evaluation list currently:" + evalDDList);
+        evalDDList = evalDDList.sort((a,b)=>{return b.getTime()-a.getTime()});
+        console.log("just sorted the list" + evalDDList);
+        evalDDList.forEach(element=>{
+          console.log("pusehd an element"); 
+          finalList.push(evalList.get(element));
+        })
+        console.log("final list: " + finalList);
+        
+        currentEval = finalList[0];
+
+        console.log("course code: "+ currentEval.course_code);
+        console.log("due date: " + currentEval.due_date.toDateString());
+
+    
+        setNextCourseCode(currentEval.course_code);  
+        setNextEvalDueDate(currentEval.due_date.toDateString());
+        setNextEvalTitle(currentEval.title);
+      })
+    });
+  
   }
 
-  const modalMarkup =
+
+
+  const modalMarkup = 
     taskBeingCompleted !== null ? (
-      <Modal isVisible={modalActive} hasBackdrop={true}>
+      <Modal isVisible={modalActive} hasBackdrop={true}>   
         <View
           style={{
             marginTop: 40,
@@ -179,15 +211,16 @@ const HomeScreen = props => {
       colors={["#bcf7ed", "#5273eb"]}
       style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
     >
+      {getNextEval()}
       <View style={{ flexDirection: "column", marginTop: 100 }}>
         <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
           Welcome Back!
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-			{`Next Evaluation: ${toDisplay}` }
+			Next Evaluation: {nextCourseCode} - {nextEvalTitle}
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Due March 10th
+          Due: {nextEvalDueDate}
         </Text>
       </View>
       <ScrollView style={{ marginTop: 50 }}>
@@ -245,6 +278,36 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
 }
 
 
+
+async function formatData() {
+  const taskMapper: TaskMapper = new TaskMapperImpl();
+  const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
+  const courseMapper: CourseMapper = new CourseMapperImpl();
+
+  const formattedData = [];
+
+  let evalDueDate = [];
+
+  const rawData: Task[] = await taskMapper.all();
+
+  for (let i = 0; i < rawData.length; i++) {
+    const task = rawData[i];
+    const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
+    const course: Course = await courseMapper.find(evaluation.course_code);
+
+    const taskInfo: TaskDescriptor = {
+      task: task,
+      evalName: evaluation.title,
+      courseCode: course.code
+    };
+
+    formattedData.push(taskInfo);
+    evalDueDate.push(evaluation.due_date);
+
+  }
+
+  return formattedData;
+}
 
 async function updateTask(task: TaskDescriptor) {
   const taskMapper: TaskMapper = new TaskMapperImpl();
