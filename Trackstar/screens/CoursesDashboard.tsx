@@ -32,7 +32,7 @@ const CoursesDashboard = props => {
   const [showComplete, setShowComplete] = useState(false); // hook state for toggle
   const [formattedCourseData, setFormattedCourseData] = useState([]);
   const navigation = props.navigation;
-  const [anyCourse, setAnyCourse ] = useState();  //for checking if there's no course
+  const [checkForCourses, setCheckForCourses] = useState(); //for checking if there's no course
  
   useFocusEffect(
     React.useCallback(() => {
@@ -101,11 +101,13 @@ const CoursesDashboard = props => {
         const formattedCourses = formatData(!showComplete).then(data => {
           setFormattedCourseData(data);
 
+		  
 		  if(listCourses == []){
             Alert.alert(
             "You have no courses.",
              "Please add a course.",
          [{text: 'Back'}])}
+		 
 
         });
       }}
@@ -149,7 +151,7 @@ async function formatData(complete: boolean) {
       data: [
         {
           code: course.code,
-          title: course.title,
+          title: course.title, 
           minGrade: course.min_grade,
         }
       ]
@@ -157,7 +159,7 @@ async function formatData(complete: boolean) {
     formattedData.push(courseInfo);
 	listCourses.push(course.title); //using title but could be anything from course
   });
-   setAnyCourse(listCourses[0]);
+   //setCheckForCourses(listCourses[0]);
   return formattedData;
 }
 
