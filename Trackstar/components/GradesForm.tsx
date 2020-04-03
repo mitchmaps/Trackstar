@@ -53,16 +53,11 @@ export default class GradesForm extends React.Component {
   }
 
   field(row_id) {
-    console.log ("row_id: " + row_id + " grades_and_weights_length: " + this.state.grades_and_weights.length);
-
-
     const grade_index = 0;
     const weight_index = 1;
 
     if(row_id < this.state.grades_and_weights.length)
     {
-    console.log ("grade: " + this.state.grades_and_weights[row_id][0]);
-    console.log ("weight: " + this.state.grades_and_weights[row_id][1]);
       return(<View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
         {/*add the keyboardtype numeric!*/}
         <TextInput
@@ -102,7 +97,17 @@ export default class GradesForm extends React.Component {
         ]
       )
     }
-
+    else if (this.state.grade_info.curr_weight == 100) {
+      Alert.alert(
+        `Current average grade: ${this.state.grade_info.curr_grade}%\nCombined weight: ${this.state.grade_info.curr_weight}%`,
+        `You have already completed 100% of the weight for this course`,
+        [
+          {
+            text: 'Back'
+          }
+        ]
+        )
+    }
     else {
       Alert.alert(
       `Current average grade: ${this.state.grade_info.curr_grade}%\nCombined weight: ${this.state.grade_info.curr_weight}%`,
@@ -118,7 +123,6 @@ export default class GradesForm extends React.Component {
 
 
   get_courses(){
-    console.log("get courses is called");
     const courseMapper: CourseMapper = new CourseMapperImpl;
     let courseList = this.state.courseCodes;
     // get courses from database
@@ -130,10 +134,7 @@ export default class GradesForm extends React.Component {
       courseList.push({value: 'none'})
     })
     courseList.shift();
-    // this.setState({courseCodes: courseList});
   }
-
-  /* The calculations are done in GradesCalculator.tsx now*/
 
   render() {
     return (
@@ -170,21 +171,16 @@ export default class GradesForm extends React.Component {
 
           />
         </View>
-        {/* Course selector */}
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
           <Text>Grade</Text>
           <Text>Weight</Text>
         </View>
-        {this.state.grades_and_weights.length > 1 ? this.state.grades_and_weights.forEach( e => {console.log(e[0])}) : console.log("not called yet")}
         {/*Figure out how to loop instead*/}
         {this.field(0)}
         {this.field(1)}
         {this.field(2)}
         {this.field(3)}
         {this.field(4)}
-        {/*{this.field(5)}
-        {this.field(6)}
-        {this.field(7)} */}
 
         <View style={{alignItems: 'center'}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}>
