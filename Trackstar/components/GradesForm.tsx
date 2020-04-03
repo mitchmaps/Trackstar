@@ -69,7 +69,7 @@ export default class GradesForm extends React.Component {
           style={{ height: 30, width: 40, backgroundColor:'white', borderColor: 'gray', borderWidth: 1}}
           onChangeText={text => this.update_array(row_id, grade_index, text)}
           value={(this.state.grades_and_weights[row_id][0]).toString()}
-        /> 
+        />
         <TextInput
           style={{ height: 30, width: 40, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
           onChangeText={text => this.update_array(row_id, weight_index, text)}
@@ -82,7 +82,7 @@ export default class GradesForm extends React.Component {
         {/*add the keyboardtype numeric!*/}
         <TextInput
           style={{ height: 30, width: 40, backgroundColor:'white', borderColor: 'gray', borderWidth: 1}}
-        /> 
+        />
         <TextInput
           style={{ height: 30, width: 40, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
         />
@@ -125,7 +125,7 @@ export default class GradesForm extends React.Component {
     courseMapper.all(true).then(elements=>{
       // update state variable with all the course codes
       elements.forEach(course=>{
-        courseList.push({value: course.code}) 
+        courseList.push({value: course.code})
       })
       courseList.push({value: 'none'})
     })
@@ -143,8 +143,8 @@ export default class GradesForm extends React.Component {
 
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
           <Text style={{fontSize: 20, textAlign: "center", textAlignVertical: "center"}}>Grade Calculator</Text>
-          
-          
+
+
           <Dropdown
             label="Course Selection"
             data={this.state.courseCodes}
@@ -154,7 +154,7 @@ export default class GradesForm extends React.Component {
               const evalMapper : EvaluationMapper = new EvaluationMapperImpl;
               let newGradeWeight = []; // new grades_and_weight 2d array to be passed back
               evalMapper.findByCourse(value).then(evals=>{ // get all the evaluations associated with the selected course
-                evals.forEach(singleEval=>{ 
+                evals.forEach(singleEval=>{
                   newGradeWeight.push([singleEval.grade, singleEval.weight]);
                 })
                 return newGradeWeight;
@@ -167,11 +167,11 @@ export default class GradesForm extends React.Component {
                 })
               })
             }}
-            
+
           />
         </View>
-        {/* Course selector */} 
-        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}> 
+        {/* Course selector */}
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
           <Text>Grade</Text>
           <Text>Weight</Text>
         </View>
@@ -180,14 +180,14 @@ export default class GradesForm extends React.Component {
         {this.field(0)}
         {this.field(1)}
         {this.field(2)}
-        {this.field(3)}  
+        {this.field(3)}
         {this.field(4)}
         {/*{this.field(5)}
         {this.field(6)}
         {this.field(7)} */}
 
         <View style={{alignItems: 'center'}}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}> 
+          <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}>
           <Text>Desired grade: </Text>
             <TextInput
               style={{ height: 30, width: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'white'}}
