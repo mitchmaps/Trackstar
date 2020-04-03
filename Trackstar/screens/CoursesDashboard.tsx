@@ -81,8 +81,6 @@ const CoursesDashboard = props => {
       )
     }
 	*/
-	
-
 
   return (
     <LinearGradient
@@ -102,6 +100,13 @@ const CoursesDashboard = props => {
         setShowComplete(!showComplete);
         const formattedCourses = formatData(!showComplete).then(data => {
           setFormattedCourseData(data);
+
+		  if(listCourses == []){
+            Alert.alert(
+            "You have no courses.",
+             "Please add a course.",
+         [{text: 'Back'}])}
+
         });
       }}
     />
