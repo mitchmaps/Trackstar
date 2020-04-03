@@ -36,7 +36,12 @@ const HomeScreen = props => {
   );
   const [fakeState, setFakeState] = useState(new Date());
   const [modalActive, setModalActive] = useState(false);
-  const [toDisplay, setDisplay] = useState("");  //for evaluation display
+
+  // to be added: 
+  const [nextCourseCode, setNextCourseCode] = useState("Temporary Evaluation Course Code");  //for evaluation display
+  const [nextEvalDueDate, setNextEvalDueDate] = useState("Temporary Evaluation Due Date");
+  const [nextEvalTitle, setNextEvalTitle] = useState("Temporary Evaluation Title");
+
   const [taskBeingCompleted, setTaskBeingCompleted] = useState<TaskDescriptor>(
     null
   );
@@ -81,7 +86,6 @@ const HomeScreen = props => {
     // trigger re render
     setFakeState(new Date());
   }, []);
-    setDisplay(data);     
 
   const handleTaskSelection = useCallback(
     id => {
@@ -97,9 +101,51 @@ const HomeScreen = props => {
     handleTaskSelection
   );
 
-  const modalMarkup =
+  // get the next evaluation 
+  function getNextEval(){
+    const taskMapper: TaskMapper = new TaskMapperImpl();
+    const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
+  
+    let evalList = new Map();
+    let evalDDList: Date[] = [];
+    let finalList: Evaluation[] = [];
+    let currentEval: Evaluation;
+  
+    evalMapper.all().then(evals=>{ // get all evaluations for user
+      return evals;
+    }).then( evals =>{
+      taskMapper.all(false).then(tasks=>{ // get all incompleted tasks for user
+       
+        tasks.forEach( tasks_element =>{ // loop through each task
+          evals.forEach( evals_element =>{ // for each task check which evaluation it maps to
+            if(tasks_element.evaluation_id ===  evals_element.id){
+              if(!evalList.has(evals_element)){
+                evalDDList.push(evals_element.due_date); // push evaluation due date to a list
+                evalList.set(evals_element.due_date, evals_element); // push evaluation due date and its respective evaluation to a map
+              }
+            }
+          });
+        });
+      }).then(()=>{
+        evalDDList = evalDDList.sort((a,b)=>{return b.getTime()-a.getTime()}); // sort the evaluation due date list
+        evalDDList.forEach(element=>{
+          finalList.push(evalList.get(element)); // retrieve all the evaluation objects based off of due date and store them into a final list
+        })
+        currentEval = finalList[0]; // take the largest one and reset states equal to that
+
+        setNextCourseCode(currentEval.course_code);  // make sure that all of this resides in the .then statement so that it acts synchronously
+        setNextEvalDueDate(currentEval.due_date.toDateString());
+        setNextEvalTitle(currentEval.title);
+      })
+    });
+  
+  }
+
+
+
+  const modalMarkup = 
     taskBeingCompleted !== null ? (
-      <Modal isVisible={modalActive} hasBackdrop={true}>
+      <Modal isVisible={modalActive} hasBackdrop={true}>   
         <View
           style={{
             marginTop: 40,
@@ -143,29 +189,24 @@ const HomeScreen = props => {
       </Modal>
     ) : null;
 
-let name_Display = "";
-let date_Display = "";
+	//	{getNextEval()} on line 199
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
       style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
     >
+      {getNextEval()}
       <View style={{ flexDirection: "column", marginTop: 100 }}>
         <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
           Welcome Back!
         </Text>
-	  </View>
-				
-	  <View style={{flex: 1, flexDirection: "row", alignContent: "space-between"}}>
-	    <Text>Next Evaluation:</Text>
-	  <Text>{name_Display}</Text>
-	  </View>
-	  
-	  <View style={{flex: 1, flexDirection: "row", alignContent: "space-between"}}>
-	    <Text>Due On:</Text>
-	  <Text>{date_Display}</Text>
-	  </View>
-      
+        <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
+			Next Evaluation: {nextCourseCode} - {nextEvalTitle}
+        </Text>
+        <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
+          Due: {nextEvalDueDate}
+        </Text>
+      </View>
       <ScrollView style={{ marginTop: 50 }}>
         {modalMarkup}
         {tasksMarkup}
@@ -220,14 +261,16 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
   return allTasks;
 }
 
+
+
 async function formatData() {
   const taskMapper: TaskMapper = new TaskMapperImpl();
   const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
   const courseMapper: CourseMapper = new CourseMapperImpl();
-  name_Display = await evalMapper.find(task.title);
-  date_Display = await evalMapper.find(task.due_date);
 
   const formattedData = [];
+
+  let evalDueDate = [];
 
   const rawData: Task[] = await taskMapper.all();
 
@@ -243,6 +286,7 @@ async function formatData() {
     };
 
     formattedData.push(taskInfo);
+    evalDueDate.push(evaluation.due_date);
 
   }
 
