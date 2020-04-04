@@ -49,30 +49,6 @@ const CoursesDashboard = props => {
 
   const coursesMarkup = generateCoursesMarkup(formattedCourseData, navigation)
 
-  // const SingleItem = data => {
-  //   const item = data.item;
-  //   return (
-  //     <View style={{ marginBottom: 10 }}>
-  //       <Card
-  //         style={{ paddingVertical: 10 }}
-  //         onPress={() => {
-  //           navigation.navigate("Course", {
-  //             code: item.code,
-  //             name: item.title,
-  //             minGrade: item.minGrade
-  //           });
-  //         }}
-  //       >
-  //         <Card.Title
-  //           title={item.code}
-  //           subtitle={item.title}
-  //           style={{ width: "100%" }}
-  //         />
-  //       </Card>
-  //     </View>
-  //   );
-  // };
-
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
@@ -81,11 +57,11 @@ const CoursesDashboard = props => {
       }}
     >
     <View style={{
-      flex: 1,
       flexDirection: "column",
       width: "100%",
-      // justifyContent: "space-around",
-      alignItems: "flex-end"
+      alignItems: "flex-end",
+      paddingTop: 10,
+      paddingRight: 10
     }}>
       <Text>Show Completed</Text>
       <Switch
@@ -100,17 +76,17 @@ const CoursesDashboard = props => {
     </View>
 
     <View style={{
-        flex: 8,
         flexDirection: "column",
         width: "100%",
         justifyContent: "space-around",
-        alignItems: "center"
+        alignItems: "center",
+        paddingTop: 10
     }}>
-      <ScrollView style={{maxHeight: 450}}>
+      <ScrollView style={{maxHeight: 500}}>
         {coursesMarkup}
       </ScrollView>
 
-        <View>
+        <View style={{paddingTop: 20}}>
           <Button
             onPress={() => {
               props.navigation.navigate("Add");
