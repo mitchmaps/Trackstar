@@ -117,7 +117,7 @@ export default class CourseCreate extends React.Component {
                 onChangeText={(text) => {this.setState({currEvalWeight: text})}}
                 value={this.state.currEvalWeight}
               />
-              { Platform.OS === 'ios' ? 
+              { Platform.OS === 'ios' ?
               <DateTimePicker
                 testID="dateTimePicker"
                 timeZoneOffsetInMinutes={0}
@@ -195,7 +195,7 @@ export default class CourseCreate extends React.Component {
     const newCourse = new Course(this.state.title, this.state.code, +this.state.minGrade);
     courseMapper.insert(newCourse);
 
-    this.props.navigation.navigate("Dashboard", {
+    this.props.navigation.navigate("My Courses", {
       code: newCourse.code,
       name: newCourse.title,
       minGrade: newCourse.min_grade,

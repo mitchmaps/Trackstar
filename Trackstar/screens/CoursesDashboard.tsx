@@ -28,6 +28,12 @@ import { iOSUIKit } from "react-native-typography";
 import {Course} from "../models";
 import { CourseMapper, CourseMapperImpl } from "../data_mappers";
 
+interface CourseDescriptor {
+  code: string;
+  title: string;
+  minGrade: number;
+}
+
 const CoursesDashboard = props => {
   const [showComplete, setShowComplete] = useState(false); // hook state for toggle
   const [formattedCourseData, setFormattedCourseData] = useState([]);
@@ -41,72 +47,92 @@ const CoursesDashboard = props => {
     }, [])
   );
 
-  const SingleItem = data => {
-    const item = data.item;
-    return (
-      <View style={{ marginBottom: 10 }}>
-        <Card
-          style={{ paddingVertical: 10 }}
-          onPress={() => {
-            navigation.navigate("Course", {
-              code: item.code,
-              name: item.title,
-              minGrade: item.minGrade
-            });
-          }}
-        >
-          <Card.Title
-            title={item.code}
-            subtitle={item.title}
-            style={{ width: "100%" }}
-          />
-        </Card>
-      </View>
-    );
-  };
+  const coursesMarkup = generateCoursesMarkup(formattedCourseData, navigation)
 
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
       style={{
         flex: 1,
-        flexDirection: "column",
-        width: "100%",
-        justifyContent: "center",
-        alignItems: "center"
       }}
     >
-    <Text>Show Completed</Text>
-    <Switch
-      value={showComplete}
-      onValueChange={() => {
-        setShowComplete(!showComplete);
-        const formattedCourses = formatData(!showComplete).then(data => {
-          setFormattedCourseData(data);
-        });
-      }}
-    />
-
-      <SectionList
-        style={{ marginTop: 50 }}
-        sections={formattedCourseData}
-        renderItem={SingleItem}
-        keyExtractor={(item, index) => index.toString()}
+    <View style={{
+      flexDirection: "column",
+      width: "100%",
+      alignItems: "flex-end",
+      paddingTop: 10,
+      paddingRight: 10
+    }}>
+      <Text>Show Completed</Text>
+      <Switch
+        value={showComplete}
+        onValueChange={() => {
+          setShowComplete(!showComplete);
+          const formattedCourses = formatData(!showComplete).then(data => {
+            setFormattedCourseData(data);
+          });
+        }}
       />
+    </View>
 
-      <View style={{ paddingBottom: 100 }}>
-        <Button
-          onPress={() => {
-            props.navigation.navigate("Add");
-          }}
-          mode="contained"
-        >
-          Add Course
-        </Button>
+    <View style={{
+        flexDirection: "column",
+        width: "100%",
+        justifyContent: "space-around",
+        alignItems: "center",
+        paddingTop: 10,
+        maxHeight: "85%"
+    }}>
+      <ScrollView style={{}}>
+        {coursesMarkup}
+      </ScrollView>
+
+        <View style={{paddingTop: 20}}>
+          <Button
+            onPress={() => {
+              props.navigation.navigate("Add");
+            }}
+            mode="contained"
+          >
+            Add Course
+          </Button>
+        </View>
       </View>
     </LinearGradient>
   );
 };
+
+function generateCoursesMarkup(courses: CourseDescriptor[], navigation) {
+  const allCourses = [];
+
+  courses.forEach((currCourse: CourseDescriptor) => {
+    const courseMarkup = (
+      <View>
+        <Card
+          style={{ width: 350, marginBottom: 10 }}
+          onPress={() => {
+            navigation.navigate("Course", {
+              code: currCourse.code,
+              name: currCourse.title,
+              minGrade: currCourse.minGrade
+            });
+          }}
+        >
+          <Card.Title title={currCourse.code} />
+          <Card.Content style={{ flex: 1, flexDirection: "row" }}>
+            <Text style={{ flex: 8, color: "#7c7c7c"}}>
+              {currCourse.title}
+            </Text>
+          </Card.Content>
+        </Card>
+      </View>
+    );
+
+    allCourses.push(<View key={currCourse.code}>{courseMarkup}</View>);
+  });
+
+  return allCourses;
+}
 
 async function formatData(complete: boolean) {
   const formattedData = [];
@@ -115,15 +141,10 @@ async function formatData(complete: boolean) {
   const rawData: Course[] = await courseMapper.all(complete);
 
   rawData.forEach(course => {
-    const courseInfo = {
-      title: course.title,
-      data: [
-        {
-          code: course.code,
-          title: course.title,
-          minGrade: course.min_grade,
-        }
-      ]
+    const courseInfo: CourseDescriptor = {
+      code: course.code,
+      title:  course.title,
+      minGrade: course.min_grade
     };
     formattedData.push(courseInfo);
   });
