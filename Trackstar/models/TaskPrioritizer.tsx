@@ -19,7 +19,6 @@ export default class TaskPrioritizer{
         
         // have an 'evals' variable that will be used to represent all evaluations
         evalMapper.all().then(evals=>{
-            console.log("evaluation mappers reached");
             
             // loop through all the task elements that were past in
             t.forEach(task_element=>{
