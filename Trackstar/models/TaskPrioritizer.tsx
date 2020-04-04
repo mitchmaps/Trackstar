@@ -4,12 +4,15 @@ import { Evaluation } from '.';
 
 export default class TaskPrioritizer{
 
-    prioritize(t: Task[]): Promise<Task[]> {
-        console.log("prioritize is called");
+    returnValue: Task[] = [];
+    sortList: number[] = []; // take all priority values and put them into a list, to be sorted
+    mappingList = new Map(); // attach all priority values with their respective tasks into a map
 
-        let returnValue = [];
-        let sortList = []; // take all priority values and put them into a list, to be sorted
-        let mappingList = new Map(); // attach all priority values with their respective tasks into a map
+    prioritize(t: Task[]): Promise<Task[]> {
+        console.log("prioritize is called ");
+        console.log("total tasks: " + t.length);
+
+
 
         let DueDate;
         let priorityCounter = 0;
@@ -19,6 +22,8 @@ export default class TaskPrioritizer{
         return new Promise((resolve) => {
           // have an 'evals' variable that will be used to represent all evaluations
           evalMapper.all().then((evals) => {
+
+            console.log("evaluation length: " + evals.length);
 
             // loop through all the task elements that were past in
             t.forEach((task_element )=> {
@@ -38,25 +43,43 @@ export default class TaskPrioritizer{
                 priorityCounter += this.weighting_levels(currentEval.weight);
                 priorityCounter/=3.0000;
 
-                // pass in the priority values into a list , and then priority + the task objects into a map so that we can retrieve the task objects later
-                sortList = this.insertList(sortList, priorityCounter);
-                mappingList = this.insertKey(mappingList, parseFloat(priorityCounter.toFixed(5)), task_element)
+                // pass in the priority values into a list 
+                // and then priority + the task objects into a map so that we can retrieve the task objects later
+                
+                let flag = false;
+                this.mappingList.forEach(task_ele=>{
+                    if(task_ele.id === task_element.id)
+                        flag = true;
+                });  
+
+                if(flag === false){
+                    priorityCounter+=0.01;
+                    this.mappingList.set(priorityCounter, task_element);
+                    this.sortList.push(priorityCounter);
+                }
+
+                console.log("flag value: " + flag);
+                console.log("sortList length: " + this.sortList.length);
+                console.log("mappingList length: " + this.mappingList.size);
+                
             })
 
             // after all elements have been inserted into lists, continue on with functionality
             // start by sorting our (priorityList)
-            sortList = sortList.sort(function(a,b){return b-a});
+            this.sortList = this.sortList.sort(function(a,b){return b-a});
 
             // populate a new sorted list of tasks based off of our sorted list
             // use our sorted list values as keys to retrieve the actual task objects
-            sortList.forEach(element => {
-              console.log(element)
-              console.log(JSON.stringify(mappingList.get(element)))
-              returnValue.push(mappingList.get(element))
+            this.sortList.forEach(element => {
+              //console.log(element)
+              //console.log(JSON.stringify(this.mappingList.get(element)))
+              this.returnValue.push(this.mappingList.get(element))
             });
-            // console.log(returnValue);
+            
+            console.log("\n\n\n\n\n\nRETURN VALUE length: " + this.returnValue.length);
+            console.log("RETURN VALUE: " + this.returnValue);
             // return the sorted tasks list as well
-            resolve(returnValue);
+            resolve(this.returnValue);
         })
       })
     }
@@ -69,32 +92,6 @@ export default class TaskPrioritizer{
         return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) /(1000 * 60 * 60 * 24));
     }
 
-    // insert a task as the value, and its priority as its key
-    private insertKey(tempMap: Map<number, Task>, key: number, value: Task) {
-        while(true){
-            if(tempMap.has(key))
-                key+=0.01
-            else
-            {
-                tempMap.set(key, value)
-                return tempMap;
-            }
-        }
-    }
-
-    // populate an entire list of priority values, if a value already exists add 0.01 to its value before pushing it
-    private insertList(tempList, value) {
-        while(true){
-            if(tempList.includes(value))
-                value+=0.01
-
-            else
-            {
-                tempList.push(value)
-                return tempList;
-            }
-        }
-    }
 
     // unfair to divide due dates into buckets so decided to create generic counter instead
     private due_date_levels(value) {
