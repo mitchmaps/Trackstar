@@ -112,21 +112,14 @@ const HomeScreen = props => {
     let currentEval: Evaluation;
   
     evalMapper.all().then(evals=>{ // get all evaluations for user
-      return evals;
-    }).then( evals =>{
-      taskMapper.all(false).then(tasks=>{ // get all incompleted tasks for user
-       
-        tasks.forEach( tasks_element =>{ // loop through each task
-          evals.forEach( evals_element =>{ // for each task check which evaluation it maps to
-            if(tasks_element.evaluation_id ===  evals_element.id){
-              if(!evalList.has(evals_element)){
-                evalDDList.push(evals_element.due_date); // push evaluation due date to a list
-                evalList.set(evals_element.due_date, evals_element); // push evaluation due date and its respective evaluation to a map
-              }
+      
+        evals.forEach( evals_element =>{ // for each task check which evaluation it maps to
+            if(!(evals_element.complete)){
+              evalDDList.push(evals_element.due_date); // push evaluation due date to a list
+              evalList.set(evals_element.due_date, evals_element); // push evaluation due date and its respective evaluation to a map
             }
-          });
         });
-      }).then(()=>{
+
         evalDDList = evalDDList.sort((a,b)=>{return b.getTime()-a.getTime()}); // sort the evaluation due date list
         evalDDList.forEach(element=>{
           finalList.push(evalList.get(element)); // retrieve all the evaluation objects based off of due date and store them into a final list
@@ -137,8 +130,6 @@ const HomeScreen = props => {
         setNextEvalDueDate(currentEval.due_date.toDateString());
         setNextEvalTitle(currentEval.title);
       })
-    });
-  
   }
 
 
