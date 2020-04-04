@@ -89,6 +89,7 @@ export default function CourseView(props) {
     evalToUpdate.complete = !evalToUpdate.complete;
     evalToUpdate.grade = +evalSelectedGradeRef.current;
     updateEval(evalToUpdate);
+    setEvalSelectedGradeRef(0);
     setModalActive(false);
   }, []);
 
