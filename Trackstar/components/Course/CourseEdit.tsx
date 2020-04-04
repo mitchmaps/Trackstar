@@ -9,7 +9,7 @@ import {
   CourseMapper,
   CourseMapperImpl,
   EvaluationMapper,
-  EvaluationMapperImpl
+  EvaluationMapperImpl,
 } from "../../data_mappers";
 
 interface EvalDescriptor {
@@ -206,6 +206,9 @@ export default class CourseEdit extends React.Component {
 
     evals.splice(evals.indexOf(evalToDelete), 1);
     this.setState({ evals: evals });
+
+    const evaluationMapper: EvaluationMapper = new EvaluationMapperImpl();
+    evaluationMapper.delete(evalToDelete);
   }
 
   handleEvalEdit(id: number) {
