@@ -5,7 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  Platform
+  Platform,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import {
@@ -23,17 +23,18 @@ import { AntDesign } from "@expo/vector-icons";
 import CircleCheckBox from "react-native-circle-checkbox";
 import Modal from "react-native-modal";
 
-import Evaluation from "../../models/Evaluation";
-import Task from "../../models/Task";
+import {Evaluation, Task, Course} from '../../models'
 
 import {
   EvaluationMapper,
   EvaluationMapperImpl,
   TaskMapper,
-  TaskMapperImpl
+  TaskMapperImpl,
 } from "../../data_mappers";
 import CalendarHelper from "../../models/CalendarHelper";
 import { Icon } from "react-native-elements";
+
+import { CourseMapper, CourseMapperImpl } from '../../data_mappers';
 
 export default function CourseView(props) {
   const { code, name, minGrade, term } = props.route.params;
@@ -41,29 +42,30 @@ export default function CourseView(props) {
   const [tasks, setTasks] = useState([]);
   const [evalBeingCompleted, setEvalBeingCompleted] = useState(null);
   const [evalSelected, setEvalSelected] = useState(null);
-  const [evalSelectedGrade, setEvalSelectedGrade] = useState('');
+  const [evalSelectedGrade, setEvalSelectedGrade] = useState("");
   const [modalActive, setModalActive] = useState(false);
   const [tasksRemaining, setTasksRemaining] = useState<Task[]>([]);
+  const [courseCompleteActive, setCourseCompleteActive] = useState(true);
 
   const [fakeState, setFakeState] = useState(new Date());
 
   const evalBeingCompletedRef = useRef(evalBeingCompleted);
-  const setEvalBeingCompletedRef = data => {
+  const setEvalBeingCompletedRef = (data) => {
     evalBeingCompletedRef.current = data;
     setEvalBeingCompleted(data);
   };
 
   const evalSelectedRef = useRef(evalSelected);
-  const setEvalSelectedRef = data => {
+  const setEvalSelectedRef = (data) => {
     evalSelectedRef.current = data;
     setEvalSelected(data);
-  }
+  };
 
   const evalSelectedGradeRef = useRef(evalSelectedGrade);
-  const setEvalSelectedGradeRef = data => {
+  const setEvalSelectedGradeRef = (data) => {
     evalSelectedGradeRef.current = data;
     setEvalSelectedGrade(data);
-  }
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -76,9 +78,11 @@ export default function CourseView(props) {
       });
 
       if (evalBeingCompletedRef.current !== null) {
-        determineRemainingTasks(evalBeingCompletedRef.current).then((data: Task[]) => {
-          setTasksRemaining(data);
-        });
+        determineRemainingTasks(evalBeingCompletedRef.current).then(
+          (data: Task[]) => {
+            setTasksRemaining(data);
+          }
+        );
       }
     }, [])
   );
@@ -117,7 +121,7 @@ export default function CourseView(props) {
 
   const evaluationsMarkup = generateEvaluationMarkup(
     courseEvals,
-    handleEvalSelection,
+    handleEvalSelection
   );
   const filteredTasks = filterTasks(courseEvals, tasks);
 
@@ -130,42 +134,99 @@ export default function CourseView(props) {
       </View>
     );
 
+  const completedEvalWeight = determineCompletedEvalWeight(courseEvals);
+
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
   )}% of your total grade.`;
 
-  const modalMarkup = evalBeingCompleted !== null ? (
-    <Modal isVisible={modalActive}>
-      <View
-        style={{
-          marginTop: "25%",
-          marginBottom: "25%",
-          backgroundColor: "white",
-          justifyContent: "center",
-          alignItems: "center"
-        }}
-      >
-        <Card.Content>
-          <Text
-            style={iOSUIKit.largeTitleEmphasized}
-          >{`Complete ${evalBeingCompleted.title}`}</Text>
-          <Text>Good job!</Text>
-          <View style={{ flex: 1, marginTop: 20 }}>
-            {generateRemainingTasksMarkup(tasksRemaining)}
-            <TextInput label="Enter grade (%)" value={evalSelectedGrade} onChange={(text) => {handleGradeChange(text)}} keyboardType="numeric" />
-            <Button mode="contained" color="#C6C6C6" style={{marginTop: 20}} labelStyle={{color: 'white'}} onPress={() => {setModalActive(false)}}>Cancel</Button>
+  const modalMarkup =
+    evalBeingCompleted !== null ? (
+      <Modal isVisible={modalActive}>
+        <View
+          style={{
+            marginTop: "25%",
+            marginBottom: "25%",
+            backgroundColor: "white",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Card.Content>
+            <Text
+              style={iOSUIKit.largeTitleEmphasized}
+            >{`Complete ${evalBeingCompleted.title}`}</Text>
+            <Text>Good job!</Text>
+            <View style={{ flex: 1, marginTop: 20 }}>
+              {generateRemainingTasksMarkup(tasksRemaining)}
+              <TextInput
+                label="Enter grade (%)"
+                value={evalSelectedGrade}
+                onChange={(text) => {
+                  handleGradeChange(text);
+                }}
+                keyboardType="numeric"
+              />
+              <Button
+                mode="contained"
+                color="#C6C6C6"
+                style={{ marginTop: 20 }}
+                labelStyle={{ color: "white" }}
+                onPress={() => {
+                  setModalActive(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                mode="contained"
+                style={{ marginTop: 10 }}
+                onPress={() => {
+                  handleEvalCompletion();
+                }}
+              >
+                Submit
+              </Button>
+            </View>
+          </Card.Content>
+        </View>
+      </Modal>
+    ) : null;
+
+  const courseCompletionModalMarkup =
+    completedEvalWeight === 100 ? (
+      <Modal isVisible={courseCompleteActive}>
+        <View
+          style={{
+            paddingTop: "25%",
+            backgroundColor: "white",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Card.Content>
+            <Text style={iOSUIKit.largeTitleEmphasized}>Course complete!</Text>
+            <Text
+              style={iOSUIKit.subheadEmphasized}
+            >{`You've finished all evaluations for ${code}: ${name}`}</Text>
+            <Text style={{ marginTop: 20 }}>
+              You can still visit this page from the course dashboard.
+            </Text>
             <Button
               mode="contained"
-              style={{marginTop: 10}}
-              onPress={() => {handleEvalCompletion()}}
+              style={{ marginTop: 20 }}
+              labelStyle={{ color: "white" }}
+              onPress={() => {
+                handleCourseComplete(code)
+                setCourseCompleteActive(false);
+              }}
             >
-              Submit
+              Complete course
             </Button>
-          </View>
-        </Card.Content>
-      </View>
-    </Modal>
-  ) : null;
+          </Card.Content>
+        </View>
+      </Modal>
+    ) : null;
 
   return (
     <View style={{ flex: 1, alignSelf: "stretch" }}>
@@ -173,7 +234,7 @@ export default function CourseView(props) {
         style={{
           height: 80,
           alignSelf: "stretch",
-          padding: 20
+          padding: 20,
         }}
       >
         <View style={{ flexDirection: "row" }}>
@@ -184,7 +245,7 @@ export default function CourseView(props) {
                 code: code,
                 title: name,
                 minGrade: minGrade,
-                evals: courseEvals
+                evals: courseEvals,
               });
             }}
           >
@@ -200,6 +261,7 @@ export default function CourseView(props) {
         <Text style={iOSUIKit.title3Emphasized}>Tasks</Text>
         {tasksMarkup}
         {modalMarkup}
+        {courseCompletionModalMarkup}
       </ScrollView>
       <Button
         mode="contained"
@@ -209,7 +271,7 @@ export default function CourseView(props) {
             courseCode: code,
             courseName: name,
             courseTerm: term,
-            courseMinGrade: minGrade
+            courseMinGrade: minGrade,
           });
         }}
       >
@@ -217,6 +279,16 @@ export default function CourseView(props) {
       </Button>
     </View>
   );
+}
+
+function handleCourseComplete(courseCode) {
+  const courseMapper: CourseMapper = new CourseMapperImpl();
+  courseMapper.find(courseCode).then((data) => {
+    const courseToUpdate: Course = data;
+
+    courseToUpdate.complete = true;
+    courseMapper.update(courseToUpdate);
+  });
 }
 
 function generateEvaluationMarkup(evals: Evaluation[], handleEvalComplete) {
@@ -231,15 +303,26 @@ function generateEvaluationMarkup(evals: Evaluation[], handleEvalComplete) {
               flex: 1,
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "flex-start"
+              justifyContent: "flex-start",
             }}
           >
-            <View style={{ flex: 1, flexDirection: "column", marginRight: 100 }}>
-              <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", alignContent: "center"}}>
+            <View
+              style={{ flex: 1, flexDirection: "column", marginRight: 100 }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignContent: "center",
+                }}
+              >
                 <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
-                <Text>{complete ? `Grade: ${grade}%`: null}</Text>
+                <Text>{complete ? `Grade: ${grade}%` : null}</Text>
               </View>
-              <Text style={{color: "#aaaaaa"}}>{complete ? 'Complete': null}</Text>
+              <Text style={{ color: "#aaaaaa" }}>
+                {complete ? "Complete" : null}
+              </Text>
               <Text
                 style={{ color: "#aaaaaa" }}
               >{`Due on ${due_date.toLocaleDateString()}`}</Text>
@@ -250,7 +333,7 @@ function generateEvaluationMarkup(evals: Evaluation[], handleEvalComplete) {
                 style={{
                   backgroundColor: "#408ff7",
                   fontWeight: "bold",
-                  color: "#ffffff"
+                  color: "#ffffff",
                 }}
               >
                 {`${currEval.weight}%`}
@@ -285,23 +368,25 @@ function generateEvaluationMarkup(evals: Evaluation[], handleEvalComplete) {
 function generateRemainingTasksMarkup(tasks: Task[]) {
   const remainingTasksMarkup: JSX.Element[] = [];
   tasks.forEach((item) => {
-    const taskMarkup = <Text>{item.title}</Text>
+    const taskMarkup = <Text>{item.title}</Text>;
 
     remainingTasksMarkup.push(taskMarkup);
   });
 
   return (
     <View>
-      <Text style={iOSUIKit.subheadEmphasized}>You still have these tasks remaining for this evaluation:</Text>
+      <Text style={iOSUIKit.subheadEmphasized}>
+        You still have these tasks remaining for this evaluation:
+      </Text>
       {remainingTasksMarkup}
     </View>
-  )
+  );
 }
 
 function filterTasks(evaluations: Evaluation[], allTasks: Task[]) {
   const courseTasks: Task[] = [];
-  evaluations.forEach(evaluation => {
-    allTasks.forEach(task => {
+  evaluations.forEach((evaluation) => {
+    allTasks.forEach((task) => {
       if (task.evaluation_id === evaluation.id) {
         courseTasks.push(task);
       }
@@ -373,7 +458,7 @@ function generateTaskMarkup(tasks: Task[], props) {
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "space-around"
+                justifyContent: "space-around",
               }}
             >
               <View>
@@ -391,7 +476,7 @@ function generateTaskMarkup(tasks: Task[], props) {
                     id: id,
                     courseCode: code,
                     courseName: name,
-                    courseMinGrade: minGrade
+                    courseMinGrade: minGrade,
                   });
                 }}
               >
@@ -403,14 +488,14 @@ function generateTaskMarkup(tasks: Task[], props) {
                 paddingTop: 10,
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "space-between"
+                justifyContent: "space-between",
               }}
             >
               <View
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  justifyContent: "space-between"
+                  justifyContent: "space-between",
                 }}
               >
                 {calendarMarkup}
@@ -435,7 +520,7 @@ function calendarAlert(task: Task) {
     `This will add '${task.title}' to your phone's calendar app`,
     [
       { text: "Cancel", style: "cancel" },
-      { text: "OK", onPress: () => CalendarHelper.addEvent(task) }
+      { text: "OK", onPress: () => CalendarHelper.addEvent(task) },
     ]
   );
 }
@@ -446,7 +531,7 @@ function notificationAlert(task: Task) {
     `This will add '${task.title}' to your phone's reminders app`,
     [
       { text: "Cancel", style: "cancel" },
-      { text: "OK", onPress: () => CalendarHelper.addEvent(task, true) }
+      { text: "OK", onPress: () => CalendarHelper.addEvent(task, true) },
     ]
   );
 }
@@ -469,7 +554,7 @@ function determineDaysUntilEval(evalDate: Date) {
 function determineCompletedEvalWeight(evals: Evaluation[]) {
   let totalGradeCompleted = 0;
 
-  evals.forEach(currEval => {
+  evals.forEach((currEval) => {
     if (currEval.complete) {
       totalGradeCompleted += currEval.weight;
     }
