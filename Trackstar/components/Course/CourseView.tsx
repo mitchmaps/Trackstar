@@ -16,6 +16,7 @@ import {
   Paragraph,
   Button,
   List,
+  TextInput,
 } from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
 import { AntDesign } from "@expo/vector-icons";
@@ -39,8 +40,11 @@ export default function CourseView(props) {
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [evalBeingCompleted, setEvalBeingCompleted] = useState(null);
+  const [evalSelected, setEvalSelected] = useState(null);
+  const [evalSelectedGrade, setEvalSelectedGrade] = useState('');
   const [modalActive, setModalActive] = useState(false);
   const [tasksRemaining, setTasksRemaining] = useState<Task[]>([]);
+
   const [fakeState, setFakeState] = useState(new Date());
 
   const evalBeingCompletedRef = useRef(evalBeingCompleted);
@@ -48,6 +52,18 @@ export default function CourseView(props) {
     evalBeingCompletedRef.current = data;
     setEvalBeingCompleted(data);
   };
+
+  const evalSelectedRef = useRef(evalSelected);
+  const setEvalSelectedRef = data => {
+    evalSelectedRef.current = data;
+    setEvalSelected(data);
+  }
+
+  const evalSelectedGradeRef = useRef(evalSelectedGrade);
+  const setEvalSelectedGradeRef = data => {
+    evalSelectedGradeRef.current = data;
+    setEvalSelectedGrade(data);
+  }
 
   useFocusEffect(
     React.useCallback(() => {
@@ -71,6 +87,7 @@ export default function CourseView(props) {
     const evalToUpdate: Evaluation = evalBeingCompletedRef.current;
 
     evalToUpdate.complete = !evalToUpdate.complete;
+    evalToUpdate.grade = +evalSelectedGradeRef.current;
     updateEval(evalToUpdate);
     setModalActive(false);
   }, []);
@@ -89,9 +106,17 @@ export default function CourseView(props) {
     }
   }, []);
 
+  const handleSelectEvalForGrading = useCallback((currEval: Evaluation) => {
+    setEvalSelectedRef(currEval);
+  }, []);
+
+  const handleGradeChange = useCallback((grade) => {
+    setEvalSelectedGradeRef(grade.nativeEvent.text);
+  }, []);
+
   const evaluationsMarkup = generateEvaluationMarkup(
     courseEvals,
-    handleEvalSelection
+    handleEvalSelection,
   );
   const filteredTasks = filterTasks(courseEvals, tasks);
 
@@ -126,9 +151,11 @@ export default function CourseView(props) {
           <Text>Good job!</Text>
           <View style={{ flex: 1, marginTop: 20 }}>
             {generateRemainingTasksMarkup(tasksRemaining)}
+            <TextInput label="Enter grade (%)" value={evalSelectedGrade} onChange={(text) => {handleGradeChange(text)}} keyboardType="numeric" />
+            <Button mode="contained" color="#C6C6C6" style={{marginTop: 20}} labelStyle={{color: 'white'}} onPress={() => {setModalActive(false)}}>Cancel</Button>
             <Button
-              style={{ marginTop: 20 }}
               mode="contained"
+              style={{marginTop: 10}}
               onPress={() => {handleEvalCompletion()}}
             >
               Submit
@@ -193,7 +220,7 @@ export default function CourseView(props) {
 
 function generateEvaluationMarkup(evals: Evaluation[], handleEvalComplete) {
   const gradingSchemeMarkup = evals.reduce((allEvals, currEval) => {
-    const { title, due_date, weight, complete, id } = currEval;
+    const { title, due_date, weight, complete, id, grade } = currEval;
 
     const evalMarkup = (
       <Card style={{ marginBottom: 10 }}>
@@ -206,8 +233,12 @@ function generateEvaluationMarkup(evals: Evaluation[], handleEvalComplete) {
               justifyContent: "flex-start"
             }}
           >
-            <View style={{ flex: 1, flexDirection: "column" }}>
-              <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
+            <View style={{ flex: 1, flexDirection: "column", marginRight: 100 }}>
+              <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", alignContent: "center"}}>
+                <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
+                <Text>{complete ? `Grade: ${grade}%`: null}</Text>
+              </View>
+              <Text style={{color: "#aaaaaa"}}>{complete ? 'Complete': null}</Text>
               <Text
                 style={{ color: "#aaaaaa" }}
               >{`Due on ${due_date.toLocaleDateString()}`}</Text>
