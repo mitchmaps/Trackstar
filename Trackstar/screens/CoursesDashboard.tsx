@@ -80,9 +80,10 @@ const CoursesDashboard = props => {
         width: "100%",
         justifyContent: "space-around",
         alignItems: "center",
-        paddingTop: 10
+        paddingTop: 10,
+        maxHeight: "85%"
     }}>
-      <ScrollView style={{maxHeight: 500}}>
+      <ScrollView style={{}}>
         {coursesMarkup}
       </ScrollView>
 
