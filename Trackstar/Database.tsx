@@ -44,7 +44,7 @@ export default class Database {
     let course2  = new Course ("Database Management Systems", "COMP3005", 90);
     let course3  = new Course ("Human Computer Interaction", "COMP3008", 80);
     let course4  = new Course ("The Meaning of Life", "PHIL1200", 90);
-    let course5  = new Course ("Complete", "COMP1200", 90, 92);
+    let course5  = new Course ("Complete", "COMP1200", 90, 92, true);
 
     courseMapper.insert(course1)
     courseMapper.insert(course2)
