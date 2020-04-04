@@ -30,6 +30,7 @@ export default class TaskEdit extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
 
     this.state = {
       title: title,
