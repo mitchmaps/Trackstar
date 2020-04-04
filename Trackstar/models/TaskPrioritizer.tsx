@@ -4,7 +4,7 @@ import { Evaluation } from '.';
 
 export default class TaskPrioritizer{
 
-    prioritize = (t: Task[]) => {
+    prioritize(t: Task[]): Promise<Task[]> {
         console.log("prioritize is called");
 
         let returnValue = [];
@@ -16,13 +16,13 @@ export default class TaskPrioritizer{
 
         let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
         let currentEval: Evaluation;
-        
-        // have an 'evals' variable that will be used to represent all evaluations
-        evalMapper.all().then(evals=>{
-            
+        return new Promise((resolve) => {
+          // have an 'evals' variable that will be used to represent all evaluations
+          evalMapper.all().then((evals) => {
+
             // loop through all the task elements that were past in
-            t.forEach(task_element=>{
- 
+            t.forEach((task_element )=> {
+
                 // find associated evaluation element
                 evals.forEach(evaluation_element=>{
                     if(evaluation_element.id === task_element.evaluation_id){
@@ -30,7 +30,7 @@ export default class TaskPrioritizer{
                     };
                 });
 
-                DueDate = this.date_diff_indays(new Date(),task_element.due_date); 
+                DueDate = this.date_diff_indays(new Date(),task_element.due_date);
 
                 // calculate priority
                 priorityCounter += this.due_date_levels(DueDate);
@@ -42,24 +42,23 @@ export default class TaskPrioritizer{
                 sortList = this.insertList(sortList, priorityCounter);
                 mappingList = this.insertKey(mappingList, parseFloat(priorityCounter.toFixed(5)), task_element)
             })
-            console.log("evaluation mappers finished");
-        }).then(()=>{ 
-            
-            // after all elements have been inserted into lists, continue on with functionality 
+
+            // after all elements have been inserted into lists, continue on with functionality
             // start by sorting our (priorityList)
             sortList = sortList.sort(function(a,b){return b-a});
-            console.log("this is the sorted list " + sortList);
 
             // populate a new sorted list of tasks based off of our sorted list
             // use our sorted list values as keys to retrieve the actual task objects
             sortList.forEach(element => {
-                returnValue.push(mappingList.get(element))
+              console.log(element)
+              console.log(JSON.stringify(mappingList.get(element)))
+              returnValue.push(mappingList.get(element))
             });
-            
-            console.log("about to return prioritized list");
+            // console.log(returnValue);
             // return the sorted tasks list as well
-            return returnValue;
+            resolve(returnValue);
         })
+      })
     }
 
 
