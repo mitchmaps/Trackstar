@@ -44,13 +44,15 @@ export default class Database {
     let course2  = new Course ("Database Management Systems", "COMP3005", 90);
     let course3  = new Course ("Human Computer Interaction", "COMP3008", 80);
     let course4  = new Course ("The Meaning of Life", "PHIL1200", 90);
-    let course5  = new Course ("Complete", "COMP1200", 90, 92, true);
+    let course5  = new Course ("Complete", "COMP1200", 90, 92);
+    let course6  = new Course ("Complete", "none", 50, 0);
 
     courseMapper.insert(course1)
     courseMapper.insert(course2)
     courseMapper.insert(course3)
     courseMapper.insert(course4)
     courseMapper.insert(course5)
+    courseMapper.insert(course6)
   }
 
   static populateEvalTable = () => {
@@ -81,7 +83,6 @@ export default class Database {
     evalMapper.insert(eval9)
     evalMapper.insert(eval10)
     evalMapper.insert(eval11)
-
   }
 
   static populateTaskTable = () => {

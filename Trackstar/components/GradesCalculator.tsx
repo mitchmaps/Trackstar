@@ -7,6 +7,8 @@ import GradeInfo from './GradeInfo';
 export default class GradseCalculator extends React.Component {
 
   static calculate(grades_and_weights, desired_grade) {
+    console.log("calculating now:");
+    console.log(grades_and_weights);
     let avg_grade = 0;
     let combined_grade = 0;
     let combined_weight = 0;
@@ -23,6 +25,7 @@ export default class GradseCalculator extends React.Component {
     }
     avg_grade = combined_grade/(combined_weight/100);
     remaining_weight = 100 - combined_weight;
+
     needed_grade = (desired_grade - combined_grade)/(remaining_weight/100);
     return new GradeInfo(parseFloat(avg_grade.toFixed(2)), parseFloat(needed_grade.toFixed(2)), parseFloat(combined_weight.toFixed(2)), parseFloat(remaining_weight.toFixed(2)))
   }
