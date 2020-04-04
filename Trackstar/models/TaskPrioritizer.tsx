@@ -4,14 +4,14 @@ import { Evaluation } from '.';
 
 export default class TaskPrioritizer{
 
-    returnValue: Task[] = [];
-    sortList: number[] = []; // take all priority values and put them into a list, to be sorted
-    mappingList = new Map(); // attach all priority values with their respective tasks into a map
+
 
     prioritize(t: Task[]): Promise<Task[]> {
-        console.log("prioritize is called ");
-        console.log("total tasks: " + t.length);
 
+
+        let returnValue: Task[] = [];
+        let sortList: number[] = []; // take all priority values and put them into a list, to be sorted
+        let mappingList = new Map(); // attach all priority values with their respective tasks into a map
 
 
         let DueDate;
@@ -19,14 +19,22 @@ export default class TaskPrioritizer{
 
         let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
         let currentEval: Evaluation;
+
         return new Promise((resolve) => {
           // have an 'evals' variable that will be used to represent all evaluations
+          console.log("1");
           evalMapper.all().then((evals) => {
 
+            console.log("2");
             console.log("evaluation length: " + evals.length);
+            console.log("prioritize is called ");
+            console.log("total tasks: " + t.length);
 
             // loop through all the task elements that were past in
             t.forEach((task_element )=> {
+
+                console.log("3");
+                console.log("looking through element");
 
                 // find associated evaluation element
                 evals.forEach(evaluation_element=>{
@@ -47,39 +55,42 @@ export default class TaskPrioritizer{
                 // and then priority + the task objects into a map so that we can retrieve the task objects later
                 
                 let flag = false;
-                this.mappingList.forEach(task_ele=>{
+                mappingList.forEach(task_ele=>{
                     if(task_ele.id === task_element.id)
                         flag = true;
                 });  
 
                 if(flag === false){
                     priorityCounter+=0.01;
-                    this.mappingList.set(priorityCounter, task_element);
-                    this.sortList.push(priorityCounter);
+                    mappingList.set(priorityCounter, task_element);
+                    sortList.push(priorityCounter);
                 }
 
                 console.log("flag value: " + flag);
-                console.log("sortList length: " + this.sortList.length);
-                console.log("mappingList length: " + this.mappingList.size);
+                console.log("sortList length: " + sortList.length);
+                console.log("mappingList length: " + mappingList.size);
                 
             })
 
+            console.log("4");
             // after all elements have been inserted into lists, continue on with functionality
             // start by sorting our (priorityList)
-            this.sortList = this.sortList.sort(function(a,b){return b-a});
+            sortList = sortList.sort(function(a,b){return b-a});
 
             // populate a new sorted list of tasks based off of our sorted list
             // use our sorted list values as keys to retrieve the actual task objects
-            this.sortList.forEach(element => {
-              //console.log(element)
-              //console.log(JSON.stringify(this.mappingList.get(element)))
-              this.returnValue.push(this.mappingList.get(element))
+            sortList.forEach(element => {
+              console.log(element)
+              console.log(JSON.stringify(mappingList.get(element)))
+              returnValue.push(mappingList.get(element))
             });
+
+            console.log("4");
             
-            console.log("\n\n\n\n\n\nRETURN VALUE length: " + this.returnValue.length);
-            console.log("RETURN VALUE: " + this.returnValue);
+            console.log("\n\n\n\n\n\nRETURN VALUE length: " + returnValue.length);
+            console.log("RETURN VALUE: " + returnValue);
             // return the sorted tasks list as well
-            resolve(this.returnValue);
+            resolve(returnValue);
         })
       })
     }
