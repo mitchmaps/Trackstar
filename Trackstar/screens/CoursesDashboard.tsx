@@ -51,7 +51,9 @@ const CoursesDashboard = props => {
             navigation.navigate("Course", {
               code: item.code,
               name: item.title,
-              minGrade: item.minGrade
+              minGrade: item.minGrade,
+              term: '',
+              complete: item.complete,
             });
           }}
         >
@@ -121,6 +123,7 @@ async function formatData(complete: boolean) {
           code: course.code,
           title: course.title,
           minGrade: course.min_grade,
+          complete: course.complete,
         }
       ]
     };

@@ -23,7 +23,8 @@ import { AntDesign } from "@expo/vector-icons";
 import CircleCheckBox from "react-native-circle-checkbox";
 import Modal from "react-native-modal";
 
-import {Evaluation, Task, Course} from '../../models'
+import { Evaluation, Task, Course } from "../../models";
+import GradesCalculator from "../GradesCalculator";
 
 import {
   EvaluationMapper,
@@ -34,10 +35,10 @@ import {
 import CalendarHelper from "../../models/CalendarHelper";
 import { Icon } from "react-native-elements";
 
-import { CourseMapper, CourseMapperImpl } from '../../data_mappers';
+import { CourseMapper, CourseMapperImpl } from "../../data_mappers";
 
 export default function CourseView(props) {
-  const { code, name, minGrade, term } = props.route.params;
+  const { code, name, minGrade, term, complete } = props.route.params;
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [evalBeingCompleted, setEvalBeingCompleted] = useState(null);
@@ -45,7 +46,8 @@ export default function CourseView(props) {
   const [evalSelectedGrade, setEvalSelectedGrade] = useState("");
   const [modalActive, setModalActive] = useState(false);
   const [tasksRemaining, setTasksRemaining] = useState<Task[]>([]);
-  const [courseCompleteActive, setCourseCompleteActive] = useState(true);
+  const [courseStatus, setCourseStatus] = useState(complete);
+  const [courseCompleteActive, setCourseCompleteActive] = useState(false);
 
   const [fakeState, setFakeState] = useState(new Date());
 
@@ -66,6 +68,12 @@ export default function CourseView(props) {
     evalSelectedGradeRef.current = data;
     setEvalSelectedGrade(data);
   };
+
+  const courseStatusRef = useRef(courseStatus);
+  const setCourseStatusRef = (data) => {
+    courseStatusRef.current = data;
+    setCourseStatus(data);
+  }
 
   useFocusEffect(
     React.useCallback(() => {
@@ -121,7 +129,8 @@ export default function CourseView(props) {
 
   const evaluationsMarkup = generateEvaluationMarkup(
     courseEvals,
-    handleEvalSelection
+    handleEvalSelection,
+    courseStatusRef.current
   );
   const filteredTasks = filterTasks(courseEvals, tasks);
 
@@ -217,7 +226,7 @@ export default function CourseView(props) {
               style={{ marginTop: 20 }}
               labelStyle={{ color: "white" }}
               onPress={() => {
-                handleCourseComplete(code)
+                handleCourseComplete(code);
                 setCourseCompleteActive(false);
               }}
             >
@@ -228,6 +237,10 @@ export default function CourseView(props) {
       </Modal>
     ) : null;
 
+  const completedGrade = courseStatusRef.current
+    ? calculateCourseGrade(courseEvals, minGrade)
+    : null;
+
   return (
     <View style={{ flex: 1, alignSelf: "stretch" }}>
       <ScrollView
@@ -237,8 +250,11 @@ export default function CourseView(props) {
           padding: 20,
         }}
       >
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={iOSUIKit.largeTitleEmphasized}>{code}</Text>
+          <Text style={iOSUIKit.subheadEmphasized}>
+            {courseStatusRef.current ? "Complete" : null}
+          </Text>
           <Button
             onPress={() => {
               props.navigation.navigate("Course Edit", {
@@ -257,6 +273,9 @@ export default function CourseView(props) {
           <Text style={iOSUIKit.title3Emphasized}>Evaluations</Text>
         </View>
         <Paragraph>{completedGradeText}</Paragraph>
+        {courseStatusRef.current ? (
+          <Text>{`Final grade: ${completedGrade.curr_grade}%`}</Text>
+        ) : null}
         <View style={{ paddingVertical: 20 }}>{evaluationsMarkup}</View>
         <Text style={iOSUIKit.title3Emphasized}>Tasks</Text>
         {tasksMarkup}
@@ -281,6 +300,15 @@ export default function CourseView(props) {
   );
 }
 
+function calculateCourseGrade(evals: Evaluation[], desiredGrade: number) {
+  const formattedEvals = [];
+  evals.forEach((item) => {
+    formattedEvals.push([item.grade, item.weight]);
+  });
+
+  return GradesCalculator.calculate(formattedEvals, desiredGrade);
+}
+
 function handleCourseComplete(courseCode) {
   const courseMapper: CourseMapper = new CourseMapperImpl();
   courseMapper.find(courseCode).then((data) => {
@@ -291,7 +319,11 @@ function handleCourseComplete(courseCode) {
   });
 }
 
-function generateEvaluationMarkup(evals: Evaluation[], handleEvalComplete) {
+function generateEvaluationMarkup(
+  evals: Evaluation[],
+  handleEvalComplete,
+  courseComplete
+) {
   const gradingSchemeMarkup = evals.reduce((allEvals, currEval) => {
     const { title, due_date, weight, complete, id, grade } = currEval;
 
@@ -323,9 +355,11 @@ function generateEvaluationMarkup(evals: Evaluation[], handleEvalComplete) {
               <Text style={{ color: "#aaaaaa" }}>
                 {complete ? "Complete" : null}
               </Text>
-              <Text
-                style={{ color: "#aaaaaa" }}
-              >{`Due on ${due_date.toLocaleDateString()}`}</Text>
+              <View style={{ flex: 1, flexDirection: "row" }}>
+                <Text
+                  style={{ color: "#aaaaaa" }}
+                >{`Due on ${due_date.toLocaleDateString()}`}</Text>
+              </View>
             </View>
             <View>
               <Badge
@@ -340,15 +374,17 @@ function generateEvaluationMarkup(evals: Evaluation[], handleEvalComplete) {
               </Badge>
             </View>
             <View style={{ marginLeft: 20 }}>
-              <CircleCheckBox
-                style={{ flex: 2 }}
-                onToggle={() => {
-                  handleEvalComplete(currEval);
-                }}
-                checked={complete ? true : false}
-                outerColor={"#408ff7"}
-                innerColor={"#408ff7"}
-              />
+              {!courseComplete ? (
+                <CircleCheckBox
+                  style={{ flex: 2 }}
+                  onToggle={() => {
+                    handleEvalComplete(currEval);
+                  }}
+                  checked={complete ? true : false}
+                  outerColor={"#408ff7"}
+                  innerColor={"#408ff7"}
+                />
+              ) : null}
             </View>
           </View>
         </Card.Content>
