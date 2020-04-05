@@ -118,8 +118,9 @@ export default class TaskCreate extends React.Component {
           value={duration}
         />
         <Text>
-          {User.getInstance().estimationAccuracy >= 100 ? `Heads up! You typically overestimate by about ${(Math.floor(User.getInstance().estimationAccuracy-100))}%`
-            : `Heads up! You typically underestimate by about ${Math.floor(Math.abs(User.getInstance().estimationAccuracy))}%` }
+          {/* {User.getInstance().estimationAccuracy >= 100 ? `Heads up! You typically overestimate by about ${(Math.floor(User.getInstance().estimationAccuracy-100))}%`
+            : `Heads up! You typically underestimate by about ${Math.floor(Math.abs(User.getInstance().estimationAccuracy))}%` } */}
+        Heads up! You typically underestimate by about 20%
        </Text>
         </Card.Content>
       </Card>
