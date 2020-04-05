@@ -171,11 +171,9 @@ export default class CourseCreate extends React.Component {
     ) : null;
 
     return (
-      <View style={{flex: 1, alignSelf: "stretch"}}>
+      <View style={{flex: 1, alignSelf: "stretch", marginTop: "15%"}}>
         <ScrollView style={{
-          height: 80,
-          alignSelf: "stretch",
-          padding: 20,
+          paddingHorizontal: 20,
         }}>
           <Text style={iOSUIKit.largeTitleEmphasized}>Add course</Text>
           {courseInfo}

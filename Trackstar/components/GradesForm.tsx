@@ -66,12 +66,12 @@ export default class GradesForm extends React.Component {
       return(<View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
         {/*add the keyboardtype numeric!*/}
         <TextInput
-          style={{ height: 30, width: 40, backgroundColor:'white', borderColor: 'gray', borderWidth: 1}}
+          style={{ height: 30, width: 50, backgroundColor:'white', borderColor: 'gray', borderWidth: 1}}
           onChangeText={text => this.update_array(row_id, grade_index, text)}
           value={(this.state.grades_and_weights[row_id][0]).toString()}
         />
         <TextInput
-          style={{ height: 30, width: 40, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
+          style={{ height: 30, width: 50, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
           onChangeText={text => this.update_array(row_id, weight_index, text)}
           value={(this.state.grades_and_weights[row_id][1]).toString()}
         />
@@ -138,12 +138,12 @@ export default class GradesForm extends React.Component {
   render() {
     return (
       <LinearGradient
-      colors={["#bcf7ed", "#5273eb"]}
-      style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around'}}>
+        colors={["#bcf7ed", "#5273eb"]}
+        style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around'}}
+      >
 
-        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-          <Text style={{fontSize: 20, textAlign: "center", textAlignVertical: "center"}}>Grade Calculator</Text>
-
+        <View style={{flexDirection: 'column', justifyContent: 'space-around', alignItems: "center"}}>
+          <Text style={{fontSize: 45, color: "white", textAlign: "center", marginTop: "15%"}}>Grade Calculator</Text>
 
           <Dropdown
             label="Course Selection"
@@ -172,8 +172,8 @@ export default class GradesForm extends React.Component {
         </View>
         {/* Course selector */}
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-          <Text>Grade</Text>
-          <Text>Weight</Text>
+          <Text style={{color: "white"}}>Grade</Text>
+          <Text style={{color: "white"}}>Weight</Text>
         </View>
         {this.state.grades_and_weights.length > 1 ? this.state.grades_and_weights.forEach( e => {console.log(e[0])}) : console.log("not called yet")}
         {/*Figure out how to loop instead*/}
@@ -188,7 +188,7 @@ export default class GradesForm extends React.Component {
 
         <View style={{alignItems: 'center'}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}>
-          <Text>Desired grade: </Text>
+          <Text style={{color: "white"}}>Desired grade: </Text>
             <TextInput
               style={{ height: 30, width: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'white'}}
               onChangeText={text => this.setState({ desired_grade: text})}
@@ -196,14 +196,14 @@ export default class GradesForm extends React.Component {
             />
           </View>
           <View style={{paddingBottom: 20}}>
-            <TouchableOpacity style={{width: 100, backgroundColor: '#5273eb', paddingVertical: 8, paddingHorizontal: 16, borderRadius: 4}} onPress={this.handle_submit}>
-              <Text style={{color: "white"}}>Calculate</Text>
+            <TouchableOpacity style={{width: 100, backgroundColor: '#bcf7ed', paddingVertical: 8, paddingHorizontal: 16, borderRadius: 4}} onPress={this.handle_submit}>
+              <Text style={{color: "#5273eb"}}>Calculate</Text>
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={{width: 120, backgroundColor: "red", paddingVertical: 8, paddingHorizontal: 16, borderRadius: 4}} onPress={this.clear_fields}>
+          {/* <TouchableOpacity style={{width: 120, backgroundColor: "red", paddingVertical: 8, paddingHorizontal: 16, borderRadius: 4}} onPress={this.clear_fields}>
             <Text style={{color: "white"}}>Clear Fields</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </LinearGradient>
     )

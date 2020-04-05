@@ -242,7 +242,7 @@ export default function CourseView(props) {
     : null;
 
   return (
-    <View style={{ flex: 1, alignSelf: "stretch" }}>
+    <View style={{ flex: 1, alignSelf: "stretch", marginTop: "15%" }}>
       <ScrollView
         style={{
           height: 80,
@@ -281,21 +281,23 @@ export default function CourseView(props) {
         {tasksMarkup}
         {modalMarkup}
         {courseCompletionModalMarkup}
+        <View style={{margin: 30}}>
+          <Button
+            mode="contained"
+            onPress={() => {
+              props.navigation.navigate("Task Create", {
+                evals: courseEvals,
+                courseCode: code,
+                courseName: name,
+                courseTerm: term,
+                courseMinGrade: minGrade,
+              });
+            }}
+          >
+          Add new task
+        </Button>
+      </View>
       </ScrollView>
-      <Button
-        mode="contained"
-        onPress={() => {
-          props.navigation.navigate("Task Create", {
-            evals: courseEvals,
-            courseCode: code,
-            courseName: name,
-            courseTerm: term,
-            courseMinGrade: minGrade,
-          });
-        }}
-      >
-        Add new task
-      </Button>
     </View>
   );
 }
