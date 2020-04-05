@@ -47,7 +47,7 @@ export default function CourseView(props) {
   const [modalActive, setModalActive] = useState(false);
   const [tasksRemaining, setTasksRemaining] = useState<Task[]>([]);
   const [courseStatus, setCourseStatus] = useState(complete);
-  const [courseCompleteActive, setCourseCompleteActive] = useState(false);
+  const [courseCompleteActive, setCourseCompleteActive] = useState(true);
 
   const [fakeState, setFakeState] = useState(new Date());
 
@@ -203,7 +203,7 @@ export default function CourseView(props) {
     ) : null;
 
   const courseCompletionModalMarkup =
-    completedEvalWeight === 100 ? (
+    completedEvalWeight === 100 && !complete ? (
       <Modal isVisible={courseCompleteActive}>
         <View
           style={{
