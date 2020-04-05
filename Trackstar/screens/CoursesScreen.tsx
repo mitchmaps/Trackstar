@@ -10,7 +10,11 @@ export default class CoursesScreen extends React.Component {
     const Stack = createStackNavigator();
 
     return (
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false
+        }}
+      >
         <Stack.Screen name="My Courses" component={CoursesDashboard} />
         <Stack.Screen name="Course" component={ViewCourseScreen} />
         <Stack.Screen name="Add" component={CourseCreate} />
