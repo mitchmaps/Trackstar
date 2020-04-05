@@ -105,7 +105,7 @@ export default class CourseEdit extends React.Component {
     return (
       <View style={{ flex: 1, alignSelf: "stretch", marginTop: "15%" }}>
         <ScrollView style={{ height: 80, alignSelf: "stretch", padding: 20 }}>
-          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between"}}>
             <Text style={iOSUIKit.largeTitleEmphasized}>Edit Course</Text>
             <Button
               mode="contained"
@@ -120,7 +120,7 @@ export default class CourseEdit extends React.Component {
           {courseInfoMarkup}
           {evalEditMarkup}
           {currEvalsMarkup}
-          <View style={{width: 150, margin: 30}}>
+          <View style={{margin: 30}}>
             <Button
               mode="contained"
               style={{backgroundColor: "red"}}
