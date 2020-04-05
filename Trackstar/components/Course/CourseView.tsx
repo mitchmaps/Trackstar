@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
   Alert,
-  Platform
+  Platform,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import {
@@ -14,27 +14,66 @@ import {
   Title,
   Badge,
   Paragraph,
-  Button
+  Button,
+  List,
+  TextInput,
 } from "react-native-paper";
 import { iOSUIKit } from "react-native-typography";
 import { AntDesign } from "@expo/vector-icons";
+import CircleCheckBox from "react-native-circle-checkbox";
+import Modal from "react-native-modal";
 
-import Evaluation from "../../models/Evaluation";
-import Task from "../../models/Task";
+import { Evaluation, Task, Course } from "../../models";
+import GradesCalculator from "../GradesCalculator";
 
 import {
   EvaluationMapper,
   EvaluationMapperImpl,
   TaskMapper,
-  TaskMapperImpl
+  TaskMapperImpl,
 } from "../../data_mappers";
 import CalendarHelper from "../../models/CalendarHelper";
-import { Icon } from 'react-native-elements'
+import { Icon } from "react-native-elements";
+
+import { CourseMapper, CourseMapperImpl } from "../../data_mappers";
 
 export default function CourseView(props) {
-  const { code, name, minGrade, term } = props.route.params;
+  const { code, name, minGrade, term, complete } = props.route.params;
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [evalBeingCompleted, setEvalBeingCompleted] = useState(null);
+  const [evalSelected, setEvalSelected] = useState(null);
+  const [evalSelectedGrade, setEvalSelectedGrade] = useState("");
+  const [modalActive, setModalActive] = useState(false);
+  const [tasksRemaining, setTasksRemaining] = useState<Task[]>([]);
+  const [courseStatus, setCourseStatus] = useState(complete);
+  const [courseCompleteActive, setCourseCompleteActive] = useState(true);
+
+  const [fakeState, setFakeState] = useState(new Date());
+
+  const evalBeingCompletedRef = useRef(evalBeingCompleted);
+  const setEvalBeingCompletedRef = (data) => {
+    evalBeingCompletedRef.current = data;
+    setEvalBeingCompleted(data);
+  };
+
+  const evalSelectedRef = useRef(evalSelected);
+  const setEvalSelectedRef = (data) => {
+    evalSelectedRef.current = data;
+    setEvalSelected(data);
+  };
+
+  const evalSelectedGradeRef = useRef(evalSelectedGrade);
+  const setEvalSelectedGradeRef = (data) => {
+    evalSelectedGradeRef.current = data;
+    setEvalSelectedGrade(data);
+  };
+
+  const courseStatusRef = useRef(courseStatus);
+  const setCourseStatusRef = (data) => {
+    courseStatusRef.current = data;
+    setCourseStatus(data);
+  }
 
   useFocusEffect(
     React.useCallback(() => {
@@ -45,21 +84,162 @@ export default function CourseView(props) {
       const taskData = retrieveTaskData().then((data: Task[]) => {
         setTasks(data);
       });
+
+      if (evalBeingCompletedRef.current !== null) {
+        determineRemainingTasks(evalBeingCompletedRef.current).then(
+          (data: Task[]) => {
+            setTasksRemaining(data);
+          }
+        );
+      }
     }, [])
   );
 
-  const evaluationsMarkup = generateEvaluationMarkup(courseEvals);
+  const handleEvalCompletion = useCallback(() => {
+    const evalToUpdate: Evaluation = evalBeingCompletedRef.current;
+
+    evalToUpdate.complete = !evalToUpdate.complete;
+    evalToUpdate.grade = +evalSelectedGradeRef.current;
+    updateEval(evalToUpdate);
+    setEvalSelectedGradeRef(0);
+    setModalActive(false);
+  }, []);
+
+  const handleEvalSelection = useCallback((currEval: Evaluation) => {
+    setEvalBeingCompletedRef(currEval);
+
+    if (currEval.complete) {
+      const evalToUpdate: Evaluation = evalBeingCompletedRef.current;
+      evalToUpdate.complete = false;
+      updateEval(evalToUpdate);
+      // need to trigger a rerender in order to immediatley reflect the DB changes
+      setFakeState(new Date());
+    } else {
+      setModalActive(true);
+    }
+  }, []);
+
+  const handleSelectEvalForGrading = useCallback((currEval: Evaluation) => {
+    setEvalSelectedRef(currEval);
+  }, []);
+
+  const handleGradeChange = useCallback((grade) => {
+    setEvalSelectedGradeRef(grade.nativeEvent.text);
+  }, []);
+
+  const evaluationsMarkup = generateEvaluationMarkup(
+    courseEvals,
+    handleEvalSelection,
+    courseStatusRef.current
+  );
   const filteredTasks = filterTasks(courseEvals, tasks);
 
-  const tasksMarkup = filteredTasks.length > 0 ? generateTaskMarkup(filteredTasks, props) : (
-    <View>
-      <Text>You haven't added any tasks yet.</Text>
-    </View>
-  );
+  const tasksMarkup =
+    filteredTasks.length > 0 ? (
+      generateTaskMarkup(filteredTasks, props)
+    ) : (
+      <View>
+        <Text>You haven't added any tasks yet.</Text>
+      </View>
+    );
+
+  const completedEvalWeight = determineCompletedEvalWeight(courseEvals);
 
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
   )}% of your total grade.`;
+
+  const modalMarkup =
+    evalBeingCompleted !== null ? (
+      <Modal isVisible={modalActive}>
+        <View
+          style={{
+            marginTop: "25%",
+            marginBottom: "25%",
+            backgroundColor: "white",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Card.Content>
+            <Text
+              style={iOSUIKit.largeTitleEmphasized}
+            >{`Complete ${evalBeingCompleted.title}`}</Text>
+            <Text>Good job!</Text>
+            <View style={{ flex: 1, marginTop: 20 }}>
+              {generateRemainingTasksMarkup(tasksRemaining)}
+              <TextInput
+                label="Enter grade (%)"
+                value={evalSelectedGrade}
+                onChange={(text) => {
+                  handleGradeChange(text);
+                }}
+                keyboardType="numeric"
+              />
+              <Button
+                mode="contained"
+                color="#C6C6C6"
+                style={{ marginTop: 20 }}
+                labelStyle={{ color: "white" }}
+                onPress={() => {
+                  setModalActive(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                mode="contained"
+                style={{ marginTop: 10 }}
+                onPress={() => {
+                  handleEvalCompletion();
+                }}
+              >
+                Submit
+              </Button>
+            </View>
+          </Card.Content>
+        </View>
+      </Modal>
+    ) : null;
+
+  const courseCompletionModalMarkup =
+    completedEvalWeight === 100 && !complete ? (
+      <Modal isVisible={courseCompleteActive}>
+        <View
+          style={{
+            paddingTop: "25%",
+            backgroundColor: "white",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Card.Content>
+            <Text style={iOSUIKit.largeTitleEmphasized}>Course complete!</Text>
+            <Text
+              style={iOSUIKit.subheadEmphasized}
+            >{`You've finished all evaluations for ${code}: ${name}`}</Text>
+            <Text style={{ marginTop: 20 }}>
+              You can still visit this page from the course dashboard.
+            </Text>
+            <Button
+              mode="contained"
+              style={{ marginTop: 20 }}
+              labelStyle={{ color: "white" }}
+              onPress={() => {
+                handleCourseComplete(code);
+                setCourseCompleteActive(false);
+              }}
+            >
+              Complete course
+            </Button>
+          </Card.Content>
+        </View>
+      </Modal>
+    ) : null;
+
+  const completedGrade = courseStatusRef.current
+    ? calculateCourseGrade(courseEvals, minGrade)
+    : null;
 
   return (
     <View style={{ flex: 1, alignSelf: "stretch" }}>
@@ -67,18 +247,21 @@ export default function CourseView(props) {
         style={{
           height: 80,
           alignSelf: "stretch",
-          padding: 20
+          padding: 20,
         }}
       >
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={iOSUIKit.largeTitleEmphasized}>{code}</Text>
+          <Text style={iOSUIKit.subheadEmphasized}>
+            {courseStatusRef.current ? "Complete" : null}
+          </Text>
           <Button
             onPress={() => {
               props.navigation.navigate("Course Edit", {
                 code: code,
                 title: name,
                 minGrade: minGrade,
-                evals: courseEvals
+                evals: courseEvals,
               });
             }}
           >
@@ -90,9 +273,14 @@ export default function CourseView(props) {
           <Text style={iOSUIKit.title3Emphasized}>Evaluations</Text>
         </View>
         <Paragraph>{completedGradeText}</Paragraph>
+        {courseStatusRef.current ? (
+          <Text>{`Final grade: ${completedGrade.curr_grade}%`}</Text>
+        ) : null}
         <View style={{ paddingVertical: 20 }}>{evaluationsMarkup}</View>
         <Text style={iOSUIKit.title3Emphasized}>Tasks</Text>
         {tasksMarkup}
+        {modalMarkup}
+        {courseCompletionModalMarkup}
       </ScrollView>
       <Button
         mode="contained"
@@ -102,7 +290,7 @@ export default function CourseView(props) {
             courseCode: code,
             courseName: name,
             courseTerm: term,
-            courseMinGrade: minGrade
+            courseMinGrade: minGrade,
           });
         }}
       >
@@ -112,32 +300,97 @@ export default function CourseView(props) {
   );
 }
 
-function generateEvaluationMarkup(evals: Evaluation[]) {
+function calculateCourseGrade(evals: Evaluation[], desiredGrade: number) {
+  const formattedEvals = [];
+  evals.forEach((item) => {
+    formattedEvals.push([item.grade, item.weight]);
+  });
+
+  return GradesCalculator.calculate(formattedEvals, desiredGrade);
+}
+
+function handleCourseComplete(courseCode) {
+  const courseMapper: CourseMapper = new CourseMapperImpl();
+  courseMapper.find(courseCode).then((data) => {
+    const courseToUpdate: Course = data;
+
+    courseToUpdate.complete = true;
+    courseMapper.update(courseToUpdate);
+  });
+}
+
+function generateEvaluationMarkup(
+  evals: Evaluation[],
+  handleEvalComplete,
+  courseComplete
+) {
   const gradingSchemeMarkup = evals.reduce((allEvals, currEval) => {
+    const { title, due_date, weight, complete, id, grade } = currEval;
+
     const evalMarkup = (
-      <View style={{marginBottom: 5}}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between"
-          }}
-        >
-          <Paragraph>{currEval.title}</Paragraph>
-          <Badge
-            visible={true}
+      <Card style={{ marginBottom: 10 }}>
+        <Card.Content>
+          <View
             style={{
-              backgroundColor: "#408ff7",
-              fontWeight: "bold",
-              color: "#ffffff"
+              flex: 1,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
             }}
           >
-            {`${currEval.weight}%`}
-          </Badge>
-        </View>
-        <Divider />
-      </View>
+            <View
+              style={{ flex: 1, flexDirection: "column", marginRight: 100 }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignContent: "center",
+                }}
+              >
+                <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
+                <Text>{complete ? `Grade: ${grade}%` : null}</Text>
+              </View>
+              <Text style={{ color: "#aaaaaa" }}>
+                {complete ? "Complete" : null}
+              </Text>
+              <View style={{ flex: 1, flexDirection: "row" }}>
+                <Text
+                  style={{ color: "#aaaaaa" }}
+                >{`Due on ${due_date.toLocaleDateString()}`}</Text>
+              </View>
+            </View>
+            <View>
+              <Badge
+                visible={true}
+                style={{
+                  backgroundColor: "#408ff7",
+                  fontWeight: "bold",
+                  color: "#ffffff",
+                }}
+              >
+                {`${currEval.weight}%`}
+              </Badge>
+            </View>
+            <View style={{ marginLeft: 20 }}>
+              {!courseComplete ? (
+                <CircleCheckBox
+                  style={{ flex: 2 }}
+                  onToggle={() => {
+                    handleEvalComplete(currEval);
+                  }}
+                  checked={complete ? true : false}
+                  outerColor={"#408ff7"}
+                  innerColor={"#408ff7"}
+                />
+              ) : null}
+            </View>
+          </View>
+        </Card.Content>
+      </Card>
     );
+
 
     if (currEval.title !== 'General tasks') {
       allEvals.push(<View key={currEval.id}>{evalMarkup}</View>);
@@ -146,17 +399,31 @@ function generateEvaluationMarkup(evals: Evaluation[]) {
     return allEvals;
   }, []);
 
+  return gradingSchemeMarkup;
+}
+
+function generateRemainingTasksMarkup(tasks: Task[]) {
+  const remainingTasksMarkup: JSX.Element[] = [];
+  tasks.forEach((item) => {
+    const taskMarkup = <Text>{item.title}</Text>;
+
+    remainingTasksMarkup.push(taskMarkup);
+  });
+
   return (
-    <Card>
-      <Card.Content>{gradingSchemeMarkup}</Card.Content>
-    </Card>
+    <View>
+      <Text style={iOSUIKit.subheadEmphasized}>
+        You still have these tasks remaining for this evaluation:
+      </Text>
+      {remainingTasksMarkup}
+    </View>
   );
 }
 
 function filterTasks(evaluations: Evaluation[], allTasks: Task[]) {
   const courseTasks: Task[] = [];
-  evaluations.forEach(evaluation => {
-    allTasks.forEach(task => {
+  evaluations.forEach((evaluation) => {
+    allTasks.forEach((task) => {
       if (task.evaluation_id === evaluation.id) {
         courseTasks.push(task);
       }
@@ -193,31 +460,32 @@ function generateTaskMarkup(tasks: Task[], props) {
       </Badge>
     );
 
-    const notificationMarkup = (
-      Platform.OS === "ios"
-      ? (
+    const notificationMarkup =
+      Platform.OS === "ios" ? (
         <TouchableOpacity>
           <Icon
-            name='bell-plus-outline'
-            type='material-community'
-            color='#517fa4'
-            onPress={() => {notificationAlert(currTask)}}
+            name="bell-plus-outline"
+            type="material-community"
+            color="#517fa4"
+            onPress={() => {
+              notificationAlert(currTask);
+            }}
           />
         </TouchableOpacity>
-      )
-      : null
-    )
+      ) : null;
 
     const calendarMarkup = (
-      <TouchableOpacity style={{paddingRight: 10}}>
+      <TouchableOpacity style={{ paddingRight: 10 }}>
         <Icon
-          name='calendar-plus'
-          type='material-community'
-          color='#517fa4'
-          onPress={() => {calendarAlert(currTask)}}
+          name="calendar-plus"
+          type="material-community"
+          color="#517fa4"
+          onPress={() => {
+            calendarAlert(currTask);
+          }}
         />
       </TouchableOpacity>
-    )
+    );
 
     const taskMarkup = (
       <View key={id} style={{ paddingVertical: 5 }}>
@@ -227,7 +495,7 @@ function generateTaskMarkup(tasks: Task[], props) {
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "space-around"
+                justifyContent: "space-around",
               }}
             >
               <View>
@@ -245,15 +513,28 @@ function generateTaskMarkup(tasks: Task[], props) {
                     id: id,
                     courseCode: code,
                     courseName: name,
-                    courseMinGrade: minGrade
+                    courseMinGrade: minGrade,
                   });
                 }}
               >
                 Edit
               </Button>
             </View>
-            <View style={{paddingTop: 10, display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-              <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+            <View
+              style={{
+                paddingTop: 10,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
                 {calendarMarkup}
                 {notificationMarkup}
               </View>
@@ -272,13 +553,13 @@ function generateTaskMarkup(tasks: Task[], props) {
 
 function calendarAlert(task: Task) {
   Alert.alert(
-    'Add to calendar?',
+    "Add to calendar?",
     `This will add '${task.title}' to your phone's calendar app`,
     [
-      {text: 'Cancel', style: 'cancel'},
-      {text: 'OK', onPress: () => CalendarHelper.addEvent(task)},
-    ],
-  )
+      { text: "Cancel", style: "cancel" },
+      { text: "OK", onPress: () => CalendarHelper.addEvent(task) },
+    ]
+  );
 }
 
 function notificationAlert(task: Task) {
@@ -310,7 +591,7 @@ function determineDaysUntilEval(evalDate: Date) {
 function determineCompletedEvalWeight(evals: Evaluation[]) {
   let totalGradeCompleted = 0;
 
-  evals.forEach(currEval => {
+  evals.forEach((currEval) => {
     if (currEval.complete) {
       totalGradeCompleted += currEval.weight;
     }
@@ -330,5 +611,17 @@ async function retrieveTaskData() {
   const taskMapper: TaskMapper = new TaskMapperImpl();
   let tasks: Task[] = await taskMapper.all();
 
+  return tasks;
+}
+
+async function updateEval(updatedEval: Evaluation) {
+  const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
+
+  evalMapper.update(updatedEval);
+}
+
+async function determineRemainingTasks(evalToComplete: Evaluation) {
+  const taskMapper: TaskMapper = new TaskMapperImpl();
+  const tasks = await taskMapper.findByEval(evalToComplete.id);
   return tasks;
 }

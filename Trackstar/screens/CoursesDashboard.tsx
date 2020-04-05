@@ -32,6 +32,8 @@ interface CourseDescriptor {
   code: string;
   title: string;
   minGrade: number;
+  term: string;
+  complete: boolean;
 }
 
 const CoursesDashboard = props => {
@@ -114,7 +116,9 @@ function generateCoursesMarkup(courses: CourseDescriptor[], navigation) {
             navigation.navigate("Course", {
               code: currCourse.code,
               name: currCourse.title,
-              minGrade: currCourse.minGrade
+              minGrade: currCourse.minGrade,
+              term: '',
+              complete: currCourse.complete,
             });
           }}
         >
@@ -144,7 +148,9 @@ async function formatData(complete: boolean) {
     const courseInfo: CourseDescriptor = {
       code: course.code,
       title:  course.title,
-      minGrade: course.min_grade
+      minGrade: course.min_grade,
+      term: '',
+      complete: course.complete,
     };
     formattedData.push(courseInfo);
   });
