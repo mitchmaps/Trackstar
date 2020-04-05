@@ -115,7 +115,7 @@ export default class TaskEdit extends React.Component {
     );
 
     return (
-      <View style={{ flex: 1, alignSelf: "stretch" }}>
+      <View style={{ flex: 1, alignSelf: "stretch", marginTop: "15%" }}>
         <ScrollView
           style={{
             height: 80,
@@ -138,14 +138,17 @@ export default class TaskEdit extends React.Component {
           </View>
             <Text>{courseCode}</Text>
           {detailsMarkup}
-          <Button
-            mode="contained"
-            style={{backgroundColor: "red"}}
-            onPress={() => {
-              this.handleDelete();
-            }}>
-          Delete
-        </Button>
+          <View style={{margin: 30}}>
+            <Button
+              mode="contained"
+              style={{backgroundColor: "red"}}
+              onPress={() => {
+                this.handleDelete();
+              }}
+            >
+              Delete
+            </Button>
+          </View>
         </ScrollView>
       </View>
     );
