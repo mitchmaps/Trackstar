@@ -48,7 +48,6 @@ export default function CourseView(props) {
   const [tasksRemaining, setTasksRemaining] = useState<Task[]>([]);
   const [courseStatus, setCourseStatus] = useState(complete);
   const [courseCompleteActive, setCourseCompleteActive] = useState(true);
-
   const [fakeState, setFakeState] = useState(new Date());
 
   const evalBeingCompletedRef = useRef(evalBeingCompleted);
@@ -553,10 +552,13 @@ function generateTaskMarkup(tasks: Task[], props) {
   }, []);
 }
 
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
 function calendarAlert(task: Task) {
+  const eventDate = new Date(task.due_date.getTime() - task.est_duration * 60000);
   Alert.alert(
     "Add to calendar?",
-    `This will add '${task.title}' to your phone's calendar app`,
+    `This will add '${task.title}' to your phone's calendar app on ${months[eventDate.getMonth()]} ${eventDate.getDate()} at ${eventDate.getHours()}:${eventDate.getMinutes()}`,
     [
       { text: "Cancel", style: "cancel" },
       { text: "OK", onPress: () => CalendarHelper.addEvent(task) },
@@ -565,9 +567,10 @@ function calendarAlert(task: Task) {
 }
 
 function notificationAlert(task: Task) {
+  const eventDate = new Date(task.due_date.getTime() - task.est_duration * 60000);
   Alert.alert(
     'Set a reminder?',
-    `This will add '${task.title}' to your phone's reminders app at ${task.due_date}`,
+    `This will add '${task.title}' to your phone's reminders app on ${months[eventDate.getMonth()]} ${eventDate.getDate()} at ${eventDate.getHours()}:${eventDate.getMinutes()}`,
     [
       {text: 'Cancel', style: 'cancel'},
       {text: 'OK', onPress: () => CalendarHelper.addReminder(task)},
