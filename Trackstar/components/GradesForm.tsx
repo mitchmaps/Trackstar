@@ -55,7 +55,6 @@ export default class GradesForm extends React.Component {
   }
 
   field(row_id) {
-
     const grade_index = 0;
     const weight_index = 1;
 
@@ -67,7 +66,6 @@ export default class GradesForm extends React.Component {
     {
       grade_value = this.state.grades_and_weights[row_id][0]
       weight_value = this.state.grades_and_weights[row_id][1]
-
     }
 
     else
@@ -78,7 +76,7 @@ export default class GradesForm extends React.Component {
 
 
     return(
-      
+
       <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
         <TextInput
         autoCapitalize = {'characters'}
@@ -93,7 +91,7 @@ export default class GradesForm extends React.Component {
           value={grade_value.toString()}
         />
         <TextInput
-        autoCapitalize = {'characters'}  
+        autoCapitalize = {'characters'}
           style={{ height: 30, width: 40, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
           onChangeText={text => {
             if(text.length===0)
@@ -105,7 +103,7 @@ export default class GradesForm extends React.Component {
         />
       </View>
     );
-    
+
   }
 
   handle_submit() {
@@ -121,7 +119,17 @@ export default class GradesForm extends React.Component {
         ]
       )
     }
-
+    else if (this.state.grade_info.curr_weight == 100) {
+      Alert.alert(
+        `Current average grade: ${this.state.grade_info.curr_grade}%\n`,
+        `You have already completed 100% of the weight for this course`,
+        [
+          {
+            text: 'Back'
+          }
+        ]
+        )
+    }
     else {
       Alert.alert(
       `Current average grade: ${this.state.grade_info.curr_grade}%\nCombined weight: ${this.state.grade_info.curr_weight}%`,
@@ -148,10 +156,7 @@ export default class GradesForm extends React.Component {
       courseList.push({value: 'none'})
     })
     courseList.shift();
-    // this.setState({courseCodes: courseList});
   }
-
-  /* The calculations are done in GradesCalculator.tsx now*/
 
   render() {
     return (
@@ -167,7 +172,7 @@ export default class GradesForm extends React.Component {
             data={this.state.courseCodes}
             value={"none"}
             containerStyle={{top:20, width:150}}
-            
+
             onChangeText={value=>{
               const evalMapper : EvaluationMapper = new EvaluationMapperImpl;
               let newGradeWeight = []; // new grades_and_weight 2d array to be passed back
@@ -188,7 +193,6 @@ export default class GradesForm extends React.Component {
 
           />
         </View>
-        {/* Course selector */}
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
           <Text style={{color: "white"}}>Grade</Text>
           <Text style={{color: "white"}}>Weight</Text>
@@ -199,9 +203,6 @@ export default class GradesForm extends React.Component {
         {this.field(2)}
         {this.field(3)}
         {this.field(4)}
-        {/*{this.field(5)}
-        {this.field(6)}
-        {this.field(7)} */}
 
         <View style={{alignItems: 'center'}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}>
