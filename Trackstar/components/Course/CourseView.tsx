@@ -391,7 +391,8 @@ function generateEvaluationMarkup(
       </Card>
     );
 
-    if (currEval.title !== "General tasks") {
+
+    if (currEval.title !== 'General tasks') {
       allEvals.push(<View key={currEval.id}>{evalMarkup}</View>);
     }
 
@@ -487,7 +488,7 @@ function generateTaskMarkup(tasks: Task[], props) {
     );
 
     const taskMarkup = (
-      <View key={title} style={{ paddingVertical: 5 }}>
+      <View key={id} style={{ paddingVertical: 5 }}>
         <Card>
           <Card.Content>
             <View
@@ -563,13 +564,13 @@ function calendarAlert(task: Task) {
 
 function notificationAlert(task: Task) {
   Alert.alert(
-    "Set a reminder?",
-    `This will add '${task.title}' to your phone's reminders app`,
+    'Set a reminder?',
+    `This will add '${task.title}' to your phone's reminders app at ${task.due_date}`,
     [
-      { text: "Cancel", style: "cancel" },
-      { text: "OK", onPress: () => CalendarHelper.addEvent(task, true) },
-    ]
-  );
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'OK', onPress: () => CalendarHelper.addReminder(task)},
+    ],
+  )
 }
 
 function determineDaysUntilEval(evalDate: Date) {

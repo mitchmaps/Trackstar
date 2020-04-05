@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, ScrollView, Platform } from "react-native";
+import { Text, View, ScrollView, Platform, Alert } from "react-native";
 import { iOSUIKit } from "react-native-typography";
 import { Card, TextInput, Button } from "react-native-paper";
 import DatePicker from "react-native-datepicker"; // android
@@ -13,6 +13,13 @@ export default class TaskEdit extends React.Component {
     title: string;
     dueDate: Date;
     duration: string;
+    dueDateYear: number;
+    dueDateMonth: number;
+    dueDateDay: number;
+    dueDateHour: number;
+    dueDateMinute: number;
+    curDueDate: Date;
+    curDueDateTime: Date;
     id: number;
   };
 
@@ -22,20 +29,27 @@ export default class TaskEdit extends React.Component {
     const { title, dueDate, duration, id } = props.route.params;
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
 
     this.state = {
       title: title,
       dueDate: dueDate,
       duration: duration,
+      dueDateYear: 0,
+      dueDateMonth: 0,
+      dueDateDay: 0,
+      dueDateHour: 0,
+      dueDateMinute: 0,
+      curDueDate: new Date(),
+      curDueDateTime: new Date(),
       id: id,
     };
   }
 
   render() {
-    const { title, dueDate, duration } = this.state;
+    const { title, dueDate, duration, dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, curDueDate, curDueDateTime} = this.state;
     const {courseCode, courseName} = this.props.route.params;
-
-    console.log(duration);
 
     const detailsMarkup = (
       <Card style={{marginTop: 20}}>
@@ -50,15 +64,28 @@ export default class TaskEdit extends React.Component {
           <Text style={{ paddingTop: 20 }}>Task due date</Text>
 
           {Platform.OS === "ios" ? (
+            <View>
             <DateTimePicker
-              testID="dateTimePicker"
-              timeZoneOffsetInMinutes={0}
-              value={dueDate}
-              onChange={(event, selectedDate) => {
-                this.setState({ dueDate: selectedDate });
-              }}
-              display="default"
-            />
+            testID="dateTimePicker"
+            value={curDueDate}
+            mode={'date'}
+            onChange={
+              (event, selectedDate) => {
+                this.setState({curDueDate: selectedDate, dueDateYear: selectedDate.getFullYear(), dueDateMonth: selectedDate.getMonth(), dueDateDay: selectedDate.getDate()});
+              }
+            }
+            display="default"/>
+            <DateTimePicker
+            testID="dateTimePicker"
+            value={curDueDateTime}
+            mode={'time'}
+            onChange={
+              (event, selectedTime) => {
+                this.setState({curDueDateTime: selectedTime, dueDateHour: selectedTime.getHours(), dueDateMinute: selectedTime.getMinutes()});
+              }
+            }
+            display="default"/>
+          </View>
           ) : (
             <DatePicker
               date={dueDate}
@@ -111,6 +138,14 @@ export default class TaskEdit extends React.Component {
           </View>
             <Text>{courseCode}</Text>
           {detailsMarkup}
+          <Button
+            mode="contained"
+            style={{backgroundColor: "red"}}
+            onPress={() => {
+              this.handleDelete();
+            }}>
+          Delete
+        </Button>
         </ScrollView>
       </View>
     );
@@ -118,7 +153,12 @@ export default class TaskEdit extends React.Component {
 
   handleSubmit() {
     const taskMapper: TaskMapper = new TaskMapperImpl();
-    const { title, dueDate, duration, id } = this.state;
+    const {  title, dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, duration , id } = this.state;
+    let dueDate = this.state.dueDate;
+
+    if (Platform.OS === "ios") {
+      dueDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
+    }
 
     taskMapper.find(id).then((data) => {
       const taskToEdit: Task = data;
@@ -128,6 +168,33 @@ export default class TaskEdit extends React.Component {
 
       taskMapper.update(taskToEdit);
       const { courseCode, courseName, courseMinGrade} = this.props.route.params;
+
+      this.props.navigation.navigate('Course view', {
+        code: courseCode,
+        name: courseName,
+        minGrade: courseMinGrade,
+      });
+    });
+  }
+
+  handleDelete() {
+    Alert.alert(
+      'Are you sure you want to delete this task?',
+      '',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'Yes', onPress: () => this.deleteTask()},
+      ],
+    )
+    }
+
+  deleteTask() {
+    const taskMapper: TaskMapper = new TaskMapperImpl();
+    const { id } = this.state;
+    const { courseCode, courseName, courseMinGrade} = this.props.route.params;
+
+    taskMapper.find(id).then((task) => {
+      taskMapper.delete(task)
 
       this.props.navigation.navigate('Course view', {
         code: courseCode,

@@ -47,7 +47,7 @@ export default class CourseEdit extends React.Component {
       evalToEdit: evals[0],
       currEvalEditTitle: evals[0].title,
       currEvalEditDate: evals[0].due_date,
-      currEvalEditWeight: evals[0].weight
+      currEvalEditWeight: evals[0].weight.toString()
     };
   }
 
@@ -79,7 +79,7 @@ export default class CourseEdit extends React.Component {
           <TextInput
             label="Minimum desired grade"
             keyboardType={"numeric"}
-            value={minGrade}
+            value={minGrade.toString()}
             onChangeText={text => {
               this.setState({ minGrade: text });
             }}
@@ -120,6 +120,15 @@ export default class CourseEdit extends React.Component {
           {courseInfoMarkup}
           {evalEditMarkup}
           {currEvalsMarkup}
+          <Button
+            mode="contained"
+            style={{backgroundColor: "red"}}
+            onPress={() => {
+              this.handleDelete();
+            }}
+          >
+            Delete
+          </Button>
         </ScrollView>
       </View>
     );
@@ -203,13 +212,12 @@ export default class CourseEdit extends React.Component {
     const { evals } = this.state;
 
     let evalToEdit: Evaluation = this.selectEvalById(id);
-    console.log(evalToEdit);
 
     this.setState({
       evalEditingActive: true,
       evalToEdit: evalToEdit,
       currEvalEditTitle: evalToEdit.title,
-      currEvalEditWeight: evalToEdit.weight,
+      currEvalEditWeight: evalToEdit.weight.toString(),
       currEvalEditDate: evalToEdit.due_date
     });
   }
@@ -302,9 +310,29 @@ export default class CourseEdit extends React.Component {
       }
     });
 
-    console.log("selecting");
-    console.log(evalToReturn);
-
     return evalToReturn;
+  }
+
+  handleDelete() {
+    Alert.alert(
+      'Are you sure you want to delete this course?',
+      'This will delete all related evaluations and tasks and cannot be undone.',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'Yes', onPress: () => this.deleteCourse()},
+      ],
+    )
+    }
+
+  deleteCourse() {
+    const courseMapper: CourseMapper = new CourseMapperImpl();
+    const { title, minGrade } = this.state;
+    const { code } = this.props.route.params;
+
+    courseMapper.find(code).then((course) => {
+      courseMapper.delete(course)
+
+      this.props.navigation.navigate("My Courses")
+    });
   }
 }

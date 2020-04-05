@@ -4,7 +4,6 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  SectionList,
   StyleSheet
 } from "react-native";
 import { Card, TextInput, Button } from "react-native-paper";
@@ -134,6 +133,15 @@ const HomeScreen = props => {
                 }}
               >
                 Submit
+              </Button>
+              <Button
+                style={{ marginTop: 20 }}
+                mode="contained"
+                onPress={() => {
+                  setModalActive(false);
+                }}
+              >
+                Cancel
               </Button>
             </View>
           </Card.Content>
