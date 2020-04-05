@@ -10,6 +10,9 @@ export default StyleSheet.create({
   buttonMargin: {
     margin: 10,
   },
+  submitButtonMargin: {
+    margin: 30,
+  },
   submitMargin: {
     margin: 20,
   }

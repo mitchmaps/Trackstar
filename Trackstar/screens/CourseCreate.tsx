@@ -182,7 +182,7 @@ export default class CourseCreate extends React.Component {
           <Divider />
           {evalCreationMarkup}
           {weightWarning}
-          <View style={styles.buttonMargin}>
+          <View style={styles.submitButtonMargin}>
             <Button mode="contained" onPress={this.handleSubmit} disabled={this.state.currTotalGradeWeight > 100 || this.state.currTotalGradeWeight < 100}>Submit</Button>
           </View>
         </ScrollView>
