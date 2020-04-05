@@ -81,7 +81,6 @@ export default class Database {
     evalMapper.insert(eval9)
     evalMapper.insert(eval10)
     evalMapper.insert(eval11)
-
   }
 
   static populateTaskTable = () => {

@@ -17,6 +17,7 @@ export default class GradesForm extends React.Component {
     grade_info: GradeInfo,
     courses: Course[],
     courseCodes: [{}],
+    TextInputValue: number,
   }
 
   constructor(props) {
@@ -32,6 +33,7 @@ export default class GradesForm extends React.Component {
       grade_info: null,
       courses: [],
       courseCodes: [{}],
+      TextInputValue: null,
     }
 
     this.get_courses();
@@ -53,40 +55,57 @@ export default class GradesForm extends React.Component {
   }
 
   field(row_id) {
-    console.log ("row_id: " + row_id + " grades_and_weights_length: " + this.state.grades_and_weights.length);
-
 
     const grade_index = 0;
     const weight_index = 1;
 
+    // set all boxes to 0 for the courses that do not have enough evaluations
+    let grade_value = 0;
+    let weight_value = 0;
+
     if(row_id < this.state.grades_and_weights.length)
     {
-    console.log ("grade: " + this.state.grades_and_weights[row_id][0]);
-    console.log ("weight: " + this.state.grades_and_weights[row_id][1]);
-      return(<View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-        {/*add the keyboardtype numeric!*/}
-        <TextInput
-          style={{ height: 30, width: 50, backgroundColor:'white', borderColor: 'gray', borderWidth: 1}}
-          onChangeText={text => this.update_array(row_id, grade_index, text)}
-          value={(this.state.grades_and_weights[row_id][0]).toString()}
-        />
-        <TextInput
-          style={{ height: 30, width: 50, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
-          onChangeText={text => this.update_array(row_id, weight_index, text)}
-          value={(this.state.grades_and_weights[row_id][1]).toString()}
-        />
-      </View>);
+      grade_value = this.state.grades_and_weights[row_id][0]
+      weight_value = this.state.grades_and_weights[row_id][1]
+
     }
-    else{
-      return(<View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-        {/*add the keyboardtype numeric!*/}
+
+    else
+    {
+      this.update_array(row_id, grade_index, '0');
+      this.update_array(row_id, weight_index, '0');
+    }
+
+
+    return(
+      
+      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
         <TextInput
+        autoCapitalize = {'characters'}
+          placeholder="Enter text"
           style={{ height: 30, width: 40, backgroundColor:'white', borderColor: 'gray', borderWidth: 1}}
+          onChangeText={text => {
+            if(text.length===0)
+              this.update_array(row_id, grade_index, '0');
+            else
+              this.update_array(row_id, grade_index, text)}
+          }
+          value={grade_value.toString()}
         />
         <TextInput
+        autoCapitalize = {'characters'}  
           style={{ height: 30, width: 40, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
+          onChangeText={text => {
+            if(text.length===0)
+              this.update_array(row_id, weight_index, '0');
+            else
+              this.update_array(row_id, weight_index, text)}
+          }
+          value={weight_value.toString()}
         />
-      </View>)}
+      </View>
+    );
+    
   }
 
   handle_submit() {
@@ -118,7 +137,6 @@ export default class GradesForm extends React.Component {
 
 
   get_courses(){
-    console.log("get courses is called");
     const courseMapper: CourseMapper = new CourseMapperImpl;
     let courseList = this.state.courseCodes;
     // get courses from database
@@ -144,13 +162,13 @@ export default class GradesForm extends React.Component {
 
         <View style={{flexDirection: 'column', justifyContent: 'space-around', alignItems: "center"}}>
           <Text style={{fontSize: 45, color: "white", textAlign: "center", marginTop: "15%"}}>Grade Calculator</Text>
-
           <Dropdown
             label="Course Selection"
             data={this.state.courseCodes}
-            containerStyle={{width:150}}
+            value={"none"}
+            containerStyle={{top:20, width:150}}
+            
             onChangeText={value=>{
-              console.log("\n\n\ndifferent course selected: " + value);
               const evalMapper : EvaluationMapper = new EvaluationMapperImpl;
               let newGradeWeight = []; // new grades_and_weight 2d array to be passed back
               evalMapper.findByCourse(value).then(evals=>{ // get all the evaluations associated with the selected course
@@ -175,7 +193,6 @@ export default class GradesForm extends React.Component {
           <Text style={{color: "white"}}>Grade</Text>
           <Text style={{color: "white"}}>Weight</Text>
         </View>
-        {this.state.grades_and_weights.length > 1 ? this.state.grades_and_weights.forEach( e => {console.log(e[0])}) : console.log("not called yet")}
         {/*Figure out how to loop instead*/}
         {this.field(0)}
         {this.field(1)}
