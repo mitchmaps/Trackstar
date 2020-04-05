@@ -1,0 +1,13 @@
+Mitchell Soares
+ID: 101103889
+
+Week 12 log:
+
+- Started and finished evaluation completion work flow including confirmation modal
+- Started and finished course completion work flow including acknowledgement modal
+- Tested new changes with other peoples work
+- Merged both features
+- Updated minor UI things
+- Recorded grade calculation portion of D4 video
+- Resolved some state rendering logic in course view and task create
+- Got to the end of the project!
