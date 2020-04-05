@@ -103,9 +103,9 @@ export default class CourseEdit extends React.Component {
     );
 
     return (
-      <View style={{ flex: 1, alignSelf: "stretch" }}>
+      <View style={{ flex: 1, alignSelf: "stretch", marginTop: "15%" }}>
         <ScrollView style={{ height: 80, alignSelf: "stretch", padding: 20 }}>
-          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between"}}>
             <Text style={iOSUIKit.largeTitleEmphasized}>Edit Course</Text>
             <Button
               mode="contained"
@@ -120,6 +120,17 @@ export default class CourseEdit extends React.Component {
           {courseInfoMarkup}
           {evalEditMarkup}
           {currEvalsMarkup}
+          <View style={{margin: 30}}>
+            <Button
+              mode="contained"
+              style={{backgroundColor: "red"}}
+              onPress={() => {
+                this.handleDelete();
+              }}
+            >
+              Delete
+            </Button>
+          </View>
         </ScrollView>
       </View>
     );
@@ -302,5 +313,28 @@ export default class CourseEdit extends React.Component {
     });
 
     return evalToReturn;
+  }
+
+  handleDelete() {
+    Alert.alert(
+      'Are you sure you want to delete this course?',
+      'This will delete all related evaluations and tasks and cannot be undone.',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'Yes', onPress: () => this.deleteCourse()},
+      ],
+    )
+    }
+
+  deleteCourse() {
+    const courseMapper: CourseMapper = new CourseMapperImpl();
+    const { title, minGrade } = this.state;
+    const { code } = this.props.route.params;
+
+    courseMapper.find(code).then((course) => {
+      courseMapper.delete(course)
+
+      this.props.navigation.navigate("My Courses")
+    });
   }
 }

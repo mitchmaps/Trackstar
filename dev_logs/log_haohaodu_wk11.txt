@@ -1,0 +1,66 @@
+HaoHao Du
+ID: 101074491
+
+Week 11 + 12:
+- sorry i didn't update the weeks last week because it was again, really heavy on implementation
+will outline now the progress and updates of the last 2 weeks and put them as both week 11 + 12
+- fully accounted for the android/ios problem , for a long time this was a long standing error
+in which I thought something was wrong with my environment so parts of the app would not be 
+fully functional on my phone however, it wasn't until last week that we realized it was a platform
+error not an environment one
+
+- so a large portion of week 11 was dedicated towards fixing those bugs and making sure that
+the app would behave identically (at least the functionality would be identical) on both platforms
+as before some portions would not even run and would crash the app, this was found on week 10
+   - in addition to that i have also taken on a large portion of the android testing done
+for our team , so whenever we have a new PR or something major that is added to our app 
+I try to make sure that it the same functionality also appears on android as well not only
+for the original screen that had errors in week 10 but also for new add ons to our app such as 
+grade screen editing , automatic prioritization on our home screen etc.
+
+- i went through many, many, revisions of the task prioritizer class between week 11 and 12, 
+at first it was optimizing and cleaning up the code, and then we realized it wasn't interacting
+completely with the datamappers and thus with the database, and then we saw that it wasn't actually
+prioritizing the information in a consistent manner so I was responsible for almost all of the 
+re-implementation of this section 
+  
+In addition at a very high level , across all of the tasks that I have achieved it was very interesting
+to see how the design patterns described by my teammates Mitch, and Gaby were utilized in our 
+application and how I had to use them (data mappers, singleton) . However, it was the task prioritizer in which I believe
+I had the most exposure to these two design patterns. Data Mappers were a lot more trickier
+than I had originally anticipated to use, as described in the D3 interview I wasn't aware that
+they had originally returned a promise, I barely knew what promises were or what asynchronous coding was
+but after *having* to learn these concepts in order to utilize the data mappers it was all in all 
+a really great learning experience (some of the things I thought were interesting was how I had to 
+learn things such as promise chaining, callbacks, I definitely mastered arrow functions, and many more !)
+
+- I also utilized my first case of peer / pair programming  , where I worked with our team member
+Nareen in order to implement a Next Evaluation functionality in our home screen. During this time
+it was really interesting coding as a team rather than an individual and debugging situations and
+unexpected problems. I believe we got through a lot more than would we have worked individually
+so that was really interesting as well. Simultaneously, a task that might have once seemed
+like an immensely complicated one didn't seem that challenging after working with our project for so
+long, learning so many new concepts and amassing such a larger toolkit of programming practices.
+
+- Another thing I worked on was the grades_Screen. throughout this project it was really interesting as a lot of the
+courses I have taken have really encouraged only using the fundamentals of the lanugages given and not
+really installing any other libraries than those already built in. So once we wanted to start incorporating 
+things that had for e.g. better UI's , more capabilities, etc. and having to look into other resources,
+modules, and packages to install and achieve these means it really taught me the usefulness of having a strong 
+community in whatever environment or programming language you are working in. For the Grades Screen particularly however,
+what I did was I implemented a dropdown menu that was populated by a course data mapper, and then it populated
+the grades and weights in their respective rows and columns in the associated grades screen. (This sounds simple
+but it was a lot trickier than i had originally thought). In addition there was a textfield error in which
+it would simply crash the screen once we deleted all the text in the textfield or be rendered as a NaN so I also 
+spent a decent amount of time on that error. Lastly, I had to make sure that the calculate implementation worked,
+and that required a lot of digging in code that was already built/made , rather than trying to look at my own code
+that I wrote so that was an entire other difficulty as looking at someone elses code is much harder than looking at your
+own , in my opinion).
+
+- these are just some of the many challenges and obstacles I have tackled on throughout this project (the last 2 weeks),
+and if this is the last dev log this project was really really taxing, but a great learning experience. I feel like it
+simulated what working in a startup would be like, high demand, but high (learning) reward. I'm sure I will elaborate much
+much more during our deliverable / interview setup  / and sorry for the lengthy response I wish you TA's all the best 
+and a safe quarantine as well !)
+
+2020 / 04 / 05 - HaoHao Du
