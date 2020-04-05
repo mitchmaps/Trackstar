@@ -40,7 +40,7 @@ export default class Database {
 
   static populateCourseTable = () => {
     let courseMapper: CourseMapper = new CourseMapperImpl
-    let course1  = new Course ("Object-Oriented Software Engineering", "COMP3004", 90);
+    let course1  = new Course ("Object-Oriented Software Engineering", "COMP3004", 95);
     let course2  = new Course ("Database Management Systems", "COMP3005", 90);
     let course3  = new Course ("Human Computer Interaction", "COMP3008", 80);
     let course4  = new Course ("The Meaning of Life", "PHIL1200", 90);
@@ -72,7 +72,7 @@ export default class Database {
 
     let eval5  = new Evaluation ("Deliverable 1", new Date(), 10, "COMP3004", true, 100);
     let eval6  = new Evaluation ("Deliverable 2", new Date(), 10, "COMP3004", true, 100);
-    let eval7  = new Evaluation ("Deliverable 3", new Date(), 60, "COMP3004", true, 100);
+    let eval7  = new Evaluation ("Deliverable 3", new Date(), 60, "COMP3004", true, 90);
     let eval8  = new Evaluation ("Deliverable 4", new Date(), 20, "COMP3004");
 
     let eval9  = new Evaluation ("Test1", new Date(), 50, "PHIL1200");
