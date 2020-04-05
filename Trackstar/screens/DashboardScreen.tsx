@@ -99,14 +99,14 @@ const HomeScreen = props => {
       <Modal isVisible={modalActive} hasBackdrop={true}>
         <View
           style={{
-            height: "55%",
-            // marginBottom: 40,
+            marginTop: 40,
+            marginBottom: 40,
             backgroundColor: "white",
             justifyContent: "center",
             alignItems: "center"
           }}
         >
-          <Card.Content style={{marginTop: "10%"}}>
+          <Card.Content>
             <Text style={iOSUIKit.largeTitleEmphasized}>Complete task</Text>
             <Text style={iOSUIKit.subheadEmphasized}>
               {taskBeingCompleted.task.title}
@@ -135,7 +135,7 @@ const HomeScreen = props => {
                 Submit
               </Button>
               <Button
-                style={{ marginTop: 20, backgroundColor: "red" }}
+                style={{ marginTop: 20 }}
                 mode="contained"
                 onPress={() => {
                   setModalActive(false);
