@@ -58,6 +58,9 @@ const CoursesDashboard = props => {
         flex: 1,
       }}
     >
+      <Text style={{ fontSize: 45, color: "white", textAlign: "center", marginTop: "20%" }}>
+          My Courses
+      </Text>
     <View style={{
       flexDirection: "column",
       width: "100%",
@@ -65,9 +68,11 @@ const CoursesDashboard = props => {
       paddingTop: 10,
       paddingRight: 10
     }}>
-      <Text>Show Completed</Text>
+
+      <Text style={{color: "white"}}>Show Completed</Text>
       <Switch
         value={showComplete}
+        color="#5273eb"
         onValueChange={() => {
           setShowComplete(!showComplete);
           const formattedCourses = formatData(!showComplete).then(data => {
@@ -83,7 +88,7 @@ const CoursesDashboard = props => {
         justifyContent: "space-around",
         alignItems: "center",
         paddingTop: 10,
-        maxHeight: "85%"
+        maxHeight: "75%"
     }}>
       <ScrollView style={{}}>
         {coursesMarkup}
@@ -95,8 +100,9 @@ const CoursesDashboard = props => {
               props.navigation.navigate("Add");
             }}
             mode="contained"
+            style={{backgroundColor: "#bcf7ed"}}
           >
-            Add Course
+            <Text style={{color: "#5273eb"}}>Add Course</Text>
           </Button>
         </View>
       </View>
