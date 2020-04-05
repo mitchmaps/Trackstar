@@ -171,18 +171,16 @@ export default class CourseCreate extends React.Component {
     ) : null;
 
     return (
-      <View style={{flex: 1, alignSelf: "stretch"}}>
+      <View style={{flex: 1, alignSelf: "stretch", marginTop: "15%"}}>
         <ScrollView style={{
-          height: 80,
-          alignSelf: "stretch",
-          padding: 20,
+          paddingHorizontal: 20,
         }}>
           <Text style={iOSUIKit.largeTitleEmphasized}>Add course</Text>
           {courseInfo}
           <Divider />
           {evalCreationMarkup}
           {weightWarning}
-          <View style={styles.buttonMargin}>
+          <View style={styles.submitButtonMargin}>
             <Button mode="contained" onPress={this.handleSubmit} disabled={this.state.currTotalGradeWeight > 100 || this.state.currTotalGradeWeight < 100}>Submit</Button>
           </View>
         </ScrollView>
