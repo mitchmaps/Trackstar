@@ -135,7 +135,7 @@ export default function CourseView(props) {
 
   const tasksMarkup =
     filteredTasks.length > 0 ? (
-      generateTaskMarkup(filteredTasks, props)
+      generateTaskMarkup(filteredTasks, courseEvals, props)
     ) : (
       <View>
         <Text>You haven't added any tasks yet.</Text>
@@ -434,16 +434,18 @@ function filterTasks(evaluations: Evaluation[], allTasks: Task[]) {
   return courseTasks;
 }
 
-function generateTaskMarkup(tasks: Task[], props) {
+function generateTaskMarkup(tasks: Task[], evals: Evaluation[], props) {
   const { code, name, minGrade } = props.route.params;
 
   return tasks.reduce((allTasks, currTask) => {
-    const { id, title, due_date, est_duration } = currTask;
+    const { id, title, due_date, est_duration, evaluation_id} = currTask;
 
     const formattedDate = new Date(due_date);
     const subTitle = `Due on ${formattedDate.toDateString()}`;
     const daysUntil = determineDaysUntilEval(formattedDate);
     const badgeText = `In ${daysUntil} days`;
+    const evalTitle = evals.find((evaluation) => {return evaluation.id == evaluation_id}).title
+
 
     const badgeColor =
       daysUntil > 10
@@ -499,8 +501,11 @@ function generateTaskMarkup(tasks: Task[], props) {
                 justifyContent: "space-around",
               }}
             >
-              <View>
+              <View style={{flex: 1}}>
                 <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
+                <Text
+                  style={{ color: "#aaaaaa" }}
+                >{evalTitle}</Text>
                 <Text
                   style={{ color: "#aaaaaa" }}
                 >{`Estimated to take ${est_duration} minutes`}</Text>

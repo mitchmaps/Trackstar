@@ -56,7 +56,7 @@ export default class TaskCreate extends React.Component {
       <Card>
         <Card.Content>
           <Text>Select the evaluation this task is for:</Text>
-          <Text style={{color: '#7c7c7c', marginTop: 5}}>{ `Select 'General tasks' to create tasks that aren't linked to any specific evaluation but are still relevant to ${courseCode}`}</Text>
+          <Text style={{color: '#7c7c7c', marginTop: 5}}>{ "Select 'General tasks' if this isn't linked to any specific evaluation."}</Text>
           <Picker selectedValue={this.state.selectedEval} onValueChange={(itemValue, itemIndex) => {this.setState({selectedEval: itemValue})}}>
             {evalSelectionMarkup}
           </Picker>
@@ -68,7 +68,7 @@ export default class TaskCreate extends React.Component {
 
             }}
           />
-          <Text style={{paddingTop: 20}}>Task due date</Text>
+          <Text style={{paddingTop: 20}}>When would you like to have this done by?</Text>
 
 
           { Platform.OS === 'ios' ?
@@ -111,15 +111,16 @@ export default class TaskCreate extends React.Component {
           />
         }
 
-       <Text> {User.getInstance().estimationAccuracy >= 100 ? `Heads up! You typically overestimate by about ${(Math.floor(User.getInstance().estimationAccuracy-100))}%`
-       : `Heads up! You typically underestimate by about ${Math.floor(Math.abs(User.getInstance().estimationAccuracy))}%` }
-       </Text>
        <TextInput
-            label="Estimated time needed in minutes"
-            keyboardType="numeric"
-            onChangeText={(text) => {this.setState({duration: text})}}
-            value={duration}
-          />
+          label="Estimated time needed in minutes"
+          keyboardType="numeric"
+          onChangeText={(text) => {this.setState({duration: text})}}
+          value={duration}
+        />
+        <Text>
+          {User.getInstance().estimationAccuracy >= 100 ? `Heads up! You typically overestimate by about ${(Math.floor(User.getInstance().estimationAccuracy-100))}%`
+            : `Heads up! You typically underestimate by about ${Math.floor(Math.abs(User.getInstance().estimationAccuracy))}%` }
+       </Text>
         </Card.Content>
       </Card>
     );
