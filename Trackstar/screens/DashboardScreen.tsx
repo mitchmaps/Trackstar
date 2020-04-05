@@ -159,7 +159,7 @@ const HomeScreen = props => {
           Welcome Back!
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Next Evaluation: COPM 3004 - Deliverable 4
+          Next Evaluation: COMP 3004 - Deliverable 4
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
           Due April 5th

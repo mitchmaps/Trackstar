@@ -77,6 +77,7 @@ export default class Database {
 
     let eval9  = new Evaluation ("Test1", new Date(), 50, "PHIL1200");
     let eval10  = new Evaluation ("Test2", new Date(), 50, "PHIL1200");
+    let eval11  = new Evaluation ("Final Exam", new Date(), 100, "SOCI1001");
 
     evalMapper.insert(eval1)
     evalMapper.insert(eval2)
@@ -88,18 +89,20 @@ export default class Database {
     evalMapper.insert(eval8)
     evalMapper.insert(eval9)
     evalMapper.insert(eval10)
+    evalMapper.insert(eval11)
   }
 
   static populateTaskTable = () => {
     let taskMapper: TaskMapper = new TaskMapperImpl
 
     let task1  = new Task ("Make demo video", new Date(2020, 3, 5, 14, 0, 0, 0), 30, 0, 8, false, 1);
-    let task2  = new Task ("Edit demo video", new Date(2020, 3, 5, 15, 0, 0, 0), 30, 0, 8, false, 2); // change date
+    let task2  = new Task ("Edit demo video", new Date(2020, 3, 5, 14, 15, 0, 0), 30, 0, 8, false, 2); // edit
     let task3  = new Task ("Prep for presentation", new Date(2020, 3, 7, 17, 0, 0, 0), 360, 0, 8, false, 3);
     let task4  = new Task ("Analyze questionnaire data", new Date(2020, 3, 7, 17, 0, 0, 0), 30, 0, 2, false, 4);
-    let task5  = new Task ("Study unit 1", new Date(2020, 3, 10, 17, 0, 0, 0), 120, 0, 10, false, 5);
-    let task6  = new Task ("Study unit 2", new Date(2020, 3, 12, 17, 0, 0, 0), 120, 0, 10, false, 6);
-    let task7  = new Task ("Make flashcards", new Date(2020, 3, 15, 17, 0, 0, 0), 30, 0, 7, false, 7);
+    let task8  = new Task ("Study Unit 1", new Date(2020, 3, 19, 18, 0, 0, 0), 30, 0, 11, false, 5);
+    let task5  = new Task ("Study unit 1", new Date(2020, 3, 10, 17, 0, 0, 0), 120, 0, 10, false, 6);
+    let task6  = new Task ("Study unit 2", new Date(2020, 3, 12, 17, 0, 0, 0), 120, 0, 10, false, 7);
+    let task7  = new Task ("Make flashcards", new Date(2020, 3, 15, 17, 0, 0, 0), 30, 0, 7, false, 8);
 
     taskMapper.insert(task1)
     taskMapper.insert(task2)
@@ -108,6 +111,7 @@ export default class Database {
     taskMapper.insert(task5)
     taskMapper.insert(task6)
     taskMapper.insert(task7)
+    taskMapper.insert(task8)
   }
 
   static deleteCourseData = () => {

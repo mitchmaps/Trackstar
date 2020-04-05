@@ -29,8 +29,8 @@ export default class CalendarHelper {
       if (status === 'granted') {
         Calendar.createReminderAsync(null, {
           title: task.title,
-          startDate: task.due_date,
-          dueDate: task.due_date,
+          startDate: new Date(task.due_date.getTime() - task.est_duration * 60000), // due_date minus est_time,
+          dueDate: new Date(task.due_date.getTime() - task.est_duration * 60000),
         })
       }
       else {
