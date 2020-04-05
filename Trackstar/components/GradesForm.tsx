@@ -121,7 +121,7 @@ export default class GradesForm extends React.Component {
     }
     else if (this.state.grade_info.curr_weight == 100) {
       Alert.alert(
-        `Current average grade: ${this.state.grade_info.curr_grade}%\nCombined weight: ${this.state.grade_info.curr_weight}%`,
+        `Current average grade: ${this.state.grade_info.curr_grade}%\n`,
         `You have already completed 100% of the weight for this course`,
         [
           {
