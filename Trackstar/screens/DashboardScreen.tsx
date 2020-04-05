@@ -4,7 +4,6 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  SectionList,
   StyleSheet
 } from "react-native";
 import { Card, TextInput, Button } from "react-native-paper";
@@ -139,14 +138,14 @@ const HomeScreen = props => {
       <Modal isVisible={modalActive} hasBackdrop={true}>   
         <View
           style={{
-            marginTop: 40,
-            marginBottom: 40,
+            height: "55%",
+            // marginBottom: 40,
             backgroundColor: "white",
             justifyContent: "center",
             alignItems: "center"
           }}
         >
-          <Card.Content>
+          <Card.Content style={{marginTop: "10%"}}>
             <Text style={iOSUIKit.largeTitleEmphasized}>Complete task</Text>
             <Text style={iOSUIKit.subheadEmphasized}>
               {taskBeingCompleted.task.title}
@@ -173,6 +172,15 @@ const HomeScreen = props => {
                 }}
               >
                 Submit
+              </Button>
+              <Button
+                style={{ marginTop: 20, backgroundColor: "red" }}
+                mode="contained"
+                onPress={() => {
+                  setModalActive(false);
+                }}
+              >
+                Cancel
               </Button>
             </View>
           </Card.Content>

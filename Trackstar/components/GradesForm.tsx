@@ -17,6 +17,7 @@ export default class GradesForm extends React.Component {
     grade_info: GradeInfo,
     courses: Course[],
     courseCodes: [{}],
+    TextInputValue: number,
   }
 
   constructor(props) {
@@ -32,6 +33,7 @@ export default class GradesForm extends React.Component {
       grade_info: null,
       courses: [],
       courseCodes: [{}],
+      TextInputValue: null,
     }
 
     this.get_courses();
@@ -53,40 +55,55 @@ export default class GradesForm extends React.Component {
   }
 
   field(row_id) {
-    console.log ("row_id: " + row_id + " grades_and_weights_length: " + this.state.grades_and_weights.length);
-
-
     const grade_index = 0;
     const weight_index = 1;
 
+    // set all boxes to 0 for the courses that do not have enough evaluations
+    let grade_value = 0;
+    let weight_value = 0;
+
     if(row_id < this.state.grades_and_weights.length)
     {
-    console.log ("grade: " + this.state.grades_and_weights[row_id][0]);
-    console.log ("weight: " + this.state.grades_and_weights[row_id][1]);
-      return(<View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-        {/*add the keyboardtype numeric!*/}
-        <TextInput
-          style={{ height: 30, width: 40, backgroundColor:'white', borderColor: 'gray', borderWidth: 1}}
-          onChangeText={text => this.update_array(row_id, grade_index, text)}
-          value={(this.state.grades_and_weights[row_id][0]).toString()}
-        /> 
-        <TextInput
-          style={{ height: 30, width: 40, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
-          onChangeText={text => this.update_array(row_id, weight_index, text)}
-          value={(this.state.grades_and_weights[row_id][1]).toString()}
-        />
-      </View>);
+      grade_value = this.state.grades_and_weights[row_id][0]
+      weight_value = this.state.grades_and_weights[row_id][1]
     }
-    else{
-      return(<View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-        {/*add the keyboardtype numeric!*/}
+
+    else
+    {
+      this.update_array(row_id, grade_index, '0');
+      this.update_array(row_id, weight_index, '0');
+    }
+
+
+    return(
+
+      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
         <TextInput
+        autoCapitalize = {'characters'}
+          placeholder="Enter text"
           style={{ height: 30, width: 40, backgroundColor:'white', borderColor: 'gray', borderWidth: 1}}
-        /> 
-        <TextInput
-          style={{ height: 30, width: 40, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
+          onChangeText={text => {
+            if(text.length===0)
+              this.update_array(row_id, grade_index, '0');
+            else
+              this.update_array(row_id, grade_index, text)}
+          }
+          value={grade_value.toString()}
         />
-      </View>)}
+        <TextInput
+        autoCapitalize = {'characters'}
+          style={{ height: 30, width: 40, borderColor: 'gray', backgroundColor:'white', borderWidth: 1}}
+          onChangeText={text => {
+            if(text.length===0)
+              this.update_array(row_id, weight_index, '0');
+            else
+              this.update_array(row_id, weight_index, text)}
+          }
+          value={weight_value.toString()}
+        />
+      </View>
+    );
+
   }
 
   handle_submit() {
@@ -102,7 +119,17 @@ export default class GradesForm extends React.Component {
         ]
       )
     }
-
+    else if (this.state.grade_info.curr_weight == 100) {
+      Alert.alert(
+        `Current average grade: ${this.state.grade_info.curr_grade}%\n`,
+        `You have already completed 100% of the weight for this course`,
+        [
+          {
+            text: 'Back'
+          }
+        ]
+        )
+    }
     else {
       Alert.alert(
       `Current average grade: ${this.state.grade_info.curr_grade}%\nCombined weight: ${this.state.grade_info.curr_weight}%`,
@@ -118,43 +145,39 @@ export default class GradesForm extends React.Component {
 
 
   get_courses(){
-    console.log("get courses is called");
     const courseMapper: CourseMapper = new CourseMapperImpl;
     let courseList = this.state.courseCodes;
     // get courses from database
     courseMapper.all(true).then(elements=>{
       // update state variable with all the course codes
       elements.forEach(course=>{
-        courseList.push({value: course.code}) 
+        courseList.push({value: course.code})
       })
       courseList.push({value: 'none'})
     })
     courseList.shift();
-    // this.setState({courseCodes: courseList});
   }
-
-  /* The calculations are done in GradesCalculator.tsx now*/
 
   render() {
     return (
       <LinearGradient
-      colors={["#bcf7ed", "#5273eb"]}
-      style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around'}}>
+        colors={["#bcf7ed", "#5273eb"]}
+        style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around'}}
+      >
 
-        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-          <Text style={{fontSize: 20, textAlign: "center", textAlignVertical: "center"}}>Grade Calculator</Text>
-          
-          
+        <View style={{flexDirection: 'column', justifyContent: 'space-around', alignItems: "center"}}>
+          <Text style={{fontSize: 45, color: "white", textAlign: "center", marginTop: "15%"}}>Grade Calculator</Text>
           <Dropdown
             label="Course Selection"
             data={this.state.courseCodes}
-            containerStyle={{width:150}}
+            value={"none"}
+            containerStyle={{top:20, width:150}}
+
             onChangeText={value=>{
-              console.log("\n\n\ndifferent course selected: " + value);
               const evalMapper : EvaluationMapper = new EvaluationMapperImpl;
               let newGradeWeight = []; // new grades_and_weight 2d array to be passed back
               evalMapper.findByCourse(value).then(evals=>{ // get all the evaluations associated with the selected course
-                evals.forEach(singleEval=>{ 
+                evals.forEach(singleEval=>{
                   newGradeWeight.push([singleEval.grade, singleEval.weight]);
                 })
                 return newGradeWeight;
@@ -167,28 +190,23 @@ export default class GradesForm extends React.Component {
                 })
               })
             }}
-            
+
           />
         </View>
-        {/* Course selector */} 
-        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}> 
-          <Text>Grade</Text>
-          <Text>Weight</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <Text style={{color: "white"}}>Grade</Text>
+          <Text style={{color: "white"}}>Weight</Text>
         </View>
-        {this.state.grades_and_weights.length > 1 ? this.state.grades_and_weights.forEach( e => {console.log(e[0])}) : console.log("not called yet")}
         {/*Figure out how to loop instead*/}
         {this.field(0)}
         {this.field(1)}
         {this.field(2)}
-        {this.field(3)}  
+        {this.field(3)}
         {this.field(4)}
-        {/*{this.field(5)}
-        {this.field(6)}
-        {this.field(7)} */}
 
         <View style={{alignItems: 'center'}}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}> 
-          <Text>Desired grade: </Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 20}}>
+          <Text style={{color: "white"}}>Desired grade: </Text>
             <TextInput
               style={{ height: 30, width: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'white'}}
               onChangeText={text => this.setState({ desired_grade: text})}
@@ -196,14 +214,14 @@ export default class GradesForm extends React.Component {
             />
           </View>
           <View style={{paddingBottom: 20}}>
-            <TouchableOpacity style={{width: 100, backgroundColor: '#5273eb', paddingVertical: 8, paddingHorizontal: 16, borderRadius: 4}} onPress={this.handle_submit}>
-              <Text style={{color: "white"}}>Calculate</Text>
+            <TouchableOpacity style={{width: 100, backgroundColor: '#bcf7ed', paddingVertical: 8, paddingHorizontal: 16, borderRadius: 4}} onPress={this.handle_submit}>
+              <Text style={{color: "#5273eb"}}>Calculate</Text>
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={{width: 120, backgroundColor: "red", paddingVertical: 8, paddingHorizontal: 16, borderRadius: 4}} onPress={this.clear_fields}>
+          {/* <TouchableOpacity style={{width: 120, backgroundColor: "red", paddingVertical: 8, paddingHorizontal: 16, borderRadius: 4}} onPress={this.clear_fields}>
             <Text style={{color: "white"}}>Clear Fields</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </LinearGradient>
     )

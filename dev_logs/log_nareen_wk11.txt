@@ -1,0 +1,20 @@
+Nareen Khurshid
+101029589
+
+Final Implementations
+----------------------------------------------
+-Received feedback from group members about dashboardscreen/home screen
+-collaborated with and discussed display of Next Due Evaluation with HaoHao
+ no more hard coded data, use datamappers and a state variable
+-received guidance on datamappers
+-What will the app look like for a new user
+-worked on dashboard sceen/home and courses dashboard
+-made pull request for new alerts on home screen and courses screen
+-app shouldn't crash when there are no courses/evaluations
+-error alerts for when there are no courses pr
+-made use of gaby's find() and all() datamappers for courses and evaluations
+
+Things that didn't work that do now thanks to other group members
+-Making new tasks on android phone
+-app no longer crashes on my android phone
+-calendar now works on android 

@@ -4,7 +4,8 @@ import { Evaluation } from '.';
 
 export default class TaskPrioritizer{
 
-    prioritize(t: Task[]) {
+    prioritize = (t: Task[]) => {
+        console.log("prioritize is called");
 
         let returnValue = [];
         let sortList = []; // take all priority values and put them into a list, to be sorted
@@ -13,39 +14,52 @@ export default class TaskPrioritizer{
         let DueDate;
         let priorityCounter = 0;
 
-        // let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
+        let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
+        let currentEval: Evaluation;
+        
+        // have an 'evals' variable that will be used to represent all evaluations
+        evalMapper.all().then(evals=>{
+            
+            // loop through all the task elements that were past in
+            t.forEach(task_element=>{
+ 
+                // find associated evaluation element
+                evals.forEach(evaluation_element=>{
+                    if(evaluation_element.id === task_element.evaluation_id){
+                        currentEval = evaluation_element;
+                    };
+                });
 
-        for (let index = 0; index < t.length; index++) {
+                DueDate = this.date_diff_indays(new Date(),task_element.due_date); 
 
-            priorityCounter = 0;
+                // calculate priority
+                priorityCounter += this.due_date_levels(DueDate);
+                priorityCounter += this.duration_levels(task_element.est_duration);
+                priorityCounter += this.weighting_levels(currentEval.weight);
+                priorityCounter/=3.0000;
 
-            // find metrics to be later put into buckets
-            DueDate = this.date_diff_indays(new Date(),t[index].due_date);
-            // let evaluation: Evaluation = evalMapper.find(t[index].evaluation_id);
+                // pass in the priority values into a list , and then priority + the task objects into a map so that we can retrieve the task objects later
+                sortList = this.insertList(sortList, priorityCounter);
+                mappingList = this.insertKey(mappingList, parseFloat(priorityCounter.toFixed(5)), task_element)
+            })
+            console.log("evaluation mappers finished");
+        }).then(()=>{ 
+            
+            // after all elements have been inserted into lists, continue on with functionality 
+            // start by sorting our (priorityList)
+            sortList = sortList.sort(function(a,b){return b-a});
+            console.log("this is the sorted list " + sortList);
 
-            // calculate priority
-            priorityCounter += this.due_date_levels(DueDate)
-            priorityCounter += this.duration_levels(t[index].est_duration)
-            // priorityCounter += this.weighting_levels(evaluation.weight);
-            // priorityCounter/=3.0000;
-            priorityCounter/=2.0000;
-
-            // pass in the priority values into a list , and then priority + the task objects into a map
-            sortList = this.insertList(sortList, priorityCounter);
-            mappingList = this.insertKey(mappingList, parseFloat(priorityCounter.toFixed(5)), t[index])
-        }
-
-        // sort the priority values list
-        sortList = sortList.sort(function(a,b){return b-a});
-
-        // populate a new sorted list of tasks based off of our sorted list
-        // use our sorted list values as keys to retrieve the actual task objects
-        sortList.forEach(element => {
-            returnValue.push(mappingList.get(element))
-        });
-
-        // return the sorted tasks list as well
-        return returnValue;
+            // populate a new sorted list of tasks based off of our sorted list
+            // use our sorted list values as keys to retrieve the actual task objects
+            sortList.forEach(element => {
+                returnValue.push(mappingList.get(element))
+            });
+            
+            console.log("about to return prioritized list");
+            // return the sorted tasks list as well
+            return returnValue;
+        })
     }
 
 
