@@ -44,13 +44,22 @@ export default class Database {
     let course2  = new Course ("Database Management Systems", "COMP3005", 90);
     let course3  = new Course ("Human Computer Interaction", "COMP3008", 80);
     let course4  = new Course ("The Meaning of Life", "PHIL1200", 90);
-    let course5  = new Course ("Complete", "COMP1200", 90, 92, true);
+    let course5  = new Course ("Intro to Software Engineering", "COMP2404", 90, 92, true);
+    let course6  = new Course ("Abstract Data Types and Algorithms", "COMP2402", 90, 92, true);
+    let course7  = new Course ("Discrete Structures II", "COMP2804", 90, 92, true);
+    let course8  = new Course ("Intro to Systems Programming", "COMP2401", 90, 92, true);
+    let course9  = new Course ("Linear Algebra", "MATH 1107", 90, 92, true);
+
 
     courseMapper.insert(course1)
     courseMapper.insert(course2)
     courseMapper.insert(course3)
     courseMapper.insert(course4)
     courseMapper.insert(course5)
+    courseMapper.insert(course6)
+    courseMapper.insert(course7)
+    courseMapper.insert(course8)
+    courseMapper.insert(course9)
   }
 
   static populateEvalTable = () => {
@@ -61,14 +70,13 @@ export default class Database {
     let eval3  = new Evaluation ("Midterm", new Date(), 20, "COMP3008");
     let eval4  = new Evaluation ("Final", new Date(), 40, "COMP3008");
 
-    let eval5  = new Evaluation ("Deliverable 1", new Date(), 5, "COMP3004");
-    let eval6  = new Evaluation ("Deliverable 2", new Date(), 5, "COMP3004");
-    let eval7  = new Evaluation ("Deliverable 3", new Date(), 30, "COMP3004");
-    let eval8  = new Evaluation ("Deliverable 4", new Date(), 10, "COMP3004");
-    let eval9  = new Evaluation ("Deliverable 5", new Date(), 50, "COMP3004");
+    let eval5  = new Evaluation ("Deliverable 1", new Date(), 10, "COMP3004", true, 100);
+    let eval6  = new Evaluation ("Deliverable 2", new Date(), 10, "COMP3004", true, 100);
+    let eval7  = new Evaluation ("Deliverable 3", new Date(), 60, "COMP3004", true, 100);
+    let eval8  = new Evaluation ("Deliverable 4", new Date(), 20, "COMP3004");
 
-    let eval10  = new Evaluation ("Test1", new Date(), 50, "PHIL1200");
-    let eval11  = new Evaluation ("Test2", new Date(), 50, "PHIL1200");
+    let eval9  = new Evaluation ("Test1", new Date(), 50, "PHIL1200");
+    let eval10  = new Evaluation ("Test2", new Date(), 50, "PHIL1200");
 
     evalMapper.insert(eval1)
     evalMapper.insert(eval2)
@@ -80,19 +88,18 @@ export default class Database {
     evalMapper.insert(eval8)
     evalMapper.insert(eval9)
     evalMapper.insert(eval10)
-    evalMapper.insert(eval11)
-
   }
 
   static populateTaskTable = () => {
     let taskMapper: TaskMapper = new TaskMapperImpl
 
-    let task1  = new Task ("Study unit 1", new Date(), 120, 0, 10, false, 1);
-    let task2  = new Task ("Study unit 2", new Date(), 120, 0, 10, false, 2);
-    let task3  = new Task ("Brainstorm project ideas", new Date(), 30, 0, 2, false, 3);
-    let task4  = new Task ("Make class diagram", new Date(), 30, 0, 7, false, 4);
-    let task5  = new Task ("Make sequence diagram", new Date(), 30, 0, 7, false, 5);
-    let task6  = new Task ("Write pseudocode", new Date(), 30, 0, 2, true, 6);
+    let task1  = new Task ("Make demo video", new Date(2020, 3, 5, 14, 0, 0, 0), 30, 0, 8, false, 1);
+    let task2  = new Task ("Edit demo video", new Date(2020, 3, 5, 15, 0, 0, 0), 30, 0, 8, false, 2); // change date
+    let task3  = new Task ("Prep for presentation", new Date(2020, 3, 7, 17, 0, 0, 0), 360, 0, 8, false, 3);
+    let task4  = new Task ("Analyze questionnaire data", new Date(2020, 3, 7, 17, 0, 0, 0), 30, 0, 2, false, 4);
+    let task5  = new Task ("Study unit 1", new Date(2020, 3, 10, 17, 0, 0, 0), 120, 0, 10, false, 5);
+    let task6  = new Task ("Study unit 2", new Date(2020, 3, 12, 17, 0, 0, 0), 120, 0, 10, false, 6);
+    let task7  = new Task ("Make flashcards", new Date(2020, 3, 15, 17, 0, 0, 0), 30, 0, 7, false, 7);
 
     taskMapper.insert(task1)
     taskMapper.insert(task2)
@@ -100,6 +107,7 @@ export default class Database {
     taskMapper.insert(task4)
     taskMapper.insert(task5)
     taskMapper.insert(task6)
+    taskMapper.insert(task7)
   }
 
   static deleteCourseData = () => {

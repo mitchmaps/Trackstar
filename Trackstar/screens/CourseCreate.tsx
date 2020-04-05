@@ -117,7 +117,7 @@ export default class CourseCreate extends React.Component {
                 onChangeText={(text) => {this.setState({currEvalWeight: text})}}
                 value={this.state.currEvalWeight}
               />
-              { Platform.OS === 'ios' ? 
+              { Platform.OS === 'ios' ?
               <DateTimePicker
                 testID="dateTimePicker"
                 timeZoneOffsetInMinutes={0}
@@ -171,18 +171,16 @@ export default class CourseCreate extends React.Component {
     ) : null;
 
     return (
-      <View style={{flex: 1, alignSelf: "stretch"}}>
+      <View style={{flex: 1, alignSelf: "stretch", marginTop: "15%"}}>
         <ScrollView style={{
-          height: 80,
-          alignSelf: "stretch",
-          padding: 20,
+          paddingHorizontal: 20,
         }}>
           <Text style={iOSUIKit.largeTitleEmphasized}>Add course</Text>
           {courseInfo}
           <Divider />
           {evalCreationMarkup}
           {weightWarning}
-          <View style={styles.buttonMargin}>
+          <View style={styles.submitButtonMargin}>
             <Button mode="contained" onPress={this.handleSubmit} disabled={this.state.currTotalGradeWeight > 100 || this.state.currTotalGradeWeight < 100}>Submit</Button>
           </View>
         </ScrollView>
@@ -195,7 +193,7 @@ export default class CourseCreate extends React.Component {
     const newCourse = new Course(this.state.title, this.state.code, +this.state.minGrade);
     courseMapper.insert(newCourse);
 
-    this.props.navigation.navigate("Dashboard", {
+    this.props.navigation.navigate("My Courses", {
       code: newCourse.code,
       name: newCourse.title,
       minGrade: newCourse.min_grade,
