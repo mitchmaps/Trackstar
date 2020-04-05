@@ -32,7 +32,7 @@ than I had originally anticipated to use, as described in the D3 interview I was
 they had originally returned a promise, I barely knew what promises were or what asynchronous coding was
 but after *having* to learn these concepts in order to utilize the data mappers it was all in all 
 a really great learning experience (some of the things I thought were interesting was how I had to 
-learn things such as promise chaining, callbacks, I definitely mastered arrow functions, and many more !)
+learn things such as promise chaining, callbacks, I definitely mastered arrow functions, and many more !) 
 
 - I also utilized my first case of peer / pair programming  , where I worked with our team member
 Nareen in order to implement a Next Evaluation functionality in our home screen. During this time
