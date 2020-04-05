@@ -111,8 +111,8 @@ export default class TaskCreate extends React.Component {
           />
         }
 
-       <Text> {User.getInstance().estimationAccuracy >= 100 ? `Heads up: you typically overestimate by about ${(User.getInstance().estimationAccuracy-100).toFixed(2)}%`
-       : `Heads up: you typically underestimate by about ${Math.abs(User.getInstance().estimationAccuracy).toFixed(2)}%` }}
+       <Text> {User.getInstance().estimationAccuracy >= 100 ? `Heads up! You typically overestimate by about ${(Math.floor(User.getInstance().estimationAccuracy-100))}%`
+       : `Heads up! You typically underestimate by about ${Math.floor(Math.abs(User.getInstance().estimationAccuracy))}%` }
        </Text>
        <TextInput
             label="Estimated time needed in minutes"
@@ -125,7 +125,7 @@ export default class TaskCreate extends React.Component {
     );
 
     return (
-      <View style={{ flex: 1, alignSelf: "stretch" }}>
+      <View style={{ flex: 1, alignSelf: "stretch", marginTop: "15%" }}>
         <ScrollView
           style={{
             height: 80,
@@ -135,7 +135,9 @@ export default class TaskCreate extends React.Component {
         >
           <Text style={iOSUIKit.largeTitleEmphasized}>Create new task</Text>
           {taskDetailsMarkup}
-          <Button mode="contained" onPress={this.handleSubmit}>Submit</Button>
+          <View style={{margin: 30}}>
+            <Button mode="contained" onPress={this.handleSubmit}>Submit</Button>
+          </View>
         </ScrollView>
       </View>
     );
