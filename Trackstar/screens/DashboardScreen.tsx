@@ -43,7 +43,7 @@ const HomeScreen = props => {
 
 
   const [nextCourseCode, setNextCourseCode] = useState("");  //for evaluation display
-  const [nextEvalDueDate, setNextEvalDueDate] = useState("n/a");
+  const [nextEvalDueDate, setNextEvalDueDate] = useState("n/a"); //if you change this string you have to change alert if ("")
   const [nextEvalTitle, setNextEvalTitle] = useState("no evaluations coming up");
 	
   const taskDataRef = useRef(formattedTaskData);
