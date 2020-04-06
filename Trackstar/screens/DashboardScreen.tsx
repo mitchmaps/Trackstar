@@ -5,7 +5,6 @@ import {
   Alert,
   ScrollView,
   TouchableOpacity,
-  SectionList,
   StyleSheet
 } from "react-native";
 import { Card, TextInput, Button } from "react-native-paper";
@@ -37,16 +36,17 @@ const HomeScreen = props => {
   );
   const [fakeState, setFakeState] = useState(new Date());
   const [modalActive, setModalActive] = useState(false);
-
-  // to be added: 
-  const [nextCourseCode, setNextCourseCode] = useState("Temporary Evaluation Course Code");  //for evaluation display
-  const [nextEvalDueDate, setNextEvalDueDate] = useState("Temporary Evaluation Due Date");
-  const [nextEvalTitle, setNextEvalTitle] = useState("Temporary Evaluation Title");
-
   const [taskBeingCompleted, setTaskBeingCompleted] = useState<TaskDescriptor>(
     null
   );
   const [currActualDuration, setCurrActualDuration] = useState("");
+
+  const [nextCourseCode, setNextCourseCode] = useState("Temporary Evaluation Course Code");  //for evaluation display
+  const [nextEvalDueDate, setNextEvalDueDate] = useState("Temporary Evaluation Due Date");
+  const [nextEvalTitle, setNextEvalTitle] = useState("Temporary Evaluation Title");
+
+
+
 
   const taskDataRef = useRef(formattedTaskData);
   const setTaskData = data => {
@@ -102,7 +102,6 @@ const HomeScreen = props => {
     handleTaskSelection
   );
 
-  // get the next evaluation 
   function getNextEval(){
     const taskMapper: TaskMapper = new TaskMapperImpl();
     const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
@@ -113,21 +112,14 @@ const HomeScreen = props => {
     let currentEval: Evaluation;
   
     evalMapper.all().then(evals=>{ // get all evaluations for user
-      return evals;
-    }).then( evals =>{
-      taskMapper.all(false).then(tasks=>{ // get all incompleted tasks for user
-       
-        tasks.forEach( tasks_element =>{ // loop through each task
-          evals.forEach( evals_element =>{ // for each task check which evaluation it maps to
-            if(tasks_element.evaluation_id ===  evals_element.id){
-              if(!evalList.has(evals_element)){
-                evalDDList.push(evals_element.due_date); // push evaluation due date to a list
-                evalList.set(evals_element.due_date, evals_element); // push evaluation due date and its respective evaluation to a map
-              }
+      
+        evals.forEach( evals_element =>{ // for each task check which evaluation it maps to
+            if(!(evals_element.complete)){
+              evalDDList.push(evals_element.due_date); // push evaluation due date to a list
+              evalList.set(evals_element.due_date, evals_element); // push evaluation due date and its respective evaluation to a map
             }
-          });
         });
-      }).then(()=>{
+
         evalDDList = evalDDList.sort((a,b)=>{return b.getTime()-a.getTime()}); // sort the evaluation due date list
         evalDDList.forEach(element=>{
           finalList.push(evalList.get(element)); // retrieve all the evaluation objects based off of due date and store them into a final list
@@ -138,34 +130,31 @@ const HomeScreen = props => {
         setNextEvalDueDate(currentEval.due_date.toDateString());
         setNextEvalTitle(currentEval.title);
       })
-    });
-  
   }
-
-
+	
   function checkForNoEvaluations(){
 	  if(nextEvalDueDate == "Temporary Evaluation Due Date"){
 		  return(
 		  Alert.alert(
-			  "You currently have no evaluations",
-			  "Please use the course screen to edit and add evaluations",
+			  "You don't have any tasks yet.",
+			  "You can create tasks from your course display screens, and they'll appear here in prioritized order.",
 			  [{text: 'Back'}]));}
   }
+	
 
-
-  const modalMarkup = 
+  const modalMarkup =
     taskBeingCompleted !== null ? (
-      <Modal isVisible={modalActive} hasBackdrop={true}>   
+      <Modal isVisible={modalActive} hasBackdrop={true}>
         <View
           style={{
-            marginTop: 40,
-            marginBottom: 40,
+            height: "55%",
+            // marginBottom: 40,
             backgroundColor: "white",
             justifyContent: "center",
             alignItems: "center"
           }}
         >
-          <Card.Content>
+          <Card.Content style={{marginTop: "10%"}}>
             <Text style={iOSUIKit.largeTitleEmphasized}>Complete task</Text>
             <Text style={iOSUIKit.subheadEmphasized}>
               {taskBeingCompleted.task.title}
@@ -193,27 +182,33 @@ const HomeScreen = props => {
               >
                 Submit
               </Button>
+              <Button
+                style={{ marginTop: 20, backgroundColor: "red" }}
+                mode="contained"
+                onPress={() => {
+                  setModalActive(false);
+                }}
+              >
+                Cancel
+              </Button>
             </View>
           </Card.Content>
         </View>
       </Modal>
     ) : null;
 
-	//	{getNextEval()} on line 199
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
       style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
     >
-      {getNextEval()}
-	  {checkForNoEvaluations()}
-
+    {checkForNoEvaluations()}
       <View style={{ flexDirection: "column", marginTop: 100 }}>
         <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
           Welcome Back!
-        </Text>
+          </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-			Next Evaluation: {nextCourseCode} - {nextEvalTitle}
+			    Next Evaluation: {nextCourseCode} - {nextEvalTitle}
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
           Due: {nextEvalDueDate}
@@ -225,7 +220,6 @@ const HomeScreen = props => {
       </ScrollView>
     </LinearGradient>
   );
-
 };
 
 function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
@@ -274,23 +268,19 @@ function generateTasksMarkup(tasks: TaskDescriptor[], handleModalChange) {
   return allTasks;
 }
 
-
-
 async function formatData() {
   const taskMapper: TaskMapper = new TaskMapperImpl();
   const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
   const courseMapper: CourseMapper = new CourseMapperImpl();
 
   const formattedData = [];
-
-  let evalDueDate = [];
-
   const rawData: Task[] = await taskMapper.all();
 
   for (let i = 0; i < rawData.length; i++) {
     const task = rawData[i];
     const evaluation: Evaluation = await evalMapper.find(task.evaluation_id);
     const course: Course = await courseMapper.find(evaluation.course_code);
+
 
     const taskInfo: TaskDescriptor = {
       task: task,
@@ -299,7 +289,6 @@ async function formatData() {
     };
 
     formattedData.push(taskInfo);
-    evalDueDate.push(evaluation.due_date);
     checkForNoEvaluations();
   }
 
