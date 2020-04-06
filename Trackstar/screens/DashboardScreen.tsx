@@ -130,6 +130,16 @@ const HomeScreen = props => {
         setNextEvalTitle(currentEval.title);
       })
   }
+	
+  function checkForNoEvaluations(){
+	  if(nextEvalDueDate == "Temporary Evaluation Due Date"){
+		  return(
+		  Alert.alert(
+			  "You currently have no evaluations",
+			  "Please use the course screen to edit and add evaluations",
+			  [{text: 'Back'}]));}
+  }
+	
 
   const modalMarkup =
     taskBeingCompleted !== null ? (
@@ -191,6 +201,7 @@ const HomeScreen = props => {
       colors={["#bcf7ed", "#5273eb"]}
       style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
     >
+    {checkForNoEvaluations()}
       <View style={{ flexDirection: "column", marginTop: 100 }}>
         <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
           Welcome Back!
@@ -277,6 +288,7 @@ async function formatData() {
     };
 
     formattedData.push(taskInfo);
+    checkForNoEvaluations();
   }
 
   return formattedData;
