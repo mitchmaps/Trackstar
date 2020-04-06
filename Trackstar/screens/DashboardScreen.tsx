@@ -136,8 +136,8 @@ const HomeScreen = props => {
 	  if(nextEvalDueDate == "Temporary Evaluation Due Date"){
 		  return(
 		  Alert.alert(
-			  "You currently have no evaluations",
-			  "Please use the course screen to edit and add evaluations",
+			  "You don't have any tasks yet.",
+			  "You can create tasks from your course display screens, and they'll appear here in prioritized order.",
 			  [{text: 'Back'}]));}
   }
 	
