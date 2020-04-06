@@ -65,8 +65,6 @@ export default class TaskPrioritizer{
             // populate a new sorted list of tasks based off of our sorted list
             // use our sorted list values as keys to retrieve the actual task objects
             sortList.forEach(element => {
-              console.log(element)
-              console.log(JSON.stringify(mappingList.get(element)))
               returnValue.push(mappingList.get(element))
             });
             // return the sorted tasks list as well
