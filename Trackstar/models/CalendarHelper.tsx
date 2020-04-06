@@ -29,7 +29,7 @@ export default class CalendarHelper {
       if (status === 'granted') {
         const newDate = new Date(task.due_date.getTime() - task.est_duration * 60000 + task.due_date.getTimezoneOffset() * 60000)
         const dateNoOffset = new Date(task.due_date.getTime() - task.est_duration * 60000)
-        const formattedDate = `${newDate.getFullYear()}-0${newDate.getMonth()+1}-0${newDate.getDate()}T${newDate.getHours()}:${newDate.getMinutes()}:00.000Z`
+        const formattedDate = `${newDate.getFullYear()}-${newDate.getMonth()+1}-${newDate.getDate()}T${newDate.getHours()}:${newDate.getMinutes()}:00.000Z`
 
         Calendar.createReminderAsync(null, {
           title: task.title,
