@@ -41,12 +41,9 @@ const HomeScreen = props => {
   );
   const [currActualDuration, setCurrActualDuration] = useState("");
 
-  const [nextCourseCode, setNextCourseCode] = useState("Temporary Evaluation Course Code");  //for evaluation display
-  const [nextEvalDueDate, setNextEvalDueDate] = useState("Temporary Evaluation Due Date");
-  const [nextEvalTitle, setNextEvalTitle] = useState("Temporary Evaluation Title");
-
-
-
+  const [nextCourseCode, setNextCourseCode] = useState("");  //for evaluation display
+  const [nextEvalDueDate, setNextEvalDueDate] = useState("");
+  const [nextEvalTitle, setNextEvalTitle] = useState("no evaluations coming up");
 
   const taskDataRef = useRef(formattedTaskData);
   const setTaskData = data => {
