@@ -32,19 +32,17 @@ export default class TaskEdit extends React.Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
 
-    const todayDate = new Date()
-
     this.state = {
       title: title,
       dueDate: dueDate,
       duration: duration,
-      dueDateYear: todayDate.getFullYear(),
-      dueDateMonth: todayDate.getMonth(),
-      dueDateDay: todayDate.getDate(),
-      dueDateHour: todayDate.getHours(),
-      dueDateMinute: todayDate.getMinutes(),
-      curDueDate: new Date(),
-      curDueDateTime: new Date(),
+      dueDateYear: dueDate.getFullYear(),
+      dueDateMonth: dueDate.getMonth(),
+      dueDateDay: dueDate.getDate(),
+      dueDateHour: dueDate.getHours(),
+      dueDateMinute: dueDate.getMinutes(),
+      curDueDate: dueDate,
+      curDueDateTime: dueDate,
       id: id,
     };
   }

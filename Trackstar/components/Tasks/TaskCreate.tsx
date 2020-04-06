@@ -81,15 +81,10 @@ export default class TaskCreate extends React.Component {
             mode={'date'}
             onChange={
               (event, selectedDate) => {
-                console.log(selectedDate)
-                console.log(selectedDate.getFullYear())
-                console.log(selectedDate.getMonth())
-                console.log(selectedDate.getDate())
-                console.log(selectedDate.getHours())
-
                 this.setState({curDueDate: selectedDate, dueDateYear: selectedDate.getFullYear(), dueDateMonth: selectedDate.getMonth(), dueDateDay: selectedDate.getDate()});
               }
             }
+            timeZoneOffsetInMinutes={0}
             display="default"/>
             <DateTimePicker
             testID="dateTimePicker"
@@ -112,6 +107,7 @@ export default class TaskCreate extends React.Component {
               this.setState({dueDate: selectedDate});
             }
           }
+          timeZoneOffsetInMinutes={0}
           androidMode='spinner'
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
@@ -158,11 +154,10 @@ export default class TaskCreate extends React.Component {
     let dueDate = this.state.dueDate;
     const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params.evals;
 
-    if (Platform.OS === "ios") {
-      console.log(dueDateYear)
-      dueDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
-      console.log("!!!!!!!!!!!!!!!!!!!!!")
-      console.log(dueDate)
+    if (Platform.OS === 'ios') {
+      const tempDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
+      dueDate = new Date(tempDate.getTime())
+      console.log(`Due date: ${dueDate}`)
     }
 
     const taskMapper: TaskMapper = new TaskMapperImpl();
