@@ -30,14 +30,16 @@ export default class TaskCreate extends React.Component {
     );
     this.handleSubmit = this.handleSubmit.bind(this);
 
+    const todayDate = new Date()
+
     this.state = {
       title: "",
       selectedEval: this.props.route.params.evals[0].id,
-      dueDateYear: 0,
-      dueDateMonth: 0,
-      dueDateDay: 0,
-      dueDateHour: 0,
-      dueDateMinute: 0,
+      dueDateYear: todayDate.getFullYear(),
+      dueDateMonth: todayDate.getMonth(),
+      dueDateDay: todayDate.getDate(),
+      dueDateHour: todayDate.getHours(),
+      dueDateMinute: todayDate.getMinutes(),
       curDueDate: new Date(),
       curDueDateTime: new Date(),
       dueDate: new Date(),
@@ -79,6 +81,12 @@ export default class TaskCreate extends React.Component {
             mode={'date'}
             onChange={
               (event, selectedDate) => {
+                console.log(selectedDate)
+                console.log(selectedDate.getFullYear())
+                console.log(selectedDate.getMonth())
+                console.log(selectedDate.getDate())
+                console.log(selectedDate.getHours())
+
                 this.setState({curDueDate: selectedDate, dueDateYear: selectedDate.getFullYear(), dueDateMonth: selectedDate.getMonth(), dueDateDay: selectedDate.getDate()});
               }
             }
@@ -151,7 +159,10 @@ export default class TaskCreate extends React.Component {
     const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params.evals;
 
     if (Platform.OS === "ios") {
+      console.log(dueDateYear)
       dueDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
+      console.log("!!!!!!!!!!!!!!!!!!!!!")
+      console.log(dueDate)
     }
 
     const taskMapper: TaskMapper = new TaskMapperImpl();
