@@ -27,13 +27,15 @@ export default class CalendarHelper {
     if (Platform.OS === 'ios') {
       const { status } = await Calendar.requestRemindersPermissionsAsync();
       if (status === 'granted') {
-        const newDate = new Date(task.due_date.getTime() - task.est_duration * 60000)
+        const newDate = new Date(task.due_date.getTime() - task.est_duration * 60000 + task.due_date.getTimezoneOffset() * 60000)
+        console.log(`new date: ${newDate}`)
         const formattedDate = `${newDate.getFullYear()}-0${newDate.getMonth()+1}-0${newDate.getDate()}T${newDate.getHours()}:${newDate.getMinutes()}:00.000Z`
+        // console.log(formattedDate)
         Calendar.createReminderAsync(null, {
           title: task.title,
-          startDate: new Date(task.due_date.getTime() - task.est_duration * 60000),
-          dueDate: task.due_date,
-          alarms: [{absoluteDate: formattedDate}]
+          startDate: newDate,
+          dueDate: newDate,
+          alarms: [{absoluteDate: formattedDate, relativeOffset: 0}],
         })
       }
       else {
