@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   Text,
   View,
+  Alert,
   ScrollView,
   TouchableOpacity,
   StyleSheet
@@ -40,13 +41,11 @@ const HomeScreen = props => {
   );
   const [currActualDuration, setCurrActualDuration] = useState("");
 
-  const [nextCourseCode, setNextCourseCode] = useState("Temporary Evaluation Course Code");  //for evaluation display
-  const [nextEvalDueDate, setNextEvalDueDate] = useState("Temporary Evaluation Due Date");
-  const [nextEvalTitle, setNextEvalTitle] = useState("Temporary Evaluation Title");
 
-
-
-
+  const [nextCourseCode, setNextCourseCode] = useState("");  //for evaluation display
+  const [nextEvalDueDate, setNextEvalDueDate] = useState("n/a"); //if you change this string you have to change alert if ("")
+  const [nextEvalTitle, setNextEvalTitle] = useState("no evaluations coming up");
+	
   const taskDataRef = useRef(formattedTaskData);
   const setTaskData = data => {
     taskDataRef.current = data;
@@ -130,6 +129,16 @@ const HomeScreen = props => {
         setNextEvalTitle(currentEval.title);
       })
   }
+	
+  function checkForNoEvaluations(){
+	  if(nextEvalDueDate == "n/a"){
+		  return(
+		  Alert.alert(
+			  "You don't have any tasks yet.",
+			  "You can create tasks from your course display screens, and they'll appear here in prioritized order.",
+			  [{text: 'Back'}]));}
+  }
+	
 
   const modalMarkup =
     taskBeingCompleted !== null ? (
@@ -191,6 +200,7 @@ const HomeScreen = props => {
       colors={["#bcf7ed", "#5273eb"]}
       style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
     >
+    {checkForNoEvaluations()}
       <View style={{ flexDirection: "column", marginTop: 100 }}>
         <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
           Welcome Back!
@@ -277,6 +287,7 @@ async function formatData() {
     };
 
     formattedData.push(taskInfo);
+    checkForNoEvaluations();
   }
 
   return formattedData;
