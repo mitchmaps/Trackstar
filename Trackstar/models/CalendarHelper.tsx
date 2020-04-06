@@ -36,7 +36,7 @@ export default class CalendarHelper {
           title: task.title,
           startDate: dateNoOffset,
           dueDate: dateNoOffset,
-          alarms: [{absoluteDate: formattedDate, relativeOffset: 0}],
+          alarms: [{relativeOffset: 0}],
         })
       }
       else {
