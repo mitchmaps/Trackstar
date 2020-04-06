@@ -41,10 +41,11 @@ const HomeScreen = props => {
   );
   const [currActualDuration, setCurrActualDuration] = useState("");
 
-  const [nextCourseCode, setNextCourseCode] = useState("");  //for evaluation display
-  const [nextEvalDueDate, setNextEvalDueDate] = useState("");
-  const [nextEvalTitle, setNextEvalTitle] = useState("no evaluations coming up");
 
+  const [nextCourseCode, setNextCourseCode] = useState("");  //for evaluation display
+  const [nextEvalDueDate, setNextEvalDueDate] = useState("n/a");
+  const [nextEvalTitle, setNextEvalTitle] = useState("no evaluations coming up");
+	
   const taskDataRef = useRef(formattedTaskData);
   const setTaskData = data => {
     taskDataRef.current = data;
@@ -130,7 +131,7 @@ const HomeScreen = props => {
   }
 	
   function checkForNoEvaluations(){
-	  if(nextEvalDueDate == "Temporary Evaluation Due Date"){
+	  if(nextEvalDueDate == "n/a"){
 		  return(
 		  Alert.alert(
 			  "You don't have any tasks yet.",
