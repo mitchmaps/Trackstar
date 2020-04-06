@@ -30,14 +30,16 @@ export default class TaskCreate extends React.Component {
     );
     this.handleSubmit = this.handleSubmit.bind(this);
 
+    const todayDate = new Date()
+
     this.state = {
       title: "",
       selectedEval: this.props.route.params.evals[0].id,
-      dueDateYear: 0,
-      dueDateMonth: 0,
-      dueDateDay: 0,
-      dueDateHour: 0,
-      dueDateMinute: 0,
+      dueDateYear: todayDate.getFullYear(),
+      dueDateMonth: todayDate.getMonth(),
+      dueDateDay: todayDate.getDate(),
+      dueDateHour: todayDate.getHours(),
+      dueDateMinute: todayDate.getMinutes(),
       curDueDate: new Date(),
       curDueDateTime: new Date(),
       dueDate: new Date(),
@@ -82,6 +84,7 @@ export default class TaskCreate extends React.Component {
                 this.setState({curDueDate: selectedDate, dueDateYear: selectedDate.getFullYear(), dueDateMonth: selectedDate.getMonth(), dueDateDay: selectedDate.getDate()});
               }
             }
+            timeZoneOffsetInMinutes={0}
             display="default"/>
             <DateTimePicker
             testID="dateTimePicker"
@@ -104,6 +107,7 @@ export default class TaskCreate extends React.Component {
               this.setState({dueDate: selectedDate});
             }
           }
+          timeZoneOffsetInMinutes={0}
           androidMode='spinner'
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
@@ -150,8 +154,9 @@ export default class TaskCreate extends React.Component {
     let dueDate = this.state.dueDate;
     const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params.evals;
 
-    if (Platform.OS === "ios") {
-      dueDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
+    if (Platform.OS === 'ios') {
+      const tempDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
+      dueDate = new Date(tempDate.getTime())
     }
 
     const taskMapper: TaskMapper = new TaskMapperImpl();
