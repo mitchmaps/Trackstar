@@ -127,7 +127,7 @@ export default class TaskMapperImpl implements TaskMapper {
 
   private updatePriorities(): void {
     console.log("updating priority...")
-    this.all(true).then((tasks) => {
+    this.all().then((tasks) => {
       Task.prioritizer.prioritize(tasks).then((sortedTasks) => {
         for (let i: number = 0; i < sortedTasks.length; i++) {
           sortedTasks[i].priority = i + 1;
