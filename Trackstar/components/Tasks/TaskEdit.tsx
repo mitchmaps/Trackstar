@@ -160,7 +160,8 @@ export default class TaskEdit extends React.Component {
     let dueDate = this.state.dueDate;
 
     if (Platform.OS === "ios") {
-      dueDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
+      const tempDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
+      dueDate = new Date(tempDate.getTime())
     }
 
     taskMapper.find(id).then((data) => {

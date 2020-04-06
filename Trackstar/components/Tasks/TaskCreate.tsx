@@ -157,7 +157,6 @@ export default class TaskCreate extends React.Component {
     if (Platform.OS === 'ios') {
       const tempDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
       dueDate = new Date(tempDate.getTime())
-      console.log(`Due date: ${dueDate}`)
     }
 
     const taskMapper: TaskMapper = new TaskMapperImpl();
