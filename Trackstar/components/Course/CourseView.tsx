@@ -374,12 +374,11 @@ function generateEvaluationMarkup(
                 style={{
                   flex: 1,
                   flexDirection: "row",
-                  justifyContent: "space-between",
                   alignContent: "center",
                 }}
               >
                 <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
-                <Text>{complete ? `Grade: ${grade}%` : null}</Text>
+                <Text style={{marginLeft: 10}}>{complete ? `Grade: ${grade}%` : null}</Text>
               </View>
               <Text style={{ color: "#aaaaaa" }}>
                 {complete ? "Complete" : null}
