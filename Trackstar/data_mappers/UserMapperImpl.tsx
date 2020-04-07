@@ -43,10 +43,11 @@ export default class UserMapperImpl implements UserMapper {
   updateEstAccuracy(newTask: Task): void {
     this.getUser().then(() => { // updates the singleton
       let user = User.getInstance() // get the singleton
-      let calculation = user.estimationAccuracy
-      let estimation: number = newTask.actual_duration/newTask.est_duration;
+      let currentAccuracy = user.estimationAccuracy;
+      let totalTasks = user.numCompletedTasks;
+      let newTaskAccuracy: number = ((newTask.est_duration-newTask.actual_duration)/newTask.est_duration)*100;
 
-      user.estimationAccuracy = (calculation*user.numCompletedTasks +estimation)/(user.numCompletedTasks+1);
+      user.estimationAccuracy = (currentAccuracy*totalTasks + newTaskAccuracy)/(user.numCompletedTasks+1);
       user.numCompletedTasks += 1;
       this.update(user);
     })

@@ -14,9 +14,10 @@ export default class TaskMapperImpl implements TaskMapper {
   }
 
   insert(t: Task): void {
+    const complete = t.complete ? 1 : 0;
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into Task (title, due_date, est_duration, actual_duration, priority, complete, eval_id, id) values (?, ?, ?, ?, ?, ?, ?, ?)", [t.title, JSON.stringify(t.due_date), t.est_duration, t.actual_duration, t.priority, t.complete, t.evaluation_id, t.id], () => this.updatePriorities(), this.errorHandler);
+        tx.executeSql("insert into Task (title, due_date, est_duration, actual_duration, priority, complete, eval_id, id) values (?, ?, ?, ?, ?, ?, ?, ?)", [t.title, JSON.stringify(t.due_date), t.est_duration, t.actual_duration, t.priority, complete, t.evaluation_id, t.id], () => this.updatePriorities(), this.errorHandler);
       },
       null
     );
