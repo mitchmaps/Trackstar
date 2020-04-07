@@ -103,14 +103,14 @@ const HomeScreen = props => {
   function getNextEval(){
     const taskMapper: TaskMapper = new TaskMapperImpl();
     const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
-  
+
     let evalList = new Map();
     let evalDDList: Date[] = [];
     let finalList: Evaluation[] = [];
     let currentEval: Evaluation;
-  
+
     evalMapper.all().then(evals=>{ // get all evaluations for user
-      
+
         evals.forEach( evals_element =>{ // for each task check which evaluation it maps to
             if(!(evals_element.complete)){
               evalDDList.push(evals_element.due_date); // push evaluation due date to a list

@@ -174,23 +174,27 @@ export default class GradesForm extends React.Component {
             containerStyle={{top:20, width:150}}
 
             onChangeText={value=>{
-              const evalMapper : EvaluationMapper = new EvaluationMapperImpl;
-              let newGradeWeight = []; // new grades_and_weight 2d array to be passed back
-              evalMapper.findByCourse(value).then(evals=>{ // get all the evaluations associated with the selected course
-                evals.forEach(singleEval=>{
-                  newGradeWeight.push([singleEval.grade, singleEval.weight]);
+              if (value == "none") {
+                this.setState({grades_and_weights: []});
+              }
+              else {
+                const evalMapper : EvaluationMapper = new EvaluationMapperImpl;
+                let newGradeWeight = []; // new grades_and_weight 2d array to be passed back
+                evalMapper.findByCourse(value).then(evals=>{ // get all the evaluations associated with the selected course
+                  evals.forEach(singleEval=>{
+                    newGradeWeight.push([singleEval.grade, singleEval.weight]);
+                  })
+                  return newGradeWeight;
+                }).then(newState=>{
+                    this.setState({grades_and_weights: newState}); // set the grades_and_weight state to the array we just made
+                }).then(()=>{
+                  const courseMapper: CourseMapper = new CourseMapperImpl;
+                  courseMapper.find(value).then(val=>{
+                    this.setState({desired_grade: val.min_grade}) // set the desired weight state to the retrieved
+                  })
                 })
-                return newGradeWeight;
-              }).then(newState=>{
-                  this.setState({grades_and_weights: newState}); // set the grades_and_weight state to the array we just made
-              }).then(()=>{
-                const courseMapper: CourseMapper = new CourseMapperImpl;
-                courseMapper.find(value).then(val=>{
-                  this.setState({desired_grade: val.min_grade}) // set the desired weight state to the retrieved
-                })
-              })
+              }
             }}
-
           />
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>

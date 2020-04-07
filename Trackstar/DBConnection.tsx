@@ -7,6 +7,6 @@ export default class DBConnection {
   }
 
   static close() {
-    // apparently there's no way to close it???
+    // apparently there's no way to close it
   }
 }
