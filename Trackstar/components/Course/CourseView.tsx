@@ -243,9 +243,23 @@ export default function CourseView(props) {
       </Modal>
     ) : null;
 
-  const completedGrade = courseStatusRef.current
-    ? calculateCourseGrade(courseEvals, minGrade)
-    : null;
+  const completedGrade = calculateCourseGrade(courseEvals, minGrade);
+  const differenceBetweenMinGrade = minGrade - completedGrade.curr_grade;
+
+  const differenceText = differenceBetweenMinGrade <= 0 ? (
+    `You are currently ${Math.abs(differenceBetweenMinGrade)}% above your desired minimum grade for this course.`
+  ) : (
+    `You are currently ${Math.abs(differenceBetweenMinGrade)}% below your desired minimum grade for this course.`
+  );
+
+  const currGradeMarkup = differenceBetweenMinGrade ? (
+    <Card>
+      <Card.Content style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={iOSUIKit.largeTitleEmphasized}>{completedGrade.curr_grade}%</Text>
+          <Text style={{marginLeft: 10, flex: 1, flexWrap: 'wrap', color: differenceBetweenMinGrade <= 0 ? 'dodgerblue': '#ff0100'}}>{differenceText}</Text>
+      </Card.Content>
+    </Card>
+  ) : <Text>You haven't completed any evaluations yet.</Text>
 
   return (
     <View style={{ flex: 1, alignSelf: "stretch", marginTop: "15%" }}>
@@ -275,6 +289,10 @@ export default function CourseView(props) {
           </Button>
         </View>
         <Text style={iOSUIKit.subhead}>{name}</Text>
+        <View style={{ paddingTop: 10 }}>
+          <Text style={iOSUIKit.title3Emphasized}>Current grade</Text>
+        </View>
+        <View style={{ paddingTop: 20}}>{currGradeMarkup}</View>
         <View style={{ paddingTop: 10 }}>
           <Text style={iOSUIKit.title3Emphasized}>Evaluations</Text>
         </View>
