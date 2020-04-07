@@ -151,7 +151,7 @@ export default class TaskCreate extends React.Component {
   handleSubmit() {
     const { title, selectedEval, dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, duration } = this.state;
     let dueDate = this.state.dueDate;
-    const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params.evals;
+    const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params;
 
     if (Platform.OS === 'ios') {
       const tempDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
