@@ -153,8 +153,6 @@ export default function CourseView(props) {
     courseEvals
   )}% of your total grade.`;
 
-  console.log(currCourse);
-
   const modalMarkup =
     evalBeingCompleted !== null ? (
       <Modal isVisible={modalActive}>
