@@ -129,7 +129,8 @@ const HomeScreen = props => {
         setNextEvalTitle(currentEval.title);
       })
   }
-	
+
+	/*
   function checkForNoEvaluations(){
 	  if(nextEvalDueDate == "n/a"){
 		  return(
@@ -139,7 +140,7 @@ const HomeScreen = props => {
 			  [{text: 'Back'}]));}
   }
 	
-
+*/
   const modalMarkup =
     taskBeingCompleted !== null ? (
       <Modal isVisible={modalActive} hasBackdrop={true}>
@@ -194,13 +195,14 @@ const HomeScreen = props => {
         </View>
       </Modal>
     ) : null;
-
+	
+// on line 203  {checkForNoEvaluations()}
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
       style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
     >
-    {checkForNoEvaluations()}
+   
       <View style={{ flexDirection: "column", marginTop: 100 }}>
         <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
           Welcome Back!
@@ -287,7 +289,7 @@ async function formatData() {
     };
 
     formattedData.push(taskInfo);
-    checkForNoEvaluations();
+    //checkForNoEvaluations();
   }
 
   return formattedData;
