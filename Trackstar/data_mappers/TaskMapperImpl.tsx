@@ -139,21 +139,4 @@ export default class TaskMapperImpl implements TaskMapper {
       })
     })
   }
-
-  private allCompleted(): Promise<Task[]> {
-    return new Promise((resolve) => {
-      const task_objs = []
-      this.db.transaction(tx => {
-        tx.executeSql("select * from Task where complete = 1", [],
-          (_, { rows: { _array } }) => {
-            _array.forEach(task => {
-              task_objs.push(new Task(task.title, new Date(JSON.parse(task.due_date)), task.est_duration, task.eval_id, task.complete, task.priority, task.id))
-            })
-            resolve(task_objs)
-          },
-          this.errorHandler
-        )
-      })
-    })
-  };
 }
