@@ -246,13 +246,16 @@ export default function CourseView(props) {
   const completedGrade = calculateCourseGrade(courseEvals, minGrade);
   const differenceBetweenMinGrade = minGrade - completedGrade.curr_grade;
 
-  const differenceText = differenceBetweenMinGrade <= 0 ? (
-    `You are currently ${Math.abs(differenceBetweenMinGrade)}% above your desired minimum grade for this course.`
-  ) : (
-    `You are currently ${Math.abs(differenceBetweenMinGrade)}% below your desired minimum grade for this course.`
-  );
+  let differenceText;
+  if (differenceBetweenMinGrade === 0) {
+    differenceText = `You are currently at your desired mininum grade for this course.`;
+  } else if (differenceBetweenMinGrade < 0) {
+    differenceText = `You are currently ${Math.abs(differenceBetweenMinGrade)}% above your desired minimum grade for this course.`;
+  } else {
+    differenceText = `You are currently ${Math.abs(differenceBetweenMinGrade)}% below your desired minimum grade for this course.`;
+  }
 
-  const currGradeMarkup = differenceBetweenMinGrade ? (
+  const currGradeMarkup = !Number.isNaN(differenceBetweenMinGrade) ? (
     <Card>
       <Card.Content style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
           <Text style={iOSUIKit.largeTitleEmphasized}>{completedGrade.curr_grade}%</Text>
