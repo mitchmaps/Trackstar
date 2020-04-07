@@ -16,8 +16,12 @@ import TestScreen from './screens/TestScreen';
 
 import ViewCourseScreen from './screens/ViewCourseScreen';
 import CourseCreate from './screens/CourseCreate';
+import { CourseMapperImpl, EvaluationMapperImpl, TaskMapperImpl } from './data_mappers';
 
 const Stack = createStackNavigator();
+const cm = new CourseMapperImpl()
+const em = new EvaluationMapperImpl()
+const tm = new TaskMapperImpl()
 
 // change this into a seperate class component
 const Tab = createBottomTabNavigator();

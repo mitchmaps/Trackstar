@@ -30,6 +30,7 @@ export default class TaskMapperImpl implements TaskMapper {
             this.updatePriorities();
             if (complete)
               this.updateEstAccuracy();
+              this.delete(t);
           },
           this.errorHandler);
       },
@@ -153,6 +154,7 @@ export default class TaskMapperImpl implements TaskMapper {
       })
       calculation/=tasksList.length; // divide the total amount of (positive or negative) minutes they were under or over their estimated duration by by the # of tasks
       user.estimationAccuracy = (calculation*100); // set user.estimationAccuracy = to the result
+      user.numCompletedTasks += user.numCompletedTasks;
       userMapper.update(user);
       })
     })

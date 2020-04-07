@@ -14,7 +14,7 @@ export default class UserMapperImpl implements UserMapper {
   update(user: User): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("update User set est_accuracy=?, calendarId=?", [user.estimationAccuracy, user.calendarId], null, this.errorHandler);
+        tx.executeSql("update User set est_accuracy=?, num_completed_tasks=?, calendarId=?", [user.estimationAccuracy, user.numCompletedTasks, user.calendarId], null, this.errorHandler);
       },
       null
     );
@@ -42,7 +42,7 @@ export default class UserMapperImpl implements UserMapper {
   private insert(): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into User (est_accuracy) values (100)", [], null, this.errorHandler);
+        tx.executeSql("insert into User (est_accuracy, num_completed_tasks) values (100, 0)", [], null, this.errorHandler);
       },
       null
     );
@@ -50,7 +50,7 @@ export default class UserMapperImpl implements UserMapper {
 
   private createTable(): void {
     this.db.transaction(tx => {
-      tx.executeSql("create table if not exists User (est_accuracy float, calendarId text default null)")
+      tx.executeSql("create table if not exists User (est_accuracy float, num_completed_tasks integer default 0, calendarId text default null)")
     })
   }
 
