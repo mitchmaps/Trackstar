@@ -14,7 +14,6 @@ export default class TaskMapperImpl implements TaskMapper {
   }
 
   insert(t: Task): void {
-    console.log("isnerting now2");
     const complete = t.complete ? 1 : 0;
     this.db.transaction(
       tx => {
