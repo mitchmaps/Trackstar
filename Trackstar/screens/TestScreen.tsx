@@ -256,6 +256,7 @@ const TestScreen = (props) => {
           Database.deleteTaskTable()
           Database.deleteEvalTable()
           Database.deleteCourseTable()
+          Database.deleteUserTable()
         }}>
           <Text>Drop Tables</Text>
         </TouchableOpacity>

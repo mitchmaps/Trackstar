@@ -28,7 +28,7 @@ class TabNavigator extends React.Component{
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-  
+
             if (route.name === 'Home') {
               iconName = 'home';
             } else if (route.name === 'Courses') {
@@ -36,7 +36,7 @@ class TabNavigator extends React.Component{
             } else {
               iconName = 'calculator';
             }
-  
+
             // You can return any component that you like here!
             return <AntDesign name={iconName} size={size} color={color} />;
           },
@@ -46,13 +46,13 @@ class TabNavigator extends React.Component{
           inactiveTintColor: 'gray',
         }}
       >
-  
+
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Courses" component={CoursesScreen} />
         <Tab.Screen name="Grades" component={GradesScreen} />
         <Tab.Screen name="Testing" component={TestScreen} />
       </Tab.Navigator>
-    ); 
+    );
   }
 }
 
