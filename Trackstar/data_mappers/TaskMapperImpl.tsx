@@ -29,7 +29,7 @@ export default class TaskMapperImpl implements TaskMapper {
           () => {
             this.updatePriorities();
             if (complete) {
-              this.updateEstAccuracy();
+              this.updateEstAccuracy(t);
               this.delete(t);
             }
           },
@@ -138,28 +138,7 @@ export default class TaskMapperImpl implements TaskMapper {
     })
   }
 
-  private updateEstAccuracy(): void {
 
-    let userMapper: UserMapper = new UserMapperImpl;
-    userMapper.getUser().then(() => { // updates the singleton
-
-    let user = User.getInstance() // get the singleton
-    let tasksList: Task[] = [];
-    let calculation = 0;
-
-    this.allCompleted().then(tasks => {
-      tasks.forEach(element => {
-        tasksList.push(element); // take this list to be stored for later
-        let estimation: number = element.actual_duration/element.est_duration;
-        calculation+=estimation; // for each completed task look at how far off they were from actual duration
-      })
-      calculation/=tasksList.length; // divide the total amount of (positive or negative) minutes they were under or over their estimated duration by by the # of tasks
-      user.estimationAccuracy = (calculation*100); // set user.estimationAccuracy = to the result
-      user.numCompletedTasks += user.numCompletedTasks;
-      userMapper.update(user);
-      })
-    })
-  }
 
   private allCompleted(): Promise<Task[]> {
     return new Promise((resolve) => {

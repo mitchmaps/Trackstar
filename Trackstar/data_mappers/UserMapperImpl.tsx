@@ -1,6 +1,7 @@
 import UserMapper from "./UserMapper";
 import User from "../models/User";
 import DBConnection from "../DBConnection";
+import { Task } from "../models";
 
 
 export default class UserMapperImpl implements UserMapper {
@@ -38,6 +39,21 @@ export default class UserMapperImpl implements UserMapper {
       })
     })
   }
+
+    private updateEstAccuracy(newTask: Task): void {
+
+      let userMapper: UserMapper = new UserMapperImpl;
+      userMapper.getUser().then(() => { // updates the singleton
+
+      let user = User.getInstance() // get the singleton
+
+      let calculation = user.estimationAccuracy
+      let estimation: number = newTask.actual_duration/newTask.est_duration;
+      
+      user.estimationAccuracy = (calculation*user.numCompletedTasks +estimation)/(user.numCompletedTasks+1);
+      userMapper.update(user);
+      })
+    }
 
   private insert(): void {
     this.db.transaction(
