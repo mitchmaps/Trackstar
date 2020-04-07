@@ -18,6 +18,7 @@ export default class GradesForm extends React.Component {
     courses: Course[],
     courseCodes: [{}],
     TextInputValue: number,
+    call_function: void,
   }
 
   constructor(props) {
@@ -34,9 +35,9 @@ export default class GradesForm extends React.Component {
       courses: [],
       courseCodes: [{}],
       TextInputValue: null,
+      call_function: this.get_courses(),
     }
-
-    this.get_courses();
+    console.log("starting page up");
 
   }
 
@@ -145,17 +146,24 @@ export default class GradesForm extends React.Component {
 
 
   get_courses(){
+    console.log("get courses called");
     const courseMapper: CourseMapper = new CourseMapperImpl;
     let courseList = this.state.courseCodes;
+    console.log("i never made it this far");
     // get courses from database
     courseMapper.all(true).then(elements=>{
+      console.log("going into the loop");
       // update state variable with all the course codes
       elements.forEach(course=>{
         courseList.push({value: course.code})
       })
       courseList.push({value: 'none'})
+      console.log("finished the loop");
     })
+    console.log(courseList);
     courseList.shift();
+    console.log(courseList);
+    this.setState({courseCodes: courseList})
   }
 
   render() {
@@ -174,27 +182,23 @@ export default class GradesForm extends React.Component {
             containerStyle={{top:20, width:150}}
 
             onChangeText={value=>{
-              if (value == "none") {
-                this.setState({grades_and_weights: []});
-              }
-              else {
-                const evalMapper : EvaluationMapper = new EvaluationMapperImpl;
-                let newGradeWeight = []; // new grades_and_weight 2d array to be passed back
-                evalMapper.findByCourse(value).then(evals=>{ // get all the evaluations associated with the selected course
-                  evals.forEach(singleEval=>{
-                    newGradeWeight.push([singleEval.grade, singleEval.weight]);
-                  })
-                  return newGradeWeight;
-                }).then(newState=>{
-                    this.setState({grades_and_weights: newState}); // set the grades_and_weight state to the array we just made
-                }).then(()=>{
-                  const courseMapper: CourseMapper = new CourseMapperImpl;
-                  courseMapper.find(value).then(val=>{
-                    this.setState({desired_grade: val.min_grade}) // set the desired weight state to the retrieved
-                  })
+              const evalMapper : EvaluationMapper = new EvaluationMapperImpl;
+              let newGradeWeight = []; // new grades_and_weight 2d array to be passed back
+              evalMapper.findByCourse(value).then(evals=>{ // get all the evaluations associated with the selected course
+                evals.forEach(singleEval=>{
+                  newGradeWeight.push([singleEval.grade, singleEval.weight]);
                 })
-              }
+                return newGradeWeight;
+              }).then(newState=>{
+                  this.setState({grades_and_weights: newState}); // set the grades_and_weight state to the array we just made
+              }).then(()=>{
+                const courseMapper: CourseMapper = new CourseMapperImpl;
+                courseMapper.find(value).then(val=>{
+                  this.setState({desired_grade: val.min_grade}) // set the desired weight state to the retrieved
+                })
+              })
             }}
+
           />
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
