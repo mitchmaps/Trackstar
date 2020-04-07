@@ -39,6 +39,7 @@ import { CourseMapper, CourseMapperImpl } from "../../data_mappers";
 
 export default function CourseView(props) {
   const { code, name, minGrade, term, complete } = props.route.params;
+  const [currCourse, setCurrCourse] = useState<Course>(null);
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [evalBeingCompleted, setEvalBeingCompleted] = useState(null);
@@ -76,6 +77,10 @@ export default function CourseView(props) {
 
   useFocusEffect(
     React.useCallback(() => {
+      const courseData = retrieveCoureData(code).then((data: Course) => {
+        setCurrCourse(data);
+      });
+
       const evalData = retrieveEvalData(code).then((data: Evaluation[]) => {
         setCourseEvals(data);
       });
@@ -147,6 +152,8 @@ export default function CourseView(props) {
   const completedGradeText = `You have completed ${determineCompletedEvalWeight(
     courseEvals
   )}% of your total grade.`;
+
+  console.log(currCourse);
 
   const modalMarkup =
     evalBeingCompleted !== null ? (
@@ -608,6 +615,13 @@ function determineCompletedEvalWeight(evals: Evaluation[]) {
   });
 
   return totalGradeCompleted;
+}
+
+async function retrieveCoureData(code: string) {
+  const courseMapper: CourseMapper = new CourseMapperImpl();
+  let course: Course = await courseMapper.find(code);
+
+  return course;
 }
 
 async function retrieveEvalData(code: string) {
