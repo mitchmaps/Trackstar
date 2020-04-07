@@ -28,9 +28,10 @@ export default class TaskMapperImpl implements TaskMapper {
         tx.executeSql("update Task set title=?, due_date=?, est_duration=?, actual_duration=?, priority=?, complete=? where id=?", [t.title, JSON.stringify(t.due_date), t.est_duration, t.actual_duration, t.priority, t.complete, t.id],
           () => {
             this.updatePriorities();
-            if (complete)
+            if (complete) {
               this.updateEstAccuracy();
               this.delete(t);
+            }
           },
           this.errorHandler);
       },
