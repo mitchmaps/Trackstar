@@ -29,7 +29,8 @@ export default class TaskMapperImpl implements TaskMapper {
           () => {
             this.updatePriorities();
             if (complete) {
-              this.updateEstAccuracy(t);
+              let userMapper: UserMapper = new UserMapperImpl();
+              userMapper.updateEstAccuracy(t);
               this.delete(t);
             }
           },
@@ -138,8 +139,6 @@ export default class TaskMapperImpl implements TaskMapper {
       })
     })
   }
-
-
 
   private allCompleted(): Promise<Task[]> {
     return new Promise((resolve) => {
