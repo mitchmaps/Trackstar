@@ -106,8 +106,8 @@ const HomeScreen = (props) => {
     handleTaskSelection
   );
 
-  const noTasksMarkup =
-    taskDataRef.current.length === 0 ? (
+  const noTasksMarkup = taskDataRef.current.length === 0 ? (
+    <View style={{flex: 5}}>
       <Card>
         <Card.Title
           title="You don't have any tasks yet"
@@ -118,7 +118,8 @@ const HomeScreen = (props) => {
           </Text>
         </Card.Content>
       </Card>
-    ) : null;
+    </View>
+  ) : null;
 
   const modalMarkup =
     taskBeingCompleted !== null ? (
@@ -186,16 +187,18 @@ const HomeScreen = (props) => {
       <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
         Due: {nextEval.due_date.toLocaleString()}
       </Text>
+      {noTasksMarkup}
     </View>
   ) : (
     <View style={{ flexDirection: "column", marginTop: 100 }}>
       <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
         Welcome Back!
       </Text>
-      <Text style={{ flex: 1, flexWrap: "wrap", textAlign: "center" }}>
-        You haven't added any evaluations yet. When you do, the one due soonest
+      <Text style={{ color: "white", flex: 1, flexWrap: "wrap", textAlign: "center" }}>
+        You haven't added any evaluations yet. When you do, the one due next
         will be displayed here.
       </Text>
+      {noTasksMarkup}
     </View>
   );
 
@@ -207,7 +210,6 @@ const HomeScreen = (props) => {
       {nextEvalMarkup}
       <ScrollView style={{ marginTop: 50 }}>
         {modalMarkup}
-        {noTasksMarkup}
         {tasksMarkup}
       </ScrollView>
     </LinearGradient>
