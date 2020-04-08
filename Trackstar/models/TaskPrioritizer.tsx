@@ -36,10 +36,10 @@ export default class TaskPrioritizer{
                 // and then priority + the task objects into a map so that we can retrieve the task objects later
                 let flag = false;
                 let mappingKeysArray = Array.from(mappingList.keys())
-                console.log(mappingKeysArray)
+                // console.log(mappingKeysArray)
                 for (let j = 0; j < mappingKeysArray.length; j++) {
-                    console.log(mappingList[mappingKeysArray[j]])
-                    if(mappingList[mappingKeysArray[j]].id === t[i].id) {
+                    // console.log(mappingList.get(mappingKeysArray[j]))
+                    if(mappingList.get(mappingKeysArray[j]).id === t[i].id) {
                         flag = true
                     }
                 }
@@ -55,12 +55,12 @@ export default class TaskPrioritizer{
 
             // after all elements have been inserted into lists, continue on with functionality
             // start by sorting our (priorityList)
+            console.log(sortList)
             sortList = sortList.sort(function(a,b){return b-a});
-
+            console.log(sortList)
             // populate a new sorted list of tasks based off of our sorted list
             // use our sorted list values as keys to retrieve the actual task objects
             for (let k = 0; k < sortList.length; k++) {
-                console.log(`kloop${k}`)
               returnValue.push(mappingList.get(sortList[k]))
             }
 
