@@ -133,7 +133,14 @@ const HomeScreen = props => {
   }
 	
   function checkForNoEvaluations(){
+	  /*
+	  	  checkForNoEvaluations.catc(onRejected);
+	  checkForNoEvaluations.catch(function(error){
+	  console.error(error);});
+	  */
+	  
 	  if(nextEvalDueDate == "Temporary Evaluation Due Date"){
+		 
 		  return(
 		  Alert.alert(
 			  "You don't have any tasks yet.",
