@@ -106,14 +106,19 @@ const HomeScreen = (props) => {
     handleTaskSelection
   );
 
-  // function checkForNoEvaluations(){
-  //   if(nextEvalDueDate == "n/a"){
-  // 	  return(
-  // 	  Alert.alert(
-  // 		  "You don't have any tasks yet.",
-  // 		  "You can create tasks from your course display screens, and they'll appear here in prioritized order.",
-  // 		  [{text: 'Back'}]));}
-  // }
+  const noTasksMarkup =
+    taskDataRef.current.length === 0 ? (
+      <Card>
+        <Card.Title
+          title="You don't have any tasks yet"
+        />
+        <Card.Content>
+          <Text>
+            You can create them for course evaluations and they will appear here in prioritized order.
+          </Text>
+        </Card.Content>
+      </Card>
+    ) : null;
 
   const modalMarkup =
     taskBeingCompleted !== null ? (
@@ -188,7 +193,8 @@ const HomeScreen = (props) => {
         Welcome Back!
       </Text>
       <Text style={{ flex: 1, flexWrap: "wrap", textAlign: "center" }}>
-        You haven't added any evaluations yet. When you do, the one due soonest will be displayed here.
+        You haven't added any evaluations yet. When you do, the one due soonest
+        will be displayed here.
       </Text>
     </View>
   );
@@ -201,6 +207,7 @@ const HomeScreen = (props) => {
       {nextEvalMarkup}
       <ScrollView style={{ marginTop: 50 }}>
         {modalMarkup}
+        {noTasksMarkup}
         {tasksMarkup}
       </ScrollView>
     </LinearGradient>
