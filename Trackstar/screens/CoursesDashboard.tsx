@@ -175,7 +175,7 @@ async function formatData(complete: boolean) {
       complete: course.complete,
     };
     formattedData.push(courseInfo);
-    listCourses.push(course.title); //using title but could be anything from course
+    //listCourses.push(course.title); //using title but could be anything from course
   });
 
   return formattedData;
