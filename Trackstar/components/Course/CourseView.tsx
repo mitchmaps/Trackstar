@@ -248,9 +248,9 @@ export default function CourseView(props) {
   if (differenceBetweenMinGrade === 0) {
     differenceText = `You are currently at your desired mininum grade for this course.`;
   } else if (differenceBetweenMinGrade < 0) {
-    differenceText = `You are currently ${Math.abs(differenceBetweenMinGrade)}% above your desired minimum grade for this course.`;
+    differenceText = `You are currently ${Math.floor(Math.abs(differenceBetweenMinGrade))}% above your desired minimum grade for this course.`;
   } else {
-    differenceText = `You are currently ${Math.abs(differenceBetweenMinGrade)}% below your desired minimum grade for this course.`;
+    differenceText = `You are currently ${Math.floor(Math.abs(differenceBetweenMinGrade))}% below your desired minimum grade for this course.`;
   }
 
   const currGradeMarkup = !Number.isNaN(differenceBetweenMinGrade) ? (
