@@ -41,13 +41,11 @@ const HomeScreen = props => {
   );
   const [currActualDuration, setCurrActualDuration] = useState("");
 
-  const [nextCourseCode, setNextCourseCode] = useState("Temporary Evaluation Course Code");  //for evaluation display
-  const [nextEvalDueDate, setNextEvalDueDate] = useState("Temporary Evaluation Due Date");
-  const [nextEvalTitle, setNextEvalTitle] = useState("Temporary Evaluation Title");
 
-
-
-
+  const [nextCourseCode, setNextCourseCode] = useState("");  //for evaluation display
+  const [nextEvalDueDate, setNextEvalDueDate] = useState("n/a"); //if you change this string you have to change alert if ("")
+  const [nextEvalTitle, setNextEvalTitle] = useState("no evaluations coming up");
+	
   const taskDataRef = useRef(formattedTaskData);
   const setTaskData = data => {
     taskDataRef.current = data;
@@ -102,6 +100,25 @@ const HomeScreen = props => {
     handleTaskSelection
   );
 
+
+    function checkForNoEvaluations(){ 
+	
+	/*
+	  checkForNoEvaluations.catc(onRejected);
+	  checkForNoEvaluations.catch(function(error){
+	  console.error(error);});
+	  */
+
+	  if(nextEvalDueDate == "n/a"||formatData.formattedData == []){
+		  return(
+		  Alert.alert(
+			  "You don't have any tasks yet.",
+			  "You can create tasks from your course display screens, and they'll appear here in prioritized order.",
+			  [{text: 'Back'}]));}
+
+  }
+  
+
   function getNextEval(){
     const taskMapper: TaskMapper = new TaskMapperImpl();
     const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
@@ -126,27 +143,19 @@ const HomeScreen = props => {
         })
         currentEval = finalList[0]; // take the largest one and reset states equal to that
 
+
+
         setNextCourseCode(currentEval.course_code);  // make sure that all of this resides in the .then statement so that it acts synchronously
         setNextEvalDueDate(currentEval.due_date.toDateString());
         setNextEvalTitle(currentEval.title);
       })
+
+
+	  
   }
 	
-  function checkForNoEvaluations(){
-	  /*
-	  	  checkForNoEvaluations.catc(onRejected);
-	  checkForNoEvaluations.catch(function(error){
-	  console.error(error);});
-	  */
-	  
-	  if(nextEvalDueDate == "Temporary Evaluation Due Date"){
-		 
-		  return(
-		  Alert.alert(
-			  "You don't have any tasks yet.",
-			  "You can create tasks from your course display screens, and they'll appear here in prioritized order.",
-			  [{text: 'Back'}]));}
-  }
+	
+
 	
 
   const modalMarkup =
@@ -204,12 +213,14 @@ const HomeScreen = props => {
       </Modal>
     ) : null;
 
+	//line 210 	{checkForNoEvaluations()} 
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
       style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
     >
-    {checkForNoEvaluations()}
+
+
       <View style={{ flexDirection: "column", marginTop: 100 }}>
         <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
           Welcome Back!
@@ -218,7 +229,7 @@ const HomeScreen = props => {
 			    Next Evaluation: {nextCourseCode} - {nextEvalTitle}
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Due: {nextEvalDueDate}
+          Due: {nextEvalDueDate} 	{checkForNoEvaluations()} 
         </Text>
       </View>
       <ScrollView style={{ marginTop: 50 }}>
