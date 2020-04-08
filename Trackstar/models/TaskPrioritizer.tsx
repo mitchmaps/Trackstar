@@ -8,45 +8,50 @@ export default class TaskPrioritizer{
 
     async prioritize(t: Task[]): Promise<Task[]> {
 
-
         let returnValue: Task[] = [];
         let sortList: number[] = []; // take all priority values and put them into a list, to be sorted
         let mappingList = new Map(); // attach all priority values with their respective tasks into a map
-
-
         let DueDate;
         let priorityCounter = 0;
-
         let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
         let currentEval: Evaluation;
 
-        return new Promise((resolve) => {
+        return new Promise(async (resolve) => {
             // loop through all the task elements that were past in
-            t.forEach(async (task_element )=> {
+            for (let i = 0; i < t.length; i++) {
+                console.log(`here1: ${t[i].title}`)
                 // find associated evaluation element
-                    currentEval = await evalMapper.find(task_element.evaluation_id)
-                    DueDate = this.date_diff_indays(new Date(),task_element.due_date);
+                currentEval = await evalMapper.find(t[i].evaluation_id)
+                console.log(`here2: ${currentEval.title}`)
 
-                    // calculate priority
-                    priorityCounter += this.due_date_levels(DueDate);
-                    priorityCounter += this.duration_levels(task_element.est_duration);
-                    priorityCounter += this.weighting_levels(currentEval.weight);
-                    priorityCounter/=3.0000;
+                DueDate = this.date_diff_indays(new Date(),t[i].due_date);
 
-                    // pass in the priority values into a list
-                    // and then priority + the task objects into a map so that we can retrieve the task objects later
-                    let flag = false;
-                    mappingList.forEach(task_ele=>{
-                        if(task_ele.id === task_element.id)
-                            flag = true;
-                    });
+                // calculate priority
+                priorityCounter += this.due_date_levels(DueDate);
+                priorityCounter += this.duration_levels(t[i].est_duration);
+                priorityCounter += this.weighting_levels(currentEval.weight);
+                priorityCounter/=3.0000;
 
-                    if(flag === false){
-                        priorityCounter+=0.01;
-                        mappingList.set(priorityCounter, task_element);
-                        sortList.push(priorityCounter);
+                // pass in the priority values into a list
+                // and then priority + the task objects into a map so that we can retrieve the task objects later
+                let flag = false;
+                let mappingKeysArray = Array.from(mappingList.keys())
+                console.log(mappingKeysArray)
+                for (let j = 0; j < mappingKeysArray.length; j++) {
+                    console.log(mappingList[mappingKeysArray[j]])
+                    if(mappingList[mappingKeysArray[j]].id === t[i].id) {
+                        flag = true
                     }
-            })
+                }
+
+                if(flag === false){
+                    priorityCounter+=0.01;
+                    mappingList.set(priorityCounter, t[i]);
+                    sortList.push(priorityCounter);
+                }
+                console.log("here3")
+            }
+            console.log("here4")
 
             // after all elements have been inserted into lists, continue on with functionality
             // start by sorting our (priorityList)
@@ -54,9 +59,11 @@ export default class TaskPrioritizer{
 
             // populate a new sorted list of tasks based off of our sorted list
             // use our sorted list values as keys to retrieve the actual task objects
-            sortList.forEach(element => {
-              returnValue.push(mappingList.get(element))
-            });
+            for (let k = 0; k < sortList.length; k++) {
+                console.log(`kloop${k}`)
+              returnValue.push(mappingList.get(sortList[k]))
+            }
+
             // return the sorted tasks list as well
             console.log(returnValue.length);
             resolve(returnValue);
