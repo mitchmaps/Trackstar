@@ -65,18 +65,18 @@ export default class Database {
   static populateEvalTable = () => {
     let evalMapper: EvaluationMapper = new EvaluationMapperImpl
 
-    let eval1  = new Evaluation ("Project 1", new Date(), 20, "COMP3008");
-    let eval2  = new Evaluation ("Project 2", new Date(), 20, "COMP3008");
-    let eval3  = new Evaluation ("Midterm", new Date(), 20, "COMP3008");
-    let eval4  = new Evaluation ("Final", new Date(), 40, "COMP3008");
+    let eval1  = new Evaluation ("Project 1", new Date(), 30, "COMP3008");
+    let eval2  = new Evaluation ("Project 2", new Date(), 10, "COMP3008");
+    let eval3  = new Evaluation ("Midterm", new Date(), 50, "COMP3008");
+    let eval4  = new Evaluation ("Final", new Date(), 10, "COMP3008");
 
     let eval5  = new Evaluation ("Deliverable 1", new Date(), 10, "COMP3004", true, 100);
     let eval6  = new Evaluation ("Deliverable 2", new Date(), 10, "COMP3004", true, 100);
     let eval7  = new Evaluation ("Deliverable 3", new Date(), 60, "COMP3004", true, 90);
     let eval8  = new Evaluation ("Deliverable 4", new Date(), 20, "COMP3004");
 
-    let eval9  = new Evaluation ("Test1", new Date(), 50, "PHIL1200");
-    let eval10  = new Evaluation ("Test2", new Date(), 50, "PHIL1200");
+    let eval9  = new Evaluation ("Midterm", new Date(), 90, "PHIL1200");
+    let eval10  = new Evaluation ("Final", new Date(), 10, "PHIL1200");
 
     evalMapper.insert(eval1)
     evalMapper.insert(eval2)
@@ -93,19 +93,19 @@ export default class Database {
   static populateTaskTable = () => {
     let taskMapper: TaskMapper = new TaskMapperImpl
 
-    let task1  = new Task ("Make demo video", new Date(2020, 3, 5, 14, 0, 0, 0), 30, 0, 8, false, 1);
-    let task2  = new Task ("Edit demo video", new Date(2020, 3, 5, 15, 0, 0, 0), 30, 0, 8, false, 2); // change date
-    let task3  = new Task ("Prep for presentation", new Date(2020, 3, 7, 17, 0, 0, 0), 360, 0, 8, false, 3);
-    let task4  = new Task ("Analyze questionnaire data", new Date(2020, 3, 7, 17, 0, 0, 0), 30, 0, 2, false, 4);
-    let task5  = new Task ("Study unit 1", new Date(2020, 3, 10, 17, 0, 0, 0), 120, 0, 10, false, 5);
-    let task6  = new Task ("Study unit 2", new Date(2020, 3, 12, 17, 0, 0, 0), 120, 0, 10, false, 6);
-    let task7  = new Task ("Make flashcards", new Date(2020, 3, 15, 17, 0, 0, 0), 30, 0, 7, false, 7);
+    let task4  = new Task ("Analyze questionnaire data", new Date(2020, 3, 10, 17, 0, 0, 0), 1, 0, 2, false, 1);
+    // let task1  = new Task ("Demo", new Date(2020, 3, 8, 14, 0, 0, 0), 30, 0, 8, false, 1);
+    // let task2  = new Task ("Demo video ", new Date(2020, 3, 5, 15, 0, 0, 0), 30, 0, 8, false, 2); // change date
+    // let task3  = new Task ("Prep for presentation", new Date(2020, 3, 7, 17, 0, 0, 0), 360, 0, 8, false, 3);
+    // let task5  = new Task ("Study unit 1", new Date(2020, 3, 10, 17, 0, 0, 0), 120, 0, 1, false, 2);
+    let task6  = new Task ("Study unit 2", new Date(2020, 3, 12, 17, 0, 0, 0), 1, 0, 10, false, 2);
+    let task7  = new Task ("Make flashcards", new Date(2020, 3, 15, 17, 0, 0, 0), 1, 0, 4, false, 3);
 
-    taskMapper.insert(task1)
-    taskMapper.insert(task2)
-    taskMapper.insert(task3)
+    // taskMapper.insert(task1)
+    // taskMapper.insert(task2)
+    // taskMapper.insert(task3)
     taskMapper.insert(task4)
-    taskMapper.insert(task5)
+    // taskMapper.insert(task5)
     taskMapper.insert(task6)
     taskMapper.insert(task7)
   }
