@@ -16,76 +16,39 @@ export default class TaskPrioritizer{
         let evalMapper: EvaluationMapper = new EvaluationMapperImpl;
         let currentEval: Evaluation;
 
-<<<<<<< HEAD
-        return new Promise((resolve) => {
-          // have an 'evals' variable that will be used to represent all evaluations
-
-          evalMapper.all().then((evals) => {
-=======
         return new Promise(async (resolve) => {
->>>>>>> 5697d62cdffe01aa76662c4becbe4e6d4993367f
 
             // loop through all the task elements that were past in
             for (let i = 0; i < t.length; i++) {
                 priorityCounter = 0;
 
-                console.log(`here1: ${t[i].title}`)
                 // find associated evaluation element
                 currentEval = await evalMapper.find(t[i].evaluation_id)
-                console.log(`here2: ${currentEval.title}`)
-
                 DueDate = this.date_diff_indays(new Date(),t[i].due_date);
 
                 // calculate priority
                 priorityCounter += this.due_date_levels(DueDate);
-                console.log(`${t[i].title}: ${this.due_date_levels(DueDate)}`)
-
                 priorityCounter += this.duration_levels(t[i].est_duration);
-                console.log(`${t[i].title}: ${this.duration_levels(t[i].est_duration)}`)
-
                 priorityCounter += this.weighting_levels(currentEval.weight);
-                console.log(`${t[i].title}: ${this.weighting_levels(currentEval.weight)}`)
-
-<<<<<<< HEAD
-                // pass in the priority values into a list
-                // and then priority + the task objects into a map so that we can retrieve the task objects later
-
-                let flag = false;
-                mappingList.forEach(task_ele=>{
-                    if(task_ele.id === task_element.id)
-                        flag = true;
-                });
-=======
                 priorityCounter/=3.0000;
-                console.log(`${t[i].title}: ${priorityCounter}`)
                 // pass in the priority values into a list
                 // and then priority + the task objects into a map so that we can retrieve the task objects later
                 let flag = false;
                 let mappingKeysArray = Array.from(mappingList.keys())
-                // console.log(mappingKeysArray)
                 for (let j = 0; j < mappingKeysArray.length; j++) {
-                    // console.log(mappingList.get(mappingKeysArray[j]))
                     if(mappingList.get(mappingKeysArray[j]).id === t[i].id) {
                         flag = true
                     }
                 }
->>>>>>> 5697d62cdffe01aa76662c4becbe4e6d4993367f
 
                 if(flag === true){
                     priorityCounter+=0.01;
 
                 }
-<<<<<<< HEAD
-
-            })
-=======
                 mappingList.set(priorityCounter, t[i]);
                 sortList.push(priorityCounter);
-                console.log("here3")
             }
-            console.log("here4")
 
->>>>>>> 5697d62cdffe01aa76662c4becbe4e6d4993367f
             // after all elements have been inserted into lists, continue on with functionality
             // start by sorting our (priorityList)
             sortList = sortList.sort(function(a,b){return b-a});
@@ -96,11 +59,6 @@ export default class TaskPrioritizer{
             }
 
             // return the sorted tasks list as well
-<<<<<<< HEAD
-            console.log(returnValue)
-=======
-            console.log(mappingList);
->>>>>>> 5697d62cdffe01aa76662c4becbe4e6d4993367f
             resolve(returnValue);
         })
         }
