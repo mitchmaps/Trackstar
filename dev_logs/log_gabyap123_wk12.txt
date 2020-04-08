@@ -2,4 +2,19 @@ Gabrielle Pancu
 ID: 101104085
 
 Week 10: March 31 - April 7
-- improve UI for calendar/notification integration
+- add nicer buttons with icons for calendar & notification integration
+- modify prioritizer code to use promises properly
+- help find & debug prioritizer bug
+- add time picker for task due date, update the way due date is set
+- add cancel button to task completion modal
+- fix typescript warnings
+- handle grade calculator case when current weight adds up to 100%
+- add delete button for tasks and courses, with alert for confirmation
+- add sql to enable foreign keys
+- modify sql so that task has on delete cascade for evaluations and evaluation has on delete cascade for courses
+- fix bug related to task due date
+- clean up UI across all pages
+- add associated evaluation title to task cards in course view
+- add mock db data for demo video
+- film, edit, and upload demo video
+- write all of D4 documentation

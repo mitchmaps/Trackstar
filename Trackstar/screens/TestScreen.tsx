@@ -12,6 +12,9 @@ import {
   TaskMapper,
   TaskMapperImpl
 } from "../data_mappers";
+import UserMapper from '../data_mappers/UserMapper';
+import UserMapperImpl from '../data_mappers/UserMapperImpl';
+import User from '../models/User';
 
 const TestScreen = (props) => {
   const navigation = props.navigation;
@@ -34,6 +37,19 @@ const TestScreen = (props) => {
           }
         }>
           <Text>Request Calendar Permission</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => {
+          let userMapper: UserMapper = new UserMapperImpl;
+          userMapper.getUser().then(() => { // updates the singleton
+
+          let user = User.getInstance() // get the singleton
+
+          user.estimationAccuracy = (20); // set user.estimationAccuracy = to the result
+          userMapper.update(user);
+          })
+        }}>
+          <Text>Update Accuracy</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
@@ -240,6 +256,7 @@ const TestScreen = (props) => {
           Database.deleteTaskTable()
           Database.deleteEvalTable()
           Database.deleteCourseTable()
+          Database.deleteUserTable()
         }}>
           <Text>Drop Tables</Text>
         </TouchableOpacity>

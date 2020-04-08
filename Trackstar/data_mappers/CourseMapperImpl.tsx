@@ -7,6 +7,7 @@ export default class CourseMapperImpl implements CourseMapper {
   db = DBConnection.open()
 
   constructor() {
+    this.db.exec([{ sql: 'PRAGMA foreign_keys = ON;', args: [] }], false, () => true);
     this.createTable()
   }
 

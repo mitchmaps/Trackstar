@@ -30,14 +30,16 @@ export default class TaskCreate extends React.Component {
     );
     this.handleSubmit = this.handleSubmit.bind(this);
 
+    const todayDate = new Date()
+
     this.state = {
       title: "",
       selectedEval: this.props.route.params.evals[0].id,
-      dueDateYear: 0,
-      dueDateMonth: 0,
-      dueDateDay: 0,
-      dueDateHour: 0,
-      dueDateMinute: 0,
+      dueDateYear: todayDate.getFullYear(),
+      dueDateMonth: todayDate.getMonth(),
+      dueDateDay: todayDate.getDate(),
+      dueDateHour: todayDate.getHours(),
+      dueDateMinute: todayDate.getMinutes(),
       curDueDate: new Date(),
       curDueDateTime: new Date(),
       dueDate: new Date(),
@@ -56,7 +58,7 @@ export default class TaskCreate extends React.Component {
       <Card>
         <Card.Content>
           <Text>Select the evaluation this task is for:</Text>
-          <Text style={{color: '#7c7c7c', marginTop: 5}}>{ `Select 'General tasks' to create tasks that aren't linked to any specific evaluation but are still relevant to ${courseCode}`}</Text>
+          <Text style={{color: '#7c7c7c', marginTop: 5}}>{ "Select 'General tasks' if this isn't linked to any specific evaluation."}</Text>
           <Picker selectedValue={this.state.selectedEval} onValueChange={(itemValue, itemIndex) => {this.setState({selectedEval: itemValue})}}>
             {evalSelectionMarkup}
           </Picker>
@@ -68,7 +70,7 @@ export default class TaskCreate extends React.Component {
 
             }}
           />
-          <Text style={{paddingTop: 20}}>Task due date</Text>
+          <Text style={{paddingTop: 20}}>When would you like to have this done by?</Text>
 
 
           { Platform.OS === 'ios' ?
@@ -82,6 +84,7 @@ export default class TaskCreate extends React.Component {
                 this.setState({curDueDate: selectedDate, dueDateYear: selectedDate.getFullYear(), dueDateMonth: selectedDate.getMonth(), dueDateDay: selectedDate.getDate()});
               }
             }
+            timeZoneOffsetInMinutes={0}
             display="default"/>
             <DateTimePicker
             testID="dateTimePicker"
@@ -104,6 +107,7 @@ export default class TaskCreate extends React.Component {
               this.setState({dueDate: selectedDate});
             }
           }
+          timeZoneOffsetInMinutes={0}
           androidMode='spinner'
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
@@ -111,21 +115,22 @@ export default class TaskCreate extends React.Component {
           />
         }
 
-       <Text> {User.getInstance().estimationAccuracy >= 100 ? `Heads up: you typically overestimate by about ${(User.getInstance().estimationAccuracy-100).toFixed(2)}%`
-       : `Heads up: you typically underestimate by about ${Math.abs(User.getInstance().estimationAccuracy).toFixed(2)}%` }}
-       </Text>
        <TextInput
-            label="Estimated time needed in minutes"
-            keyboardType="numeric"
-            onChangeText={(text) => {this.setState({duration: text})}}
-            value={duration}
-          />
+          label="Estimated time needed in minutes"
+          keyboardType="numeric"
+          onChangeText={(text) => {this.setState({duration: text})}}
+          value={duration}
+        />
+        <Text>
+          {User.getInstance().estimationAccuracy >= 100 ? `Heads up! You typically overestimate by about ${(Math.floor(User.getInstance().estimationAccuracy-100))}%`
+            : `Heads up! You typically underestimate by about ${Math.floor(Math.abs(User.getInstance().estimationAccuracy))}%` }
+       </Text>
         </Card.Content>
       </Card>
     );
 
     return (
-      <View style={{ flex: 1, alignSelf: "stretch" }}>
+      <View style={{ flex: 1, alignSelf: "stretch", marginTop: "15%" }}>
         <ScrollView
           style={{
             height: 80,
@@ -135,7 +140,9 @@ export default class TaskCreate extends React.Component {
         >
           <Text style={iOSUIKit.largeTitleEmphasized}>Create new task</Text>
           {taskDetailsMarkup}
-          <Button mode="contained" onPress={this.handleSubmit}>Submit</Button>
+          <View style={{margin: 30}}>
+            <Button mode="contained" onPress={this.handleSubmit}>Submit</Button>
+          </View>
         </ScrollView>
       </View>
     );
@@ -144,10 +151,11 @@ export default class TaskCreate extends React.Component {
   handleSubmit() {
     const { title, selectedEval, dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, duration } = this.state;
     let dueDate = this.state.dueDate;
-    const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params.evals;
+    const { evals, courseCode, courseName, courseTerm, courseMinGrade } = this.props.route.params;
 
-    if (Platform.OS === "ios") {
-      dueDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
+    if (Platform.OS === 'ios') {
+      const tempDate = new Date(dueDateYear, dueDateMonth, dueDateDay, dueDateHour, dueDateMinute, 0, 0);
+      dueDate = new Date(tempDate.getTime())
     }
 
     const taskMapper: TaskMapper = new TaskMapperImpl();
@@ -169,7 +177,7 @@ export default class TaskCreate extends React.Component {
     evals.forEach((currEval) => {
       const {id, course_code, due_date, title, weight} = currEval;
       const evalMarkup = (
-        <Picker.Item label={title} value={id} />
+        <Picker.Item label={title} value={id} key={id}/>
       );
 
       evalSelectionMarkup.push(evalMarkup);

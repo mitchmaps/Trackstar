@@ -1,0 +1,10 @@
+Mitchell Soares
+ID: 101103889
+
+Week 11 log:
+
+- Edited UI for a lot of different pages
+- Optimized some rendering logic
+- Added the placeholder "general tasks" evaluation worth 0% to all new courses
+- Updated UI on task creation screen to reflect the changes
+- Reviewed team PRs

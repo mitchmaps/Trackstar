@@ -1,6 +1,7 @@
 import UserMapper from "./UserMapper";
 import User from "../models/User";
 import DBConnection from "../DBConnection";
+import { Task } from "../models";
 
 
 export default class UserMapperImpl implements UserMapper {
@@ -14,7 +15,7 @@ export default class UserMapperImpl implements UserMapper {
   update(user: User): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("update User set est_accuracy=?, calendarId=?", [user.estimationAccuracy, user.calendarId], null, this.errorHandler);
+        tx.executeSql("update User set est_accuracy=?, num_completed_tasks=?, calendarId=?", [user.estimationAccuracy, user.numCompletedTasks, user.calendarId], null, this.errorHandler);
       },
       null
     );
@@ -39,10 +40,23 @@ export default class UserMapperImpl implements UserMapper {
     })
   }
 
+  updateEstAccuracy(newTask: Task): void {
+    this.getUser().then(() => { // updates the singleton
+      let user = User.getInstance() // get the singleton
+      let currentAccuracy = user.estimationAccuracy;
+      let totalTasks = user.numCompletedTasks;
+      let newTaskAccuracy: number = ((newTask.est_duration-newTask.actual_duration)/newTask.est_duration)*100;
+
+      user.estimationAccuracy = (currentAccuracy*totalTasks + newTaskAccuracy)/(user.numCompletedTasks+1);
+      user.numCompletedTasks += 1;
+      this.update(user);
+    })
+  }
+
   private insert(): void {
     this.db.transaction(
       tx => {
-        tx.executeSql("insert into User (est_accuracy) values (100)", [], null, this.errorHandler);
+        tx.executeSql("insert into User (est_accuracy, num_completed_tasks) values (100, 0)", [], null, this.errorHandler);
       },
       null
     );
@@ -50,7 +64,7 @@ export default class UserMapperImpl implements UserMapper {
 
   private createTable(): void {
     this.db.transaction(tx => {
-      tx.executeSql("create table if not exists User (est_accuracy float, calendarId text default null)")
+      tx.executeSql("create table if not exists User (est_accuracy float, num_completed_tasks integer default 0, calendarId text default null)")
     })
   }
 
