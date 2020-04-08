@@ -22,7 +22,7 @@ export default class TaskPrioritizer{
 
         return new Promise((resolve) => {
           // have an 'evals' variable that will be used to represent all evaluations
-          
+
           evalMapper.all().then((evals) => {
 
             // loop through all the task elements that were past in
@@ -42,21 +42,21 @@ export default class TaskPrioritizer{
                 priorityCounter += this.weighting_levels(currentEval.weight);
                 priorityCounter/=3.0000;
 
-                // pass in the priority values into a list 
+                // pass in the priority values into a list
                 // and then priority + the task objects into a map so that we can retrieve the task objects later
-                
+
                 let flag = false;
                 mappingList.forEach(task_ele=>{
                     if(task_ele.id === task_element.id)
                         flag = true;
-                });  
+                });
 
                 if(flag === false){
                     priorityCounter+=0.01;
                     mappingList.set(priorityCounter, task_element);
                     sortList.push(priorityCounter);
                 }
-                
+
             })
             // after all elements have been inserted into lists, continue on with functionality
             // start by sorting our (priorityList)
@@ -68,6 +68,7 @@ export default class TaskPrioritizer{
               returnValue.push(mappingList.get(element))
             });
             // return the sorted tasks list as well
+            console.log(returnValue)
             resolve(returnValue);
         })
       })

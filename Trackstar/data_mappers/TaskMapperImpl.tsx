@@ -14,7 +14,8 @@ export default class TaskMapperImpl implements TaskMapper {
   }
 
   insert(t: Task): void {
-    const complete = t.complete ? 1 : 0;   
+    console.log("insertion")
+    const complete = t.complete ? 1 : 0;
     this.db.transaction(
       tx => {
         tx.executeSql("insert into Task (title, due_date, est_duration, actual_duration, priority, complete, eval_id, id) values (?, ?, ?, ?, ?, ?, ?, ?)", [t.title, JSON.stringify(t.due_date), t.est_duration, t.actual_duration, t.priority, complete, t.evaluation_id, t.id], () => this.updatePriorities(), this.errorHandler);
@@ -121,6 +122,7 @@ export default class TaskMapperImpl implements TaskMapper {
   }
 
   private updatePriority(t: Task): void {
+    console.log("updating in db")
     this.db.transaction(
       tx => {
         tx.executeSql("update Task set priority=? where id=?", [t.priority, t.id], null, this.errorHandler);
@@ -130,10 +132,10 @@ export default class TaskMapperImpl implements TaskMapper {
   };
 
   private updatePriorities(): void {
-    console.log("updating priority...")
     this.all().then((tasks) => {
       Task.prioritizer.prioritize(tasks).then( sortedTasks => {
         for (let i: number = 0; i < sortedTasks.length; i++) {
+          console.log("changing priority...")
           sortedTasks[i].priority = i + 1;
           this.updatePriority(sortedTasks[i]);
         }
