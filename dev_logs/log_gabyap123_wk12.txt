@@ -18,3 +18,5 @@ Week 10: March 31 - April 7
 - add mock db data for demo video
 - film, edit, and upload demo video
 - write all of D4 documentation
+- make plan for D4 presentation
+- found bug in prioritizer, debugged, fixed
