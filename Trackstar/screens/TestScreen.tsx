@@ -235,10 +235,17 @@ const TestScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => {
+<<<<<<< HEAD
           let task4  = new Task ("Analyze questionnaire data", new Date(2020, 3, 10, 17, 0, 0, 0), 1, 0, 2, false, 1);
           let task6  = new Task ("Study unit 2", new Date(2020, 3, 12, 17, 0, 0, 0), 1, 0, 10, false, 2);
           let task7  = new Task ("Make flashcards", new Date(2020, 3, 15, 17, 0, 0, 0), 1, 0, 4, false, 3);
           console.log(Task.prioritizer.prioritize([task7, task4, task6]))
+=======
+          let task4  = new Task ("Analyze questionnaire data", new Date(2020, 3, 10, 17, 0, 0, 0), 1, 0, 2, false, 1, 4);
+          let task6  = new Task ("Study unit 2", new Date(2020, 3, 12, 17, 0, 0, 0), 1, 0, 10, false, 2, 6);
+          let task7  = new Task ("Make flashcards", new Date(2020, 3, 15, 17, 0, 0, 0), 1, 0, 4, false, 3, 7);
+          Task.prioritizer.prioritize([task7, task4, task6]).then((result) => {console.log(result)})
+>>>>>>> 5697d62cdffe01aa76662c4becbe4e6d4993367f
           }}
         >
           <Text>Test prioritizer</Text>

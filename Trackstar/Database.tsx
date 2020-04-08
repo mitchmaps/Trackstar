@@ -104,7 +104,7 @@ export default class Database {
     // taskMapper.insert(task1)
     // taskMapper.insert(task2)
     // taskMapper.insert(task3)
-    // taskMapper.insert(task4)
+    taskMapper.insert(task4)
     // taskMapper.insert(task5)
     taskMapper.insert(task6)
     // taskMapper.insert(task7)
