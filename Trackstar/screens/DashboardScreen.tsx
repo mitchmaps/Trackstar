@@ -100,17 +100,36 @@ const HomeScreen = props => {
     handleTaskSelection
   );
 
+
+    function checkForNoEvaluations(){ 
+	
+	/*
+	  checkForNoEvaluations.catc(onRejected);
+	  checkForNoEvaluations.catch(function(error){
+	  console.error(error);});
+	  */
+
+	  if(nextEvalDueDate == "n/a"||formatData.formattedData == []){
+		  return(
+		  Alert.alert(
+			  "You don't have any tasks yet.",
+			  "You can create tasks from your course display screens, and they'll appear here in prioritized order.",
+			  [{text: 'Back'}]));}
+
+  }
+  
+
   function getNextEval(){
     const taskMapper: TaskMapper = new TaskMapperImpl();
     const evalMapper: EvaluationMapper = new EvaluationMapperImpl();
-
+  
     let evalList = new Map();
     let evalDDList: Date[] = [];
     let finalList: Evaluation[] = [];
     let currentEval: Evaluation;
-
+  
     evalMapper.all().then(evals=>{ // get all evaluations for user
-
+      
         evals.forEach( evals_element =>{ // for each task check which evaluation it maps to
             if(!(evals_element.complete)){
               evalDDList.push(evals_element.due_date); // push evaluation due date to a list
@@ -124,23 +143,21 @@ const HomeScreen = props => {
         })
         currentEval = finalList[0]; // take the largest one and reset states equal to that
 
+
+
         setNextCourseCode(currentEval.course_code);  // make sure that all of this resides in the .then statement so that it acts synchronously
         setNextEvalDueDate(currentEval.due_date.toDateString());
         setNextEvalTitle(currentEval.title);
       })
-  }
 
-	/*
-  function checkForNoEvaluations(){
-	  if(nextEvalDueDate == "n/a"){
-		  return(
-		  Alert.alert(
-			  "You don't have any tasks yet.",
-			  "You can create tasks from your course display screens, and they'll appear here in prioritized order.",
-			  [{text: 'Back'}]));}
+
+	  
   }
 	
-*/
+	
+
+	
+
   const modalMarkup =
     taskBeingCompleted !== null ? (
       <Modal isVisible={modalActive} hasBackdrop={true}>
@@ -195,14 +212,15 @@ const HomeScreen = props => {
         </View>
       </Modal>
     ) : null;
-	
-// on line 203  {checkForNoEvaluations()}
+
+	//line 210 	{checkForNoEvaluations()} 
   return (
     <LinearGradient
       colors={["#bcf7ed", "#5273eb"]}
       style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
     >
-   
+
+
       <View style={{ flexDirection: "column", marginTop: 100 }}>
         <Text style={{ fontSize: 45, color: "white", textAlign: "center" }}>
           Welcome Back!
@@ -211,7 +229,7 @@ const HomeScreen = props => {
 			    Next Evaluation: {nextCourseCode} - {nextEvalTitle}
         </Text>
         <Text style={{ fontSize: 15, color: "white", textAlign: "center" }}>
-          Due: {nextEvalDueDate}
+          Due: {nextEvalDueDate} 	{checkForNoEvaluations()} 
         </Text>
       </View>
       <ScrollView style={{ marginTop: 50 }}>
@@ -289,7 +307,7 @@ async function formatData() {
     };
 
     formattedData.push(taskInfo);
-    //checkForNoEvaluations();
+    checkForNoEvaluations();
   }
 
   return formattedData;
