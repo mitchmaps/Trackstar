@@ -39,6 +39,7 @@ import { CourseMapper, CourseMapperImpl } from "../../data_mappers";
 
 export default function CourseView(props) {
   const { code, name, minGrade, term, complete } = props.route.params;
+  const [currCourse, setCurrCourse] = useState<Course>(null);
   const [courseEvals, setCourseEvals] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [evalBeingCompleted, setEvalBeingCompleted] = useState(null);
@@ -76,6 +77,10 @@ export default function CourseView(props) {
 
   useFocusEffect(
     React.useCallback(() => {
+      const courseData = retrieveCoureData(code).then((data: Course) => {
+        setCurrCourse(data);
+      });
+
       const evalData = retrieveEvalData(code).then((data: Evaluation[]) => {
         setCourseEvals(data);
       });
@@ -236,9 +241,26 @@ export default function CourseView(props) {
       </Modal>
     ) : null;
 
-  const completedGrade = courseStatusRef.current
-    ? calculateCourseGrade(courseEvals, minGrade)
-    : null;
+  const completedGrade = calculateCourseGrade(courseEvals, minGrade);
+  const differenceBetweenMinGrade = minGrade - completedGrade.curr_grade;
+
+  let differenceText;
+  if (differenceBetweenMinGrade === 0) {
+    differenceText = `You are currently at your desired mininum grade for this course.`;
+  } else if (differenceBetweenMinGrade < 0) {
+    differenceText = `You are currently ${Math.abs(differenceBetweenMinGrade)}% above your desired minimum grade for this course.`;
+  } else {
+    differenceText = `You are currently ${Math.abs(differenceBetweenMinGrade)}% below your desired minimum grade for this course.`;
+  }
+
+  const currGradeMarkup = !Number.isNaN(differenceBetweenMinGrade) ? (
+    <Card>
+      <Card.Content style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={iOSUIKit.largeTitleEmphasized}>{completedGrade.curr_grade}%</Text>
+          <Text style={{marginLeft: 10, flex: 1, flexWrap: 'wrap', color: differenceBetweenMinGrade <= 0 ? 'dodgerblue': '#ff0100'}}>{differenceText}</Text>
+      </Card.Content>
+    </Card>
+  ) : <Text>You haven't completed any evaluations yet.</Text>
 
   return (
     <View style={{ flex: 1, alignSelf: "stretch", marginTop: "15%" }}>
@@ -268,6 +290,10 @@ export default function CourseView(props) {
           </Button>
         </View>
         <Text style={iOSUIKit.subhead}>{name}</Text>
+        <View style={{ paddingTop: 10 }}>
+          <Text style={iOSUIKit.title3Emphasized}>Current grade</Text>
+        </View>
+        <View style={{ paddingTop: 20}}>{currGradeMarkup}</View>
         <View style={{ paddingTop: 10 }}>
           <Text style={iOSUIKit.title3Emphasized}>Evaluations</Text>
         </View>
@@ -346,12 +372,11 @@ function generateEvaluationMarkup(
                 style={{
                   flex: 1,
                   flexDirection: "row",
-                  justifyContent: "space-between",
                   alignContent: "center",
                 }}
               >
                 <Text style={iOSUIKit.subheadEmphasized}>{title}</Text>
-                <Text>{complete ? `Grade: ${grade}%` : null}</Text>
+                <Text style={{marginLeft: 10}}>{complete ? `Grade: ${grade}%` : null}</Text>
               </View>
               <Text style={{ color: "#aaaaaa" }}>
                 {complete ? "Complete" : null}
@@ -608,6 +633,13 @@ function determineCompletedEvalWeight(evals: Evaluation[]) {
   });
 
   return totalGradeCompleted;
+}
+
+async function retrieveCoureData(code: string) {
+  const courseMapper: CourseMapper = new CourseMapperImpl();
+  let course: Course = await courseMapper.find(code);
+
+  return course;
 }
 
 async function retrieveEvalData(code: string) {
