@@ -1,0 +1,29 @@
+Nareen Khurshid
+101029589
+
+D4
+----------------------------------------------
+Before D4 and implementations, please refer to log 11
+-Received feedback from group members about home screen
+-Pair Programming with HaoHao on dashboardscreen got Next due Evalution to display
+-worked on dashboard screen/home
+-encountered issues with async functions, received feedback from team members
+-UI How the app looks upon startup, for a new user (message saying "no tasks")
+-Tested app on android, compared with HaoHao
+
+Things I've learned about during this project
+-returning promises
+-data mappers
+-layered design and how it's beneficial
+-Displaying screens
+-Singleton (one user instance) and working with user instances
+-databases and data mappers, state variables
+-using react Native Expo to make an application
+-Testing on an actual device (app works on ios and android)
+
+Practiced for D4 The evening before and day of with team members
+
+Successfully presented our working app with members during D4
+talked about our single user instance, that it works on both android and ios
+quickly summarized the newly added: how the state variable and data mappers are used and 
+show the next due evaluation 
